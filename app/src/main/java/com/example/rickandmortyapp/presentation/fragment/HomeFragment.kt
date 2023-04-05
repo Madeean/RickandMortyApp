@@ -44,10 +44,10 @@ class HomeFragment : Fragment() {
         setToolbar()
         setSearchEpisode()
         setRecyclerView()
-        getAllData(state = 0)
+        getAllData()
 
         binding.swlEpisode.setOnRefreshListener {
-            getAllData(state = 0)
+            getAllData()
             binding.swlEpisode.isRefreshing = false
         }
     }
@@ -59,36 +59,15 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun getAllData(name: String? = "", state: Int) {
-        var searchName = ""
-        if (state == 1) {
-            searchName = name ?: ""
-        } else {
-            searchName = ""
-        }
-        perulanganError = 0
+    private fun getAllData(name: String = "") {
+
         setLoading(true)
-        adapter.refresh()
-        adapter.retry()
+
         lifecycleScope.launch {
-            episodeViewModel.getAllEpisode(application, searchName).collectLatest {
+            episodeViewModel.getAllEpisode(application, name).collectLatest {
                 setLoading(false)
                 adapter.submitData(it)
-                adapter.addLoadStateListener { loadState ->
-                    if (loadState.refresh is LoadState.Loading) {
-                        setLoading(true)
-                    } else {
-                        setLoading(false)
-                    }
-                    if (loadState.refresh is LoadState.Error) {
-                        setLoading(false)
-                        perulanganError++
-                        if (perulanganError == 1) {
-                            println("ERROR312")
-                            showError("Episode tidak ditemukan")
-                        }
-                    }
-                }
+
             }
         }
     }
@@ -109,6 +88,18 @@ class HomeFragment : Fragment() {
 
     private fun setRecyclerView() {
         adapter = EpisodePagingAdapter()
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading) {
+                setLoading(true)
+            } else {
+                setLoading(false)
+            }
+            if (loadState.refresh is LoadState.Error) {
+                setLoading(false)
+                showError("Episode tidak ditemukan")
+
+            }
+        }
         binding.rvEpisode.layoutManager = LinearLayoutManager(context)
         binding.rvEpisode.adapter = adapter
     }
@@ -117,7 +108,7 @@ class HomeFragment : Fragment() {
         val searchValue = binding.etSearchHome.text
         binding.ibSearch.setOnClickListener {
             if (searchValue.toString().isNotBlank()) {
-                getAllData(searchValue.toString(), 1)
+                getAllData(searchValue.toString())
             } else {
                 Toast.makeText(context, "Masukkan nama episode", Toast.LENGTH_SHORT).show()
             }
