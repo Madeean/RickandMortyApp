@@ -18,19 +18,20 @@ class EpisodeListPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeModelItemModel> {
         val position = params.key ?: 1
-        try {
-
+        return try {
+            println("masuk 2")
             val respone =
                 apiService.getEpisodeList(name, page = if (position == 1) 1 else position * 10 - 10)
             val data = EpisodeDetail.transforms(respone.results)
 
+            println(data)
 
-            return toLoadResult(
+            toLoadResult(
                 data = data, nextKey = if (data.isEmpty()) null else position + 1
             )
 
         } catch (e: java.lang.Exception) {
-            return LoadResult.Error(e)
+            LoadResult.Error(e)
         }
     }
 

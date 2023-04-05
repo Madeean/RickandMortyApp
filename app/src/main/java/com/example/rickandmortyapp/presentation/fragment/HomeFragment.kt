@@ -40,17 +40,28 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setObserve()
         setProgressBar()
         setToolbar()
         setSearchEpisode()
         setRecyclerView()
-        getAllData(state = 0)
+        getAllData()
 
         binding.swlEpisode.setOnRefreshListener {
-            getAllData(state = 0)
+            getAllData()
             binding.swlEpisode.isRefreshing = false
         }
     }
+
+    private fun setObserve() {
+        episodeViewModel.quote.observe(viewLifecycleOwner) {
+            if (it != null) {
+                adapter.submitData(lifecycle, it)
+
+            }
+        }
+    }
+
 
     private fun setProgressBar() {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
@@ -59,38 +70,32 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun getAllData(name: String? = "", state: Int) {
-        var searchName = ""
-        if (state == 1) {
-            searchName = name ?: ""
-        } else {
-            searchName = ""
-        }
-        perulanganError = 0
+    private fun getAllData(name: String = "") {
+
         setLoading(true)
-        adapter.refresh()
-        adapter.retry()
-        lifecycleScope.launch {
-            episodeViewModel.getAllEpisode(application, searchName).collectLatest {
-                setLoading(false)
-                adapter.submitData(it)
-                adapter.addLoadStateListener { loadState ->
-                    if (loadState.refresh is LoadState.Loading) {
-                        setLoading(true)
-                    } else {
-                        setLoading(false)
-                    }
-                    if (loadState.refresh is LoadState.Error) {
-                        setLoading(false)
-                        perulanganError++
-                        if (perulanganError == 1) {
-                            println("ERROR312")
-                            showError("Episode tidak ditemukan")
-                        }
-                    }
-                }
-            }
-        }
+        episodeViewModel.getAllQuote(name)
+        setLoading(false)
+//        lifecycleScope.launch {
+//            episodeViewModel.getAllEpisode(application, searchName).collectLatest {
+//                setLoading(false)
+//                adapter.submitData(it)
+//                adapter.addLoadStateListener { loadState ->
+//                    if (loadState.refresh is LoadState.Loading) {
+//                        setLoading(true)
+//                    } else {
+//                        setLoading(false)
+//                    }
+//                    if (loadState.refresh is LoadState.Error) {
+//                        setLoading(false)
+//                        perulanganError++
+//                        if (perulanganError == 1) {
+//                            println("ERROR312")
+//                            showError("Episode tidak ditemukan")
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun showError(error: String?) {
@@ -109,6 +114,19 @@ class HomeFragment : Fragment() {
 
     private fun setRecyclerView() {
         adapter = EpisodePagingAdapter()
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading) {
+                setLoading(true)
+            } else {
+                setLoading(false)
+            }
+            if (loadState.refresh is LoadState.Error) {
+                setLoading(false)
+                println("ERROR312")
+                showError("Episode tidak ditemukan")
+
+            }
+        }
         binding.rvEpisode.layoutManager = LinearLayoutManager(context)
         binding.rvEpisode.adapter = adapter
     }
@@ -117,7 +135,7 @@ class HomeFragment : Fragment() {
         val searchValue = binding.etSearchHome.text
         binding.ibSearch.setOnClickListener {
             if (searchValue.toString().isNotBlank()) {
-                getAllData(searchValue.toString(), 1)
+                getAllData(searchValue.toString())
             } else {
                 Toast.makeText(context, "Masukkan nama episode", Toast.LENGTH_SHORT).show()
             }
