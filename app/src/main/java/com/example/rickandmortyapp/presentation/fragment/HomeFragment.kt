@@ -16,7 +16,7 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentHomeBinding
 import com.example.rickandmortyapp.presentation.PresentationUtils.setupDialogError
 import com.example.rickandmortyapp.presentation.adapter.EpisodePagingAdapter
-import com.example.rickandmortyapp.presentation.viewmodel.EpisodeViewModel
+import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

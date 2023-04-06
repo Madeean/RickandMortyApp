@@ -1,6 +1,7 @@
 package com.example.rickandmortyapp.data.repository.di
 
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeApiService
+import com.example.rickandmortyapp.data.repository.network.karakter.KarakterApiService
 import com.example.rickandmortyapp.presentation.PresentationUtils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -13,19 +14,28 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 class NetworkModule {
 
-    @Provides
-    fun getTvShowApiService(): EpisodeApiService {
+    private fun retrofitClient(): Retrofit {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .build()
-        val retrofit = Retrofit.Builder()
+
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
             .build()
-        return retrofit.create(EpisodeApiService::class.java)
+    }
+
+    @Provides
+    fun getTvShowApiService(): EpisodeApiService {
+        return retrofitClient().create(EpisodeApiService::class.java)
+    }
+
+    @Provides
+    fun getKarakterApiService(): KarakterApiService {
+        return retrofitClient().create(KarakterApiService::class.java)
     }
 }

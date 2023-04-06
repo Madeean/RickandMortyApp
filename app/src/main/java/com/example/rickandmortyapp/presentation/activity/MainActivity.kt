@@ -9,9 +9,10 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityMainBinding
 import com.example.rickandmortyapp.presentation.fragment.HomeFragment
 import com.example.rickandmortyapp.presentation.fragment.KarakterFragment
-import com.example.rickandmortyapp.presentation.viewmodel.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.viewmodel.EpisodeViewModelFactory
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
+import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModelFactory
+import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModel
+import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var episodeFactory: EpisodeViewModelFactory
     private val episodeViewModel: EpisodeViewModel by viewModels {
         episodeFactory
+    }
+    @Inject
+    lateinit var karakterFactory: KarakterViewModelFactory
+    private val karakterViewModel: KarakterViewModel by viewModels {
+        karakterFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewPager() {
-        val adapter = FragmentAdapter(supportFragmentManager, lifecycle,application,episodeViewModel)
+        val adapter = FragmentAdapter(supportFragmentManager, lifecycle,application,episodeViewModel,karakterViewModel)
         adapter.addFragment(HomeFragment())
         adapter.addFragment(KarakterFragment())
 
