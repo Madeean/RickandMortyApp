@@ -1,6 +1,8 @@
 package com.example.rickandmortyapp.presentation.fragment
 
+import android.app.AlertDialog
 import android.app.Application
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +12,15 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentKarakterBinding
 import com.example.rickandmortyapp.databinding.KarakterBottomSheetDialogBinding
+import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
@@ -28,14 +33,9 @@ class KarakterFragment : Fragment() {
     private lateinit var binding: FragmentKarakterBinding
     private lateinit var karakterViewModel: KarakterViewModel
     private lateinit var application: Application
-    private lateinit var karakterBottomSheetDialog: KarakterBottomSheetDialogBinding
     private lateinit var adapter: KarakterPagingAdapter
+    private lateinit var dialog: Dialog
 
-    private var name: String? = null
-    private var gender: String? = null
-    private var status: String? = null
-    private var species: String? = null
-    private var type: String? = null
 
 
     override fun onCreateView(
@@ -48,34 +48,83 @@ class KarakterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setBinding()
+        setProgressBar()
         setToolbar()
         setBottomSheetDialog()
         setRecyclerView()
         getAllData()
 
+        binding.swlKarakter.setOnRefreshListener {
+            getAllData()
+            binding.swlKarakter.isRefreshing = false
+        }
+
     }
 
-    private fun getAllData() {
+    private fun setProgressBar() {
+        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
+        alertDialog.setView(R.layout.progress)
+        dialog = alertDialog.create()
+    }
+
+    private fun getAllData(
+        gender: String = "",
+        status: String = "",
+        species: String = "",
+        type: String = "",
+        name: String = ""
+    ) {
+        val genderValue: String = if(gender == "all") "" else gender
+        val statusValue: String = if(status == "all") "" else status
         println("MASUK 1")
         lifecycleScope.launch {
             karakterViewModel.getAllKarakter(
-                application, name ?: "", status ?: "", species ?: "", type ?: "", gender ?: ""
+                application,
+                name ?: "",
+                statusValue ?: "",
+                species ?: "",
+                type ?: "",
+                genderValue ?: ""
             ).collectLatest {
                 adapter.submitData(it)
             }
         }
     }
 
+    private fun setLoading(isLoading: Boolean) {
+        if (isLoading) {
+            dialog.show()
+        } else {
+            dialog.dismiss()
+        }
+    }
+
     private fun setRecyclerView() {
         adapter = KarakterPagingAdapter()
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.Loading) {
+                setLoading(true)
+            } else {
+                setLoading(false)
+            }
+            if (loadState.refresh is LoadState.Error) {
+                setLoading(false)
+                showError("Karakter tidak ditemukan")
+
+            }
+        }
         binding.rvKarakter.layoutManager = GridLayoutManager(context, 2)
         binding.rvKarakter.adapter = adapter
     }
 
-    private fun setBinding() {
-        karakterBottomSheetDialog = KarakterBottomSheetDialogBinding.inflate(layoutInflater)
+    private fun showError(error: String?) {
+        PresentationUtils.setupDialogError(requireContext(), error ?: "")
+            .setPositiveButton("Ok") { dialog, _ ->
+            dialog.dismiss()
+        }.show()
     }
+
+
 
     private fun setBottomSheetDialog() {
 
@@ -94,15 +143,15 @@ class KarakterFragment : Fragment() {
             viewBottomSheet.acStatus.setAdapter(adapterStatus)
 
             viewBottomSheet.btnGetKarakter.setOnClickListener {
-                println(
-                    """
-                    ${viewBottomSheet.acGender.text}
-                    ${viewBottomSheet.acStatus.text}
-                    ${viewBottomSheet.etNamaKarakter.text}
-                    ${viewBottomSheet.etSearchType.text}
-                    ${viewBottomSheet.etSearchSpecies.text}
-                """.trimIndent()
+
+                getAllData(
+                    name = viewBottomSheet.etNamaKarakter.text.toString(),
+                    gender = viewBottomSheet.acGender.text.toString(),
+                    species = viewBottomSheet.etSearchSpecies.text.toString(),
+                    type = viewBottomSheet.etSearchType.text.toString(),
+                    status = viewBottomSheet.acStatus.text.toString()
                 )
+
                 dialog.dismiss()
             }
 
@@ -113,7 +162,7 @@ class KarakterFragment : Fragment() {
     }
 
     private fun setToolbar() {
-        binding.karakterToolbar.myToolbarTitle.text = "Karakter"
+        binding.karakterToolbar.tvToolbar.text = "Karakter"
     }
 
     companion object {

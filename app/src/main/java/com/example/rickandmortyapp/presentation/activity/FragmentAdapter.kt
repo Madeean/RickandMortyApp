@@ -7,8 +7,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.rickandmortyapp.presentation.fragment.HomeFragment
 import com.example.rickandmortyapp.presentation.fragment.KarakterFragment
+import com.example.rickandmortyapp.presentation.fragment.LocationFragment
+import com.example.rickandmortyapp.presentation.fragment.SettingFragment
 import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModel
+import com.example.rickandmortyapp.presentation.viewmodel.location.LocationViewModel
 
 class FragmentAdapter(
     fragmentManager: FragmentManager,
@@ -16,6 +19,7 @@ class FragmentAdapter(
     private val application: Application,
     private val episodeViewModel: EpisodeViewModel,
     private val karakterViewModel: KarakterViewModel,
+    private val locationViewModel: LocationViewModel
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     private val fragmentList = arrayListOf<Fragment>()
 
@@ -28,10 +32,11 @@ class FragmentAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-//        return fragmentList[position]
         return when (position) {
             0 -> HomeFragment.newInstance(episodeViewModel, application)
             1 -> KarakterFragment.newInstance(karakterViewModel, application)
+            2 -> LocationFragment.newInstance(locationViewModel, application)
+            3 -> SettingFragment()
             else -> HomeFragment.newInstance(episodeViewModel, application)
         }
     }

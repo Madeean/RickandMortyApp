@@ -1,8 +1,9 @@
 package com.example.rickandmortyapp.data.repository.di
 
+import com.example.rickandmortyapp.data.DataUtils.BASE_URL
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeApiService
 import com.example.rickandmortyapp.data.repository.network.karakter.KarakterApiService
-import com.example.rickandmortyapp.presentation.PresentationUtils.BASE_URL
+import com.example.rickandmortyapp.data.repository.network.location.LocationApiService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -37,5 +38,10 @@ class NetworkModule {
     @Provides
     fun getKarakterApiService(): KarakterApiService {
         return retrofitClient().create(KarakterApiService::class.java)
+    }
+
+    @Provides
+    fun getLocationApiService(): LocationApiService {
+        return retrofitClient().create(LocationApiService::class.java)
     }
 }

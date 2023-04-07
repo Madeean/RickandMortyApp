@@ -23,9 +23,7 @@ class KarakterListPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, KarakterModelItemModel> {
         val position = params.key ?: 1
-        println("MASUK 5")
         return try {
-            println("MASUK 6")
             val respone = apiService.getAllKarakter(
                 name = name,
                 page = if (position == 1) 1 else position * 10 - 10,
@@ -34,14 +32,12 @@ class KarakterListPagingSource(
                 gender = gender,
                 type = type
             )
-            println(respone)
             val data = KarakterDetail.transforms(respone.results)
 
             toLoadResult(
                 data = data, nextKey = if (data.isEmpty()) null else position + 1
             )
         } catch (e: Exception) {
-            println(e.message)
             LoadResult.Error(e)
         }
     }

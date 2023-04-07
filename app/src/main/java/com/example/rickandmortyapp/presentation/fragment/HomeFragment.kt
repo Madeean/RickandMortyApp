@@ -3,6 +3,7 @@ package com.example.rickandmortyapp.presentation.fragment
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,9 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentHomeBinding
+import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.setupDialogError
+import com.example.rickandmortyapp.presentation.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +31,6 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: EpisodePagingAdapter
     private lateinit var dialog: Dialog
 
-    private var perulanganError = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -87,7 +89,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        adapter = EpisodePagingAdapter()
+        adapter = EpisodePagingAdapter().apply {
+            setOnItemClickListener { position, data ->
+                val intent = Intent(context, DetailEpisodeActivity::class.java)
+                intent.putExtra(INTENT_DATA,data)
+                startActivity(intent)
+            }
+        }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
                 setLoading(true)
@@ -100,6 +108,7 @@ class HomeFragment : Fragment() {
 
             }
         }
+
         binding.rvEpisode.layoutManager = LinearLayoutManager(context)
         binding.rvEpisode.adapter = adapter
     }
@@ -116,7 +125,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setToolbar() {
-        binding.homeToolbar.myToolbarTitle.text = "Episode"
+        binding.homeToolbar.tvToolbar.text = "Episode"
     }
 
     companion object {

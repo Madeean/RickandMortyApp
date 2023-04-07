@@ -9,16 +9,20 @@ import com.example.rickandmortyapp.data.repository.network.episode.EpisodeApiSer
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeListPagingSource
 import com.example.rickandmortyapp.data.repository.network.karakter.KarakterApiService
 import com.example.rickandmortyapp.data.repository.network.karakter.KarakterListPagingSource
+import com.example.rickandmortyapp.data.repository.network.location.LocationApiService
+import com.example.rickandmortyapp.data.repository.network.location.LocationListPagingSource
 import com.example.rickandmortyapp.domain.DomainRepository
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DomainRepositoryImpl @Inject constructor(
     private val episodeApiService: EpisodeApiService,
-    private val karakterApiService:KarakterApiService
+    private val karakterApiService:KarakterApiService,
+    private val locationApiService: LocationApiService
 ) : DomainRepository {
 
     override suspend fun getAllEpisode(
@@ -48,6 +52,24 @@ class DomainRepositoryImpl @Inject constructor(
                 species = species,
                 type = type,
                 gender = gender
+            )
+        }.flow.cachedIn(scope)
+    }
+
+    override suspend fun getAllLocation(
+        scope: CoroutineScope,
+        application: Application,
+        name: String,
+        type: String,
+        dimension: String
+    ): Flow<PagingData<LocationModelItemModel>> {
+        return Pager(config = PagingConfig(1)){
+            LocationListPagingSource(
+                apiService = locationApiService,
+                application = application,
+                name = name,
+                type = type,
+                dimension = dimension
             )
         }.flow.cachedIn(scope)
     }

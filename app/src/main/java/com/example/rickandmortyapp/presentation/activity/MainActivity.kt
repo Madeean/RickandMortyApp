@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation.activity
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -9,24 +10,36 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityMainBinding
 import com.example.rickandmortyapp.presentation.fragment.HomeFragment
 import com.example.rickandmortyapp.presentation.fragment.KarakterFragment
+import com.example.rickandmortyapp.presentation.fragment.LocationFragment
+import com.example.rickandmortyapp.presentation.fragment.SettingFragment
 import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModelFactory
 import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModel
 import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModelFactory
+import com.example.rickandmortyapp.presentation.viewmodel.location.LocationViewModel
+import com.example.rickandmortyapp.presentation.viewmodel.location.LocationViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+//    private var isNightModeOn = false
 
     @Inject
     lateinit var episodeFactory: EpisodeViewModelFactory
     private val episodeViewModel: EpisodeViewModel by viewModels {
         episodeFactory
     }
+
     @Inject
     lateinit var karakterFactory: KarakterViewModelFactory
     private val karakterViewModel: KarakterViewModel by viewModels {
         karakterFactory
+    }
+
+    @Inject
+    lateinit var locationFactory: LocationViewModelFactory
+    private val locationViewModel: LocationViewModel by viewModels {
+        locationFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+//        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+//        isNightModeOn = currentNightMode == Configuration.UI_MODE_NIGHT_YES
 
         setViewPager()
         setBottomNavigationView()
@@ -46,15 +61,21 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.home -> binding.viewPager2.currentItem = 0
                 R.id.person_search -> binding.viewPager2.currentItem = 1
+                R.id.location -> binding.viewPager2.currentItem = 2
+                R.id.setting -> binding.viewPager2.currentItem = 3
             }
             true
         }
     }
 
     private fun setViewPager() {
-        val adapter = FragmentAdapter(supportFragmentManager, lifecycle,application,episodeViewModel,karakterViewModel)
+        val adapter = FragmentAdapter(
+            supportFragmentManager, lifecycle, application, episodeViewModel, karakterViewModel,locationViewModel
+        )
         adapter.addFragment(HomeFragment())
         adapter.addFragment(KarakterFragment())
+        adapter.addFragment(LocationFragment())
+        adapter.addFragment(SettingFragment())
 
         binding.viewPager2.adapter = adapter
 
