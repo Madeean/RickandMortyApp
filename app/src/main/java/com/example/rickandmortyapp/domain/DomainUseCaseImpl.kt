@@ -41,4 +41,20 @@ class DomainUseCaseImpl @Inject constructor(private val repository: DomainReposi
     ): Flow<PagingData<LocationModelItemModel>> {
         return repository.getAllLocation(scope,application,name,type,dimension)
     }
+
+    override suspend fun getKarakterById(
+        scope: CoroutineScope,
+        application: Application,
+        id: String
+    ): Flow<PagingData<KarakterModelItemModel>> {
+        return repository.getKarakterById(scope,application,id)
+    }
+
+    override suspend fun getEpisodeById(
+        scope: CoroutineScope,
+        application: Application,
+        id: String
+    ): Flow<PagingData<EpisodeModelItemModel>> {
+        return repository.getEpisodeById(scope,application,id)
+    }
 }

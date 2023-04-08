@@ -34,4 +34,16 @@ interface DomainUseCase {
         type:String,
         dimension:String
     ): Flow<PagingData<LocationModelItemModel>>
+
+    suspend fun getKarakterById(
+        scope:CoroutineScope,
+        application: Application,
+        id:String
+    ):Flow<PagingData<KarakterModelItemModel>>
+    suspend fun getEpisodeById(
+        scope:CoroutineScope,
+        application: Application,
+        id:String
+    ):Flow<PagingData<EpisodeModelItemModel>>
+
 }

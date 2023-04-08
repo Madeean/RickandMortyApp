@@ -11,6 +11,9 @@ object PresentationUtils {
 
     const val INTENT_DATA = "data"
 
+     fun getIdFromUrl(url:String):Int = url.substringAfterLast("/").toInt()
+
+
     fun getCreated(created:String):String{
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale.getDefault())

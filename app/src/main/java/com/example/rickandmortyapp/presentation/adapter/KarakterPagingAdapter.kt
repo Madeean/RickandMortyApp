@@ -12,11 +12,18 @@ import com.example.rickandmortyapp.databinding.ItemKarakterBinding
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 
-class KarakterPagingAdapter : PagingDataAdapter<KarakterModelItemModel, KarakterPagingAdapter.KarakterViewHolder>(
-    DiffCallback
-) {
+class KarakterPagingAdapter :
+    PagingDataAdapter<KarakterModelItemModel, KarakterPagingAdapter.KarakterViewHolder>(
+        DiffCallback
+    ) {
 
-    companion object{
+    private var onItemClick: ((position: Int, data: KarakterModelItemModel) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (position: Int, data: KarakterModelItemModel) -> Unit) {
+        onItemClick = listener
+    }
+
+    companion object {
         object DiffCallback : DiffUtil.ItemCallback<KarakterModelItemModel>() {
             override fun areItemsTheSame(
                 oldItem: KarakterModelItemModel,
@@ -52,6 +59,10 @@ class KarakterPagingAdapter : PagingDataAdapter<KarakterModelItemModel, Karakter
 
     override fun onBindViewHolder(holder: KarakterPagingAdapter.KarakterViewHolder, position: Int) {
         holder.bindData(getItem(position) ?: return)
+        
+        holder.binding.root.setOnClickListener {
+            onItemClick?.invoke(position, getItem(position) ?: return@setOnClickListener)
+        }
     }
 
     override fun onCreateViewHolder(

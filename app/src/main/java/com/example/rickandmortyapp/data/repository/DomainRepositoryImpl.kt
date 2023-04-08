@@ -7,8 +7,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeApiService
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeListPagingSource
+import com.example.rickandmortyapp.data.repository.network.episode.MultipleEpisodePagingSource
 import com.example.rickandmortyapp.data.repository.network.karakter.KarakterApiService
 import com.example.rickandmortyapp.data.repository.network.karakter.KarakterListPagingSource
+import com.example.rickandmortyapp.data.repository.network.karakter.MultipleKarakterPagingSource
 import com.example.rickandmortyapp.data.repository.network.location.LocationApiService
 import com.example.rickandmortyapp.data.repository.network.location.LocationListPagingSource
 import com.example.rickandmortyapp.domain.DomainRepository
@@ -70,6 +72,34 @@ class DomainRepositoryImpl @Inject constructor(
                 name = name,
                 type = type,
                 dimension = dimension
+            )
+        }.flow.cachedIn(scope)
+    }
+
+    override suspend fun getKarakterById(
+        scope: CoroutineScope,
+        application: Application,
+        id: String
+    ): Flow<PagingData<KarakterModelItemModel>> {
+        return Pager(config = PagingConfig(1)){
+            MultipleKarakterPagingSource(
+                application = application,
+                apiService = karakterApiService,
+                id = id
+            )
+        }.flow.cachedIn(scope)
+    }
+
+    override suspend fun getEpisodeById(
+        scope: CoroutineScope,
+        application: Application,
+        id: String
+    ): Flow<PagingData<EpisodeModelItemModel>> {
+        return Pager(config = PagingConfig(1)){
+            MultipleEpisodePagingSource(
+                application = application,
+                apiService = episodeApiService,
+                id = id
             )
         }.flow.cachedIn(scope)
     }

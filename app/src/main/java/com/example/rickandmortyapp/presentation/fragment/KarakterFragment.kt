@@ -3,6 +3,7 @@ package com.example.rickandmortyapp.presentation.fragment
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +22,8 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentKarakterBinding
 import com.example.rickandmortyapp.databinding.KarakterBottomSheetDialogBinding
 import com.example.rickandmortyapp.presentation.PresentationUtils
+import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
+import com.example.rickandmortyapp.presentation.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
@@ -35,7 +38,6 @@ class KarakterFragment : Fragment() {
     private lateinit var application: Application
     private lateinit var adapter: KarakterPagingAdapter
     private lateinit var dialog: Dialog
-
 
 
     override fun onCreateView(
@@ -74,8 +76,8 @@ class KarakterFragment : Fragment() {
         type: String = "",
         name: String = ""
     ) {
-        val genderValue: String = if(gender == "all") "" else gender
-        val statusValue: String = if(status == "all") "" else status
+        val genderValue: String = if (gender == "all") "" else gender
+        val statusValue: String = if (status == "all") "" else status
         println("MASUK 1")
         lifecycleScope.launch {
             karakterViewModel.getAllKarakter(
@@ -100,7 +102,13 @@ class KarakterFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        adapter = KarakterPagingAdapter()
+        adapter = KarakterPagingAdapter().apply {
+            setOnItemClickListener { position, data ->
+                val intent = Intent(context, DetailKarakterActivity::class.java)
+                intent.putExtra(INTENT_DATA, data)
+                startActivity(intent)
+            }
+        }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
                 setLoading(true)
@@ -120,10 +128,9 @@ class KarakterFragment : Fragment() {
     private fun showError(error: String?) {
         PresentationUtils.setupDialogError(requireContext(), error ?: "")
             .setPositiveButton("Ok") { dialog, _ ->
-            dialog.dismiss()
-        }.show()
+                dialog.dismiss()
+            }.show()
     }
-
 
 
     private fun setBottomSheetDialog() {

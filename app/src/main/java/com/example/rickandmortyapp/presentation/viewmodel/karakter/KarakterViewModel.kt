@@ -28,4 +28,11 @@ class KarakterViewModel @Inject constructor(private val useCase: DomainUseCase) 
         println("MASUK 2")
         return useCase.getAllKarakter(viewModelScope, application, name,status,species,type,gender)
     }
+
+    suspend fun getKarakterById(
+        application: Application,
+        id: String
+    ): Flow<PagingData<KarakterModelItemModel>> {
+        return useCase.getKarakterById(viewModelScope, application, id)
+    }
 }

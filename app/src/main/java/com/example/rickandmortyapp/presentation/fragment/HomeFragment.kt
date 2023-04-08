@@ -92,7 +92,7 @@ class HomeFragment : Fragment() {
         adapter = EpisodePagingAdapter().apply {
             setOnItemClickListener { position, data ->
                 val intent = Intent(context, DetailEpisodeActivity::class.java)
-                intent.putExtra(INTENT_DATA,data)
+                intent.putExtra(INTENT_DATA, data)
                 startActivity(intent)
             }
         }
