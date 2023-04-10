@@ -2,10 +2,12 @@ package com.example.rickandmortyapp.domain
 
 import android.app.Application
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
@@ -45,5 +47,21 @@ interface DomainUseCase {
         application: Application,
         id:String
     ):Flow<PagingData<EpisodeModelItemModel>>
+
+    suspend fun getLocationById(
+        id:Int
+    ):Flow<LocationModelItemModel>
+
+
+    suspend fun getEpisodeRoom(
+        application: Application
+    ):List<EpisodeItemModelRoom>
+    suspend fun getKarakterRoom(
+        application: Application
+    ):List<KarakterItemModelRoom>
+
+    suspend fun getLocationRoom(
+        application: Application
+    ):List<LocationItemModelRoom>
 
 }

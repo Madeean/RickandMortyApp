@@ -1,6 +1,5 @@
 package com.example.rickandmortyapp.presentation.activity
 
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -8,16 +7,16 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityMainBinding
-import com.example.rickandmortyapp.presentation.fragment.HomeFragment
-import com.example.rickandmortyapp.presentation.fragment.KarakterFragment
-import com.example.rickandmortyapp.presentation.fragment.LocationFragment
-import com.example.rickandmortyapp.presentation.fragment.SettingFragment
-import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModelFactory
-import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModel
-import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModelFactory
-import com.example.rickandmortyapp.presentation.viewmodel.location.LocationViewModel
-import com.example.rickandmortyapp.presentation.viewmodel.location.LocationViewModelFactory
+import com.example.rickandmortyapp.presentation.episode.fragment.HomeFragment
+import com.example.rickandmortyapp.presentation.karakter.fragment.KarakterFragment
+import com.example.rickandmortyapp.presentation.location.fragment.LocationFragment
+import com.example.rickandmortyapp.presentation.setting.SettingFragment
+import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
+import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
+import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
+import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModelFactory
+import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
+import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {

@@ -17,10 +17,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.activity.DetailKarakterActivity"
+            android:name=".presentation.location.activity.DetailLocationActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.activity.DetailEpisodeActivity"
+            android:name=".presentation.karakter.activity.DetailKarakterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.episode.activity.DetailEpisodeActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.activity.SplashScreenActivity"

@@ -4,8 +4,11 @@ import android.app.Application
 import androidx.paging.PagingData
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -57,4 +60,22 @@ class DomainUseCaseImpl @Inject constructor(private val repository: DomainReposi
     ): Flow<PagingData<EpisodeModelItemModel>> {
         return repository.getEpisodeById(scope,application,id)
     }
+
+    override suspend fun getLocationById(id: Int): Flow<LocationModelItemModel> {
+        return repository.getLocationById(id)
+    }
+
+    override suspend fun getEpisodeRoom(application: Application): List<EpisodeItemModelRoom> {
+        return repository.getEpisodeRoom(application)
+    }
+
+    override suspend fun getKarakterRoom(application: Application): List<KarakterItemModelRoom> {
+        return repository.getKarakterRoom(application)
+    }
+
+    override suspend fun getLocationRoom(application: Application): List<LocationItemModelRoom> {
+        return repository.getLocationRoom(application)
+    }
+
+
 }

@@ -1,9 +1,11 @@
 package com.example.rickandmortyapp.presentation.di
 
 import com.example.rickandmortyapp.data.repository.di.CoreComponent
-import com.example.rickandmortyapp.presentation.activity.DetailEpisodeActivity
-import com.example.rickandmortyapp.presentation.activity.DetailKarakterActivity
+import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
+import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.activity.MainActivity
+import com.example.rickandmortyapp.presentation.activity.SplashScreenActivity
+import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import dagger.Component
 
 @AppScope
@@ -19,4 +21,6 @@ interface AppComponent {
     fun mainActivityInject(activity: MainActivity)
     fun detailEpisodeActivity(activity: DetailEpisodeActivity)
     fun detailKarakterActivity(activity: DetailKarakterActivity)
+    fun detailLocationActivity(activity: DetailLocationActivity)
+//    fun splashScreenActivity(activity: SplashScreenActivity)
 }

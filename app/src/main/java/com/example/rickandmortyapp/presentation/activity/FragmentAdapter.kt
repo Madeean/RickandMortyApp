@@ -5,13 +5,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.rickandmortyapp.presentation.fragment.HomeFragment
-import com.example.rickandmortyapp.presentation.fragment.KarakterFragment
-import com.example.rickandmortyapp.presentation.fragment.LocationFragment
-import com.example.rickandmortyapp.presentation.fragment.SettingFragment
-import com.example.rickandmortyapp.presentation.viewmodel.episode.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.viewmodel.karakter.KarakterViewModel
-import com.example.rickandmortyapp.presentation.viewmodel.location.LocationViewModel
+import com.example.rickandmortyapp.presentation.episode.fragment.HomeFragment
+import com.example.rickandmortyapp.presentation.karakter.fragment.KarakterFragment
+import com.example.rickandmortyapp.presentation.location.fragment.LocationFragment
+import com.example.rickandmortyapp.presentation.setting.SettingFragment
+import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
+import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
+import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
 
 class FragmentAdapter(
     fragmentManager: FragmentManager,

@@ -8,7 +8,6 @@ data class LocationDetail(
     val type: String?,
     val dimension: String?,
     val residents: List<String>?,
-    val url: String?,
     val created: String?
 ) {
     companion object {
@@ -22,7 +21,6 @@ data class LocationDetail(
                             type = it.type,
                             dimension = it.dimension,
                             residents = it.residents,
-                            url = it.url,
                             created = it.created
                         )
                     )
@@ -32,14 +30,13 @@ data class LocationDetail(
             }
         }
 
-        private fun transform(model: LocationDetail):LocationModelItemModel{
+        fun transform(model: LocationDetail):LocationModelItemModel{
             return LocationModelItemModel(
                 id = model.id,
                 name = model.name,
                 type = model.type,
                 dimension = model.dimension,
                 residents = model.residents,
-                url = model.url,
                 created = model.created
             )
         }

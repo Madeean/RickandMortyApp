@@ -5,6 +5,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.rickandmortyapp.data.repository.di.LocalModule
+import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoom
+import com.example.rickandmortyapp.data.repository.local.karakter.KarakterModelRoom
+import com.example.rickandmortyapp.data.repository.local.location.LocationModelRoom
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeApiService
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeListPagingSource
 import com.example.rickandmortyapp.data.repository.network.episode.MultipleEpisodePagingSource
@@ -13,12 +17,19 @@ import com.example.rickandmortyapp.data.repository.network.karakter.KarakterList
 import com.example.rickandmortyapp.data.repository.network.karakter.MultipleKarakterPagingSource
 import com.example.rickandmortyapp.data.repository.network.location.LocationApiService
 import com.example.rickandmortyapp.data.repository.network.location.LocationListPagingSource
+import com.example.rickandmortyapp.data.repository.network.location.model.LocationDetail
 import com.example.rickandmortyapp.domain.DomainRepository
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class DomainRepositoryImpl @Inject constructor(
@@ -103,5 +114,35 @@ class DomainRepositoryImpl @Inject constructor(
             )
         }.flow.cachedIn(scope)
     }
+
+    override suspend fun getLocationById(id: Int): Flow<LocationModelItemModel> {
+        return flow{
+            try{
+                val response = locationApiService.getLocationById(id)
+                emit(LocationDetail.transform(response))
+            }catch (e: Exception){
+                emit(LocationModelItemModel(null,null,null,null, null,null))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getEpisodeRoom(application: Application): List<EpisodeItemModelRoom> {
+        val episodeDao =LocalModule.getDatabase(application).episodeDao()
+        val data = episodeDao.getAllEpisodeRoom()
+        return EpisodeModelRoom.transfromsFroomRoomToDomain(data)
+    }
+
+    override suspend fun getKarakterRoom(application: Application): List<KarakterItemModelRoom> {
+        val karakterDao = LocalModule.getDatabase(application).karakterDao()
+        val data = karakterDao.getAllKarakterRoom()
+        return KarakterModelRoom.transfromsFroomRoomToDomain(data)
+    }
+
+    override suspend fun getLocationRoom(application: Application): List<LocationItemModelRoom> {
+        val locationDao = LocalModule.getDatabase(application).locationDao()
+        val data = locationDao.getAllLocationRoom()
+        return LocationModelRoom.transfromsFroomRoomToDomain(data)
+    }
+
 
 }
