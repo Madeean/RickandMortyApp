@@ -4,12 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/abuabumuda"
     tools:context=".presentation.setting.SettingFragment">
 
+    <include
+        android:id="@+id/setting_toolbar"
+        layout="@layout/my_toolbar" />
+
     <RelativeLayout
-        android:background="@color/abuabutua"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/setting_toolbar"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -17,19 +22,25 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:layout_centerInParent="true"
+            android:id="@+id/tv_daftar_favorit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:drawablePadding="20dp"
+            android:padding="10dp"
+            android:text="Daftar Favorit"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+            app:drawableStartCompat="@drawable/favorite_tag" />
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_marginTop="20dp"
+            app:dividerColor="@color/black"
+            android:id="@+id/divider_horizontal_alamat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dark Mode"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_dark_mode"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_below="@id/tv_daftar_favorit" />
 
     </RelativeLayout>
 
