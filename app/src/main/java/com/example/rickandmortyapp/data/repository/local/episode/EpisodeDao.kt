@@ -12,4 +12,14 @@ interface EpisodeDao {
 
     @Query("SELECT * FROM episode")
     fun getAllEpisodeRoom(): List<EpisodeModelRoom>
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertEpisodeFavoriteRoom(episodeFavoriteRoom: EpisodeFavoriteModelRoom)
+
+    @Delete
+    fun deleteEpisodeFavoriteRoom(episodeFavoriteRoom: EpisodeFavoriteModelRoom)
+
+    @Query("SELECT * FROM episode_favorite")
+    fun getAllEpisodeFavoriteRoom(): List<EpisodeFavoriteModelRoom>
 }

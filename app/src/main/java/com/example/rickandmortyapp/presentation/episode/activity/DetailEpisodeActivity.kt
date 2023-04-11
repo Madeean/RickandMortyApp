@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -15,10 +16,13 @@ import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailEpisodeBinding
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.getCreated
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
+import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
+import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
@@ -40,7 +44,14 @@ class DetailEpisodeActivity : AppCompatActivity() {
         karakterFactory
     }
 
+    @Inject
+    lateinit var episodeFactory: EpisodeViewModelFactory
+    private val episodeViewModel: EpisodeViewModel by viewModels {
+        episodeFactory
+    }
+
     private var idKarakter = ""
+    private var dataFavorite: List<EpisodeItemFavoriteModelRoom> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MyApplication).appComponent.detailEpisodeActivity(this)
@@ -51,6 +62,49 @@ class DetailEpisodeActivity : AppCompatActivity() {
         setToolbar()
         setAdapter()
         getDataFromIntent()
+        setFavorite()
+
+    }
+
+    private fun setFavorite() {
+        getFavorite()
+        insertFavorite()
+    }
+
+    private fun getFavorite() {
+        lifecycleScope.launch {
+            dataFavorite = episodeViewModel.getEpisodeFavoriteRoom(application)
+
+            val isFavorite = dataFavorite.any {
+                it.idEpisode == data?.id
+            }
+
+            if (isFavorite) {
+                binding.cbFavoritDetailEpisode.setBackgroundResource(R.drawable.favorite_full)
+                binding.cbFavoritDetailEpisode.isChecked = false
+            } else {
+                binding.cbFavoritDetailEpisode.setBackgroundResource(R.drawable.favorite_outline)
+                binding.cbFavoritDetailEpisode.isChecked = true
+            }
+
+        }
+    }
+
+    private fun insertFavorite() {
+        binding.cbFavoritDetailEpisode.setOnClickListener {
+            if (binding.cbFavoritDetailEpisode.isChecked) {
+                lifecycleScope.launch {
+                    episodeViewModel.deleteEpisodeFavoriteRoom(application, data?.id ?: -1)
+                }
+                Toast.makeText(this, "Berhasil menghapus favorite", Toast.LENGTH_SHORT).show()
+            } else {
+                lifecycleScope.launch {
+                    episodeViewModel.insertEpisodeFavoriteRoom(application, data?.id ?: -1)
+                }
+                Toast.makeText(this, "Berhasil menambah favorite", Toast.LENGTH_SHORT).show()
+            }
+            getFavorite()
+        }
     }
 
     private fun setProgressBar() {

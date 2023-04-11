@@ -10,6 +10,7 @@ import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoo
 import com.example.rickandmortyapp.domain.DomainUseCase
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,32 @@ class EpisodeViewModel @Inject constructor(private val useCase: DomainUseCase) :
     ): List<EpisodeItemModelRoom> {
         return withContext(Dispatchers.IO) {
             useCase.getEpisodeRoom(application)
+        }
+    }
+
+    suspend fun insertEpisodeFavoriteRoom(
+        application: Application,
+        id: Int
+    ) {
+        return withContext(Dispatchers.IO) {
+            useCase.insertFavoriteEpisode(application, id)
+        }
+    }
+
+    suspend fun deleteEpisodeFavoriteRoom(
+        application: Application,
+        id:Int
+    ){
+        return withContext(Dispatchers.IO){
+            useCase.deleteFavoriteEpisode(application,id)
+        }
+    }
+
+    suspend fun getEpisodeFavoriteRoom(
+        application: Application
+    ): List<EpisodeItemFavoriteModelRoom> {
+        return withContext(Dispatchers.IO) {
+            useCase.getFavoriteEpisode(application)
         }
     }
 }

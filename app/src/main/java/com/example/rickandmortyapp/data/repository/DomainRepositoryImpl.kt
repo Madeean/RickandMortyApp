@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.rickandmortyapp.data.repository.di.LocalModule
+import com.example.rickandmortyapp.data.repository.local.episode.EpisodeFavoriteModelRoom
 import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoom
 import com.example.rickandmortyapp.data.repository.local.karakter.KarakterModelRoom
 import com.example.rickandmortyapp.data.repository.local.location.LocationModelRoom
@@ -20,6 +21,7 @@ import com.example.rickandmortyapp.data.repository.network.location.LocationList
 import com.example.rickandmortyapp.data.repository.network.location.model.LocationDetail
 import com.example.rickandmortyapp.domain.DomainRepository
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
@@ -142,6 +144,37 @@ class DomainRepositoryImpl @Inject constructor(
         val locationDao = LocalModule.getDatabase(application).locationDao()
         val data = locationDao.getAllLocationRoom()
         return LocationModelRoom.transfromsFroomRoomToDomain(data)
+    }
+
+    override suspend fun insertFavoriteEpisode(application: Application, id: Int) {
+        val episodeDao = LocalModule.getDatabase(application).episodeDao()
+        try {
+            episodeDao.insertEpisodeFavoriteRoom(EpisodeFavoriteModelRoom(id))
+            println("berhasil nambah")
+        }catch (e:java.lang.Exception){
+            println("gagal add favorite")
+        }
+    }
+
+    override suspend fun deleteFavoriteEpisode(application: Application, id: Int) {
+        val episodeDao = LocalModule.getDatabase(application).episodeDao()
+        try {
+            episodeDao.deleteEpisodeFavoriteRoom(EpisodeFavoriteModelRoom(id))
+            println("berhasil hapus")
+        }catch (e:java.lang.Exception){
+            println("gagal delete favorite")
+        }
+    }
+
+    override suspend fun getFavoriteEpisode(application: Application): List<EpisodeItemFavoriteModelRoom> {
+        val episodeDao = LocalModule.getDatabase(application).episodeDao()
+        return try {
+            val data = episodeDao.getAllEpisodeFavoriteRoom()
+            EpisodeFavoriteModelRoom.transforms(data)
+        }catch (e:java.lang.Exception) {
+            println("gagal delete favorite")
+            listOf()
+        }
     }
 
 

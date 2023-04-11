@@ -3,6 +3,7 @@ package com.example.rickandmortyapp.domain
 import android.app.Application
 import androidx.paging.PagingData
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
@@ -63,5 +64,19 @@ interface DomainUseCase {
     suspend fun getLocationRoom(
         application: Application
     ):List<LocationItemModelRoom>
+
+    suspend fun insertFavoriteEpisode(
+        application:Application,
+        id:Int
+    )
+
+    suspend fun deleteFavoriteEpisode(
+        application:Application,
+        id:Int
+    )
+
+    suspend fun getFavoriteEpisode(
+        application: Application
+    ):List<EpisodeItemFavoriteModelRoom>
 
 }

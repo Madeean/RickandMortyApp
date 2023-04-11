@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.paging.PagingData
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
@@ -75,6 +76,18 @@ class DomainUseCaseImpl @Inject constructor(private val repository: DomainReposi
 
     override suspend fun getLocationRoom(application: Application): List<LocationItemModelRoom> {
         return repository.getLocationRoom(application)
+    }
+
+    override suspend fun insertFavoriteEpisode(application: Application, id: Int) {
+        return repository.insertFavoriteEpisode(application,id)
+    }
+
+    override suspend fun deleteFavoriteEpisode(application: Application, id: Int) {
+        return repository.deleteFavoriteEpisode(application,id)
+    }
+
+    override suspend fun getFavoriteEpisode(application: Application): List<EpisodeItemFavoriteModelRoom> {
+        return repository.getFavoriteEpisode(application)
     }
 
 
