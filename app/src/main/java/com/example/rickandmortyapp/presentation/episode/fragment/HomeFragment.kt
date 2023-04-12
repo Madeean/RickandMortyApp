@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -18,6 +21,7 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentHomeBinding
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
+import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.setupDialogError
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
@@ -114,7 +118,7 @@ class HomeFragment : Fragment() {
             setOnItemClickListener { position, data ->
                 val intent = Intent(context, DetailEpisodeActivity::class.java)
                 intent.putExtra(INTENT_DATA, data)
-                startActivity(intent)
+                resultLauncher.launch(intent)
             }
         }
         adapter.addLoadStateListener { loadState ->
@@ -147,6 +151,18 @@ class HomeFragment : Fragment() {
         binding.ibSearch.setOnClickListener {
             getAllData(searchValue.toString())
         }
+
+//        binding.etSearchHome.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                getAllData(query ?: "")
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                return false
+//            }
+//        })
+
     }
 
     private fun setToolbar() {
@@ -161,5 +177,9 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->}
 
 }

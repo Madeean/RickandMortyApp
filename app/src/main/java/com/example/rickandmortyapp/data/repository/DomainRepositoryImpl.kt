@@ -8,7 +8,9 @@ import androidx.paging.cachedIn
 import com.example.rickandmortyapp.data.repository.di.LocalModule
 import com.example.rickandmortyapp.data.repository.local.episode.EpisodeFavoriteModelRoom
 import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoom
+import com.example.rickandmortyapp.data.repository.local.karakter.KarakterFavoriteModelRoom
 import com.example.rickandmortyapp.data.repository.local.karakter.KarakterModelRoom
+import com.example.rickandmortyapp.data.repository.local.location.LocationFavoriteModelRoom
 import com.example.rickandmortyapp.data.repository.local.location.LocationModelRoom
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeApiService
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeListPagingSource
@@ -18,14 +20,17 @@ import com.example.rickandmortyapp.data.repository.network.karakter.KarakterList
 import com.example.rickandmortyapp.data.repository.network.karakter.MultipleKarakterPagingSource
 import com.example.rickandmortyapp.data.repository.network.location.LocationApiService
 import com.example.rickandmortyapp.data.repository.network.location.LocationListPagingSource
+import com.example.rickandmortyapp.data.repository.network.location.MultipleLocationPagingSource
 import com.example.rickandmortyapp.data.repository.network.location.model.LocationDetail
 import com.example.rickandmortyapp.domain.DomainRepository
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,14 +41,14 @@ import javax.inject.Inject
 
 class DomainRepositoryImpl @Inject constructor(
     private val episodeApiService: EpisodeApiService,
-    private val karakterApiService:KarakterApiService,
+    private val karakterApiService: KarakterApiService,
     private val locationApiService: LocationApiService
 ) : DomainRepository {
 
     override suspend fun getAllEpisode(
         scope: CoroutineScope, application: Application, name: String
     ): Flow<PagingData<EpisodeModelItemModel>> {
-        return Pager(config = PagingConfig(1)) {
+        return Pager(config = PagingConfig(20)) {
             EpisodeListPagingSource(episodeApiService, application, name)
         }.flow.cachedIn(scope)
     }
@@ -58,7 +63,7 @@ class DomainRepositoryImpl @Inject constructor(
         gender: String
     ): Flow<PagingData<KarakterModelItemModel>> {
         println("MASUK 4")
-        return Pager(config = PagingConfig(1)) {
+        return Pager(config = PagingConfig(20)) {
             KarakterListPagingSource(
                 apiService = karakterApiService,
                 application = application,
@@ -78,7 +83,7 @@ class DomainRepositoryImpl @Inject constructor(
         type: String,
         dimension: String
     ): Flow<PagingData<LocationModelItemModel>> {
-        return Pager(config = PagingConfig(1)){
+        return Pager(config = PagingConfig(20)) {
             LocationListPagingSource(
                 apiService = locationApiService,
                 application = application,
@@ -90,46 +95,48 @@ class DomainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getKarakterById(
-        scope: CoroutineScope,
-        application: Application,
-        id: String
+        scope: CoroutineScope, application: Application, id: String
     ): Flow<PagingData<KarakterModelItemModel>> {
-        return Pager(config = PagingConfig(1)){
+        return Pager(config = PagingConfig(1)) {
             MultipleKarakterPagingSource(
-                application = application,
-                apiService = karakterApiService,
-                id = id
+                application = application, apiService = karakterApiService, id = id
             )
         }.flow.cachedIn(scope)
     }
 
     override suspend fun getEpisodeById(
-        scope: CoroutineScope,
-        application: Application,
-        id: String
+        scope: CoroutineScope, application: Application, id: String
     ): Flow<PagingData<EpisodeModelItemModel>> {
-        return Pager(config = PagingConfig(1)){
+        return Pager(config = PagingConfig(1)) {
             MultipleEpisodePagingSource(
-                application = application,
-                apiService = episodeApiService,
-                id = id
+                application = application, apiService = episodeApiService, id = id
             )
         }.flow.cachedIn(scope)
     }
 
     override suspend fun getLocationById(id: Int): Flow<LocationModelItemModel> {
-        return flow{
-            try{
+        return flow {
+            try {
                 val response = locationApiService.getLocationById(id)
                 emit(LocationDetail.transform(response))
-            }catch (e: Exception){
-                emit(LocationModelItemModel(null,null,null,null, null,null))
+            } catch (e: Exception) {
+                emit(LocationModelItemModel(null, null, null, null, null, null))
             }
         }.flowOn(Dispatchers.IO)
     }
 
+    override suspend fun getMultipleLocationById(
+        scope: CoroutineScope, id: String
+    ): Flow<PagingData<LocationModelItemModel>> {
+        return Pager(config = PagingConfig(1)) {
+            MultipleLocationPagingSource(
+                apiService = locationApiService, id = id
+            )
+        }.flow.cachedIn(scope)
+    }
+
     override suspend fun getEpisodeRoom(application: Application): List<EpisodeItemModelRoom> {
-        val episodeDao =LocalModule.getDatabase(application).episodeDao()
+        val episodeDao = LocalModule.getDatabase(application).episodeDao()
         val data = episodeDao.getAllEpisodeRoom()
         return EpisodeModelRoom.transfromsFroomRoomToDomain(data)
     }
@@ -148,33 +155,63 @@ class DomainRepositoryImpl @Inject constructor(
 
     override suspend fun insertFavoriteEpisode(application: Application, id: Int) {
         val episodeDao = LocalModule.getDatabase(application).episodeDao()
-        try {
-            episodeDao.insertEpisodeFavoriteRoom(EpisodeFavoriteModelRoom(id))
-            println("berhasil nambah")
-        }catch (e:java.lang.Exception){
-            println("gagal add favorite")
-        }
+        episodeDao.insertEpisodeFavoriteRoom(EpisodeFavoriteModelRoom(id))
+
     }
 
     override suspend fun deleteFavoriteEpisode(application: Application, id: Int) {
         val episodeDao = LocalModule.getDatabase(application).episodeDao()
-        try {
-            episodeDao.deleteEpisodeFavoriteRoom(EpisodeFavoriteModelRoom(id))
-            println("berhasil hapus")
-        }catch (e:java.lang.Exception){
-            println("gagal delete favorite")
-        }
+        episodeDao.deleteEpisodeFavoriteRoom(EpisodeFavoriteModelRoom(id))
+
     }
 
     override suspend fun getFavoriteEpisode(application: Application): List<EpisodeItemFavoriteModelRoom> {
         val episodeDao = LocalModule.getDatabase(application).episodeDao()
-        return try {
-            val data = episodeDao.getAllEpisodeFavoriteRoom()
-            EpisodeFavoriteModelRoom.transforms(data)
-        }catch (e:java.lang.Exception) {
-            println("gagal delete favorite")
-            listOf()
-        }
+        val data = episodeDao.getAllEpisodeFavoriteRoom()
+        return EpisodeFavoriteModelRoom.transforms(data)
+
+    }
+
+//    KARAKTER
+
+    override suspend fun insertFavoriteKarakter(application: Application, id: Int) {
+        val karakterDao = LocalModule.getDatabase(application).karakterDao()
+        karakterDao.insertKarakterFavoriteRoom(KarakterFavoriteModelRoom(id))
+
+    }
+
+    override suspend fun deleteFavoriteKarakter(application: Application, id: Int) {
+        val karakterDao = LocalModule.getDatabase(application).karakterDao()
+        karakterDao.deleteKarakterFavoriteRoom(KarakterFavoriteModelRoom(id))
+
+    }
+
+    override suspend fun getFavoriteKarakter(application: Application): List<KarakterItemFavoriteModelRoom> {
+        val karakterDao = LocalModule.getDatabase(application).karakterDao()
+        val data = karakterDao.getAllKarakterFavoriteRoom()
+        return KarakterFavoriteModelRoom.transforms(data)
+
+    }
+
+//    Location
+
+    override suspend fun insertFavoriteLocation(application: Application, id: Int) {
+        val locationDao = LocalModule.getDatabase(application).locationDao()
+        locationDao.insertLocationFavoriteRoom(LocationFavoriteModelRoom(id))
+
+    }
+
+    override suspend fun deleteFavoriteLocation(application: Application, id: Int) {
+        val locationDao = LocalModule.getDatabase(application).locationDao()
+        locationDao.deleteLocationFavoriteRoom(LocationFavoriteModelRoom(id))
+
+    }
+
+    override suspend fun getFavoriteLocation(application: Application): List<LocationItemFavoriteModelRoom> {
+        val locationDao = LocalModule.getDatabase(application).locationDao()
+        val data = locationDao.getAllLocationFavoriteRoom()
+        return LocationFavoriteModelRoom.transforms(data)
+
     }
 
 

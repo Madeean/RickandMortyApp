@@ -1,11 +1,13 @@
 package com.example.rickandmortyapp.presentation.karakter.activity
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -14,12 +16,17 @@ import com.bumptech.glide.Glide
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailKarakterBinding
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
+import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
+import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
+import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModelFactory
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -37,9 +44,16 @@ class DetailKarakterActivity : AppCompatActivity() {
     private val episodeViewModel: EpisodeViewModel by viewModels {
         episodeFactory
     }
+
+    @Inject
+    lateinit var karakterFactory: KarakterViewModelFactory
+    private val karakterViewModel: KarakterViewModel by viewModels {
+        karakterFactory
+    }
     private var idEpisode = ""
     private var idLocation = 0
     private var idOrigin = 0
+    private var dataFavorite: List<KarakterItemFavoriteModelRoom> = ArrayList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +66,7 @@ class DetailKarakterActivity : AppCompatActivity() {
         setToolbar()
         setAdapter()
         getDataFromIntent()
+        setFavorite()
 
         binding.btnDetailLocation.setOnClickListener {
             val intent = Intent(this, DetailLocationActivity::class.java)
@@ -62,6 +77,47 @@ class DetailKarakterActivity : AppCompatActivity() {
             val intent = Intent(this, DetailLocationActivity::class.java)
             intent.putExtra(PresentationUtils.INTENT_ID, idOrigin)
             startActivity(intent)
+        }
+    }
+
+    private fun setFavorite() {
+        getFavorite()
+        insertFavorite()
+    }
+
+    private fun insertFavorite() {
+        binding.cbFavoritDetailKarakter.setOnClickListener {
+            if (binding.cbFavoritDetailKarakter.isChecked) {
+                lifecycleScope.launch {
+                    karakterViewModel.deleteKarakterFavoriteRoom(application, data?.id ?: -1)
+                }
+                Toast.makeText(this, "Berhasil menghapus favorite", Toast.LENGTH_SHORT).show()
+            } else {
+                lifecycleScope.launch {
+                    karakterViewModel.insertKarakterFavoriteRoom(application, data?.id ?: -1)
+                }
+                Toast.makeText(this, "Berhasil menambah favorite", Toast.LENGTH_SHORT).show()
+            }
+            getFavorite()
+        }
+    }
+
+    private fun getFavorite() {
+        lifecycleScope.launch {
+            dataFavorite = karakterViewModel.getKarakterFavoriteRoom(application)
+
+            val isFavorite = dataFavorite.any {
+                it.idKarakter == data?.id
+            }
+
+            if (isFavorite) {
+                binding.cbFavoritDetailKarakter.setBackgroundResource(R.drawable.favorite_full)
+                binding.cbFavoritDetailKarakter.isChecked = false
+            } else {
+                binding.cbFavoritDetailKarakter.setBackgroundResource(R.drawable.favorite_outline)
+                binding.cbFavoritDetailKarakter.isChecked = true
+            }
+
         }
     }
 
@@ -171,6 +227,8 @@ class DetailKarakterActivity : AppCompatActivity() {
     private fun setToolbar() {
         binding.detailKarakterToolbar.tvToolbar.text = "Detail Karakter"
         binding.detailKarakterToolbar.ivBackToolbar.setOnClickListener {
+            val intent = Intent()
+            setResult(CODE_RESULT, intent)
             finish()
         }
     }

@@ -26,8 +26,7 @@ class EpisodeListPagingSource(
         return try {
 
 //            deleteAllDbRoom(executorService, episodeDao)
-            val respone =
-                apiService.getEpisodeList(name, page = if (position == 1) 1 else position * 10 - 10)
+            val respone = apiService.getEpisodeList(name, page = position)
             val data = EpisodeDetail.transforms(respone.results)
 //            saveToRoom(executorService, episodeDao, respone.results)
             if (position == 1) {
@@ -36,7 +35,7 @@ class EpisodeListPagingSource(
 
 
             toLoadResult(
-                data = data, nextKey = if (data.isEmpty()) null else position + 1
+                data = data, nextKey = if (data.isNullOrEmpty()) null else position + 1
             )
 
         } catch (e: java.lang.Exception) {
@@ -55,9 +54,7 @@ class EpisodeListPagingSource(
     }
 
     private fun insetAllDataRoom(
-        executorService: ExecutorService,
-        episodeDao: EpisodeDao,
-        results: List<EpisodeDetail>
+        executorService: ExecutorService, episodeDao: EpisodeDao, results: List<EpisodeDetail>
     ) {
         val dataSudahTransform = EpisodeModelRoom.transforms(results)
         println("SUDAH MASUK")

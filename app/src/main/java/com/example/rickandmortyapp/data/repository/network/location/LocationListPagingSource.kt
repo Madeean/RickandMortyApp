@@ -20,26 +20,23 @@ class LocationListPagingSource(
     private val name: String,
     private val type: String,
     private val dimension: String,
-): PagingSource<Int, LocationModelItemModel>() {
+) : PagingSource<Int, LocationModelItemModel>() {
     override fun getRefreshKey(state: PagingState<Int, LocationModelItemModel>): Int? {
         return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LocationModelItemModel> {
         val position = params.key ?: 1
-        return try{
+        return try {
             val respone = apiService.getAllLocation(
-                name = name,
-                page = if (position == 1) 1 else position * 10 - 10,
-                type = type,
-                dimension = dimension
+                name = name, page = position, type = type, dimension = dimension
             )
             val data = LocationDetail.transforms(respone.results)
-            if(position == 1) respone.results?.let { saveToRoom(it) }
+            if (position == 1) respone.results?.let { saveToRoom(it) }
             toLoadResult(
-                data = data, nextKey = if (data.isEmpty()) null else position + 1
+                data = data, nextKey = if (data.isNullOrEmpty()) null else position + 1
             )
-        }catch (e: Exception){
+        } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
@@ -55,7 +52,9 @@ class LocationListPagingSource(
 
     }
 
-    private fun insetAllDataRoom(executorService: ExecutorService, locationDao: LocationDao, results: List<LocationDetail>) {
+    private fun insetAllDataRoom(
+        executorService: ExecutorService, locationDao: LocationDao, results: List<LocationDetail>
+    ) {
         val dataSudahTransform = LocationModelRoom.transforms(results)
         executorService.execute {
             locationDao.insertAllLocationRoom(dataSudahTransform)

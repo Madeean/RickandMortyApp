@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.rickandmortyapp.domain.DomainUseCase
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +35,14 @@ class LocationViewModel @Inject constructor(private val useCase: DomainUseCase) 
             dimension = dimension
         )
     }
+    suspend fun getMultipleLocation(
+        id:String
+    ): Flow<PagingData<LocationModelItemModel>> {
+        return useCase.getMultipleLocationById(
+            scope = viewModelScope,
+            id = id
+        )
+    }
 
     private var _locationById = MutableLiveData<LocationModelItemModel>()
     val locationById: LiveData<LocationModelItemModel> = _locationById
@@ -50,6 +60,32 @@ class LocationViewModel @Inject constructor(private val useCase: DomainUseCase) 
     ):List<LocationItemModelRoom>{
         return withContext(Dispatchers.IO){
             useCase.getLocationRoom(application)
+        }
+    }
+
+    suspend fun insertLocationFavoriteRoom(
+        application: Application,
+        id: Int,
+    ) {
+        return withContext(Dispatchers.IO) {
+            useCase.insertFavoriteLocation(application, id)
+        }
+    }
+
+    suspend fun deleteLocationFavoriteRoom(
+        application: Application,
+        id:Int,
+    ){
+        return withContext(Dispatchers.IO){
+            useCase.deleteFavoriteLocation(application,id)
+        }
+    }
+
+    suspend fun getLocationFavoriteRoom(
+        application: Application
+    ): List<LocationItemFavoriteModelRoom> {
+        return withContext(Dispatchers.IO) {
+            useCase.getFavoriteLocation(application)
         }
     }
 }

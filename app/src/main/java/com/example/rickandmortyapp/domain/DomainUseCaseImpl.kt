@@ -7,8 +7,10 @@ import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -66,6 +68,10 @@ class DomainUseCaseImpl @Inject constructor(private val repository: DomainReposi
         return repository.getLocationById(id)
     }
 
+    override suspend fun getMultipleLocationById(scope: CoroutineScope,id: String): Flow<PagingData<LocationModelItemModel>> {
+        return repository.getMultipleLocationById(scope,id)
+    }
+
     override suspend fun getEpisodeRoom(application: Application): List<EpisodeItemModelRoom> {
         return repository.getEpisodeRoom(application)
     }
@@ -88,6 +94,36 @@ class DomainUseCaseImpl @Inject constructor(private val repository: DomainReposi
 
     override suspend fun getFavoriteEpisode(application: Application): List<EpisodeItemFavoriteModelRoom> {
         return repository.getFavoriteEpisode(application)
+    }
+
+//    karakter
+
+    override suspend fun insertFavoriteKarakter(application: Application, id: Int) {
+        return repository.insertFavoriteKarakter(application,id)
+    }
+
+    override suspend fun deleteFavoriteKarakter(application: Application, id: Int) {
+        return repository.deleteFavoriteKarakter(application,id)
+
+    }
+
+    override suspend fun getFavoriteKarakter(application: Application): List<KarakterItemFavoriteModelRoom> {
+        return repository.getFavoriteKarakter(application)
+    }
+
+//    Location
+
+    override suspend fun insertFavoriteLocation(application: Application, id: Int) {
+        return repository.insertFavoriteLocation(application,id)
+    }
+
+    override suspend fun deleteFavoriteLocation(application: Application, id: Int) {
+        return repository.deleteFavoriteLocation(application,id)
+
+    }
+
+    override suspend fun getFavoriteLocation(application: Application): List<LocationItemFavoriteModelRoom> {
+        return repository.getFavoriteLocation(application)
     }
 
 

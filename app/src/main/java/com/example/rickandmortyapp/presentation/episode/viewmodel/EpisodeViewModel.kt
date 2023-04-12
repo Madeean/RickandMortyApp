@@ -44,7 +44,7 @@ class EpisodeViewModel @Inject constructor(private val useCase: DomainUseCase) :
 
     suspend fun insertEpisodeFavoriteRoom(
         application: Application,
-        id: Int
+        id: Int,
     ) {
         return withContext(Dispatchers.IO) {
             useCase.insertFavoriteEpisode(application, id)
@@ -53,7 +53,7 @@ class EpisodeViewModel @Inject constructor(private val useCase: DomainUseCase) :
 
     suspend fun deleteEpisodeFavoriteRoom(
         application: Application,
-        id:Int
+        id:Int,
     ){
         return withContext(Dispatchers.IO){
             useCase.deleteFavoriteEpisode(application,id)

@@ -7,8 +7,10 @@ import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -54,6 +56,11 @@ interface DomainRepository {
         id:Int
     ):Flow<LocationModelItemModel>
 
+    suspend fun getMultipleLocationById(
+        scope: CoroutineScope,
+        id:String
+    ):Flow<PagingData<LocationModelItemModel>>
+
     suspend fun getEpisodeRoom(
         application: Application
     ):List<EpisodeItemModelRoom>
@@ -66,17 +73,52 @@ interface DomainRepository {
         application: Application
     ):List<LocationItemModelRoom>
 
+//    Episode
     suspend fun insertFavoriteEpisode(
         application:Application,
-        id:Int
+        id:Int,
     )
 
     suspend fun deleteFavoriteEpisode(
         application:Application,
-        id:Int
+        id:Int,
     )
 
     suspend fun getFavoriteEpisode(
         application: Application
     ):List<EpisodeItemFavoriteModelRoom>
+
+
+    //    Karakter
+
+    suspend fun insertFavoriteKarakter(
+        application:Application,
+        id:Int,
+    )
+
+    suspend fun deleteFavoriteKarakter(
+        application:Application,
+        id:Int,
+    )
+
+    suspend fun getFavoriteKarakter(
+        application: Application
+    ):List<KarakterItemFavoriteModelRoom>
+
+
+    //    Location
+
+    suspend fun insertFavoriteLocation(
+        application:Application,
+        id:Int,
+    )
+
+    suspend fun deleteFavoriteLocation(
+        application:Application,
+        id:Int,
+    )
+
+    suspend fun getFavoriteLocation(
+        application: Application
+    ):List<LocationItemFavoriteModelRoom>
 }

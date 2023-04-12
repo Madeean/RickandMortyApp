@@ -20,4 +20,10 @@ interface LocationApiService {
     suspend fun getLocationById(
         @Path("id") id:Int
     ):LocationDetail
+    @GET("location/{id}")
+    suspend fun getMultipleLocationById(
+        @Path("id") id:String
+        ):List<LocationDetail>
+
+
 }

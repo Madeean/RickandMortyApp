@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.rickandmortyapp.domain.DomainUseCase
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -45,6 +47,33 @@ class KarakterViewModel @Inject constructor(private val useCase: DomainUseCase) 
     ): List<KarakterItemModelRoom> {
         return withContext(Dispatchers.IO) {
             useCase.getKarakterRoom(application)
+        }
+    }
+
+
+    suspend fun insertKarakterFavoriteRoom(
+        application: Application,
+        id: Int,
+    ) {
+        return withContext(Dispatchers.IO) {
+            useCase.insertFavoriteKarakter(application, id)
+        }
+    }
+
+    suspend fun deleteKarakterFavoriteRoom(
+        application: Application,
+        id:Int,
+    ){
+        return withContext(Dispatchers.IO){
+            useCase.deleteFavoriteKarakter(application,id)
+        }
+    }
+
+    suspend fun getKarakterFavoriteRoom(
+        application: Application
+    ): List<KarakterItemFavoriteModelRoom> {
+        return withContext(Dispatchers.IO) {
+            useCase.getFavoriteKarakter(application)
         }
     }
 }

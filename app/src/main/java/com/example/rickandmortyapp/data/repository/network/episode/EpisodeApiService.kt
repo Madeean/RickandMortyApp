@@ -18,4 +18,5 @@ interface EpisodeApiService {
     suspend fun getEpisodeById(
         @Path("id") id: String,
     ):List<EpisodeDetail>
+
 }

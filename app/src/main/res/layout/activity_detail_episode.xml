@@ -23,25 +23,25 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/shape_14_white"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
             android:padding="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/detail_episode_toolbar">
 
             <TextView
-                android:layout_marginRight="10dp"
-                android:textSize="20sp"
-                android:textColor="@color/hitam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Favorite" />
+                android:layout_marginRight="10dp"
+                android:text="Favorite"
+                android:textColor="@color/hitam"
+                android:textSize="20sp" />
 
             <CheckBox
-                android:button="@null"
-                android:checked="false"
                 android:id="@+id/cb_favorit_detail_episode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/favorite_outline"/>
+                android:background="@drawable/favorite_outline"
+                android:button="@null"
+                android:checked="false" />
 
         </LinearLayout>
 

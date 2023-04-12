@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation.episode.activity
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
@@ -18,6 +19,7 @@ import com.example.rickandmortyapp.databinding.ActivityDetailEpisodeBinding
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
+import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.getCreated
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
@@ -196,6 +198,8 @@ class DetailEpisodeActivity : AppCompatActivity() {
     private fun setToolbar() {
         binding.detailEpisodeToolbar.tvToolbar.text = "Detail Episode"
         binding.detailEpisodeToolbar.ivBackToolbar.setOnClickListener {
+            val intent = Intent()
+            setResult(CODE_RESULT, intent)
             finish()
         }
     }

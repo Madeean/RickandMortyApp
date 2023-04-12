@@ -33,7 +33,7 @@ class KarakterListPagingSource(
         return try {
             val respone = apiService.getAllKarakter(
                 name = name,
-                page = if (position == 1) 1 else position * 10 - 10,
+                page = position,
                 status = status,
                 species = species,
                 gender = gender,
@@ -43,7 +43,7 @@ class KarakterListPagingSource(
             if(position == 1) respone.results?.let { saveToRoom(it) }
 
             toLoadResult(
-                data = data, nextKey = if (data.isEmpty()) null else position + 1
+                data = data, nextKey = if (data.isNullOrEmpty()) null else position + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

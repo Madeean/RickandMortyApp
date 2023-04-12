@@ -6,6 +6,9 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -15,8 +18,11 @@ import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailLocationBinding
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
+import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
@@ -49,6 +55,8 @@ class DetailLocationActivity : AppCompatActivity() {
 
     private var idKarakter = ""
     private var idLocation = 0
+    private var dataFavorite: List<LocationItemFavoriteModelRoom> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MyApplication).appComponent.detailLocationActivity(this)
         binding = ActivityDetailLocationBinding.inflate(layoutInflater)
@@ -59,6 +67,49 @@ class DetailLocationActivity : AppCompatActivity() {
         setToolbar()
         setAdapter()
         getDataFromIntent()
+        setFavorite()
+
+    }
+
+    private fun setFavorite() {
+        getFavorite()
+        insertFavorite()
+    }
+
+    private fun insertFavorite() {
+        binding.cbFavoritDetailLocation.setOnClickListener {
+            if (binding.cbFavoritDetailLocation.isChecked) {
+                lifecycleScope.launch {
+                    locationViewModel.deleteLocationFavoriteRoom(application, data?.id ?: -1)
+                }
+                Toast.makeText(this, "Berhasil menghapus favorite", Toast.LENGTH_SHORT).show()
+            } else {
+                lifecycleScope.launch {
+                    locationViewModel.insertLocationFavoriteRoom(application, data?.id ?: -1)
+                }
+                Toast.makeText(this, "Berhasil menambah favorite", Toast.LENGTH_SHORT).show()
+            }
+            getFavorite()
+        }
+    }
+
+    private fun getFavorite() {
+        lifecycleScope.launch {
+            dataFavorite = locationViewModel.getLocationFavoriteRoom(application)
+
+            val isFavorite = dataFavorite.any {
+                it.idLocation == data?.id
+            }
+
+            if (isFavorite) {
+                binding.cbFavoritDetailLocation.setBackgroundResource(R.drawable.favorite_full)
+                binding.cbFavoritDetailLocation.isChecked = false
+            } else {
+                binding.cbFavoritDetailLocation.setBackgroundResource(R.drawable.favorite_outline)
+                binding.cbFavoritDetailLocation.isChecked = true
+            }
+
+        }
     }
 
     private fun setupObserverLocation() {
@@ -158,6 +209,8 @@ class DetailLocationActivity : AppCompatActivity() {
     private fun setToolbar() {
         binding.detailLocationToolbar.tvToolbar.text = "Detail Location"
         binding.detailLocationToolbar.ivBackToolbar.setOnClickListener {
+            val intent = Intent()
+            setResult(CODE_RESULT, intent)
             finish()
         }
     }

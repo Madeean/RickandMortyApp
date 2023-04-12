@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
@@ -121,7 +123,7 @@ class KarakterFragment : Fragment() {
             setOnItemClickListener { position, data ->
                 val intent = Intent(context, DetailKarakterActivity::class.java)
                 intent.putExtra(INTENT_DATA, data)
-                startActivity(intent)
+                resultLauncher.launch(intent)
             }
         }
         adapter.addLoadStateListener { loadState ->
@@ -202,4 +204,8 @@ class KarakterFragment : Fragment() {
             }
         }
     }
+
+    private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result -> }
 }

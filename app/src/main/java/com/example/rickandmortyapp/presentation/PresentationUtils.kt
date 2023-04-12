@@ -11,6 +11,8 @@ import java.util.*
 
 object PresentationUtils {
 
+    const val CODE_RESULT = 100
+
     const val INTENT_DATA = "data"
     const val INTENT_ID = "id"
 

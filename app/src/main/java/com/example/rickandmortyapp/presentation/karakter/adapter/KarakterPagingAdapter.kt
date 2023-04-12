@@ -72,4 +72,6 @@ class KarakterPagingAdapter :
         )
         return KarakterViewHolder(binding)
     }
+
+
 }

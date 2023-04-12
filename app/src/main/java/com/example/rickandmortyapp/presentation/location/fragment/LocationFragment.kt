@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -104,7 +106,7 @@ class LocationFragment : Fragment() {
             setOnItemClickListener { position, data ->
                 val intent = Intent(requireContext(), DetailLocationActivity::class.java)
                 intent.putExtra(INTENT_DATA, data)
-                startActivity(intent)
+                resultLauncher.launch(intent)
             }
         }
         adapter.addLoadStateListener { loadState ->
@@ -180,6 +182,10 @@ class LocationFragment : Fragment() {
             }
         }
     }
+
+    private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->}
 
 
 }

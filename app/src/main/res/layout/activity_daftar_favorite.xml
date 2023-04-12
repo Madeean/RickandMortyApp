@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/daftar_favorit_toolbar"
-        layout="@layout/my_toolbar" />
+        layout="@layout/detail_toolbar" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/daftar_favorit_tab_layout"
