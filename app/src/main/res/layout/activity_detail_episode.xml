@@ -13,7 +13,10 @@
 
         <include
             android:id="@+id/detail_episode_toolbar"
-            layout="@layout/detail_toolbar" />
+            layout="@layout/detail_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/rl_favorit_detail_episode"
@@ -30,8 +33,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Favorite"
+                android:layout_marginEnd="10dp"
+                android:text="@string/favorite"
                 android:textColor="@color/hitam"
                 android:textSize="20sp" />
 
@@ -61,7 +64,7 @@
                 android:id="@+id/tv_name_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="@string/name"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -71,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_name_tag"
-                android:text="Pilot"
+                android:text="@string/pilot"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -80,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_name"
-                android:text="Air Date"
+                android:text="@string/air_date"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -90,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_air_date_tag"
-                android:text="December 2, 2013"
+                android:text="@string/december_2_2013"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -99,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_air_date"
-                android:text="Episode"
+                android:text="@string/episode"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -109,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_episode_tag"
-                android:text="S01E01"
+                android:text="@string/episode"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -118,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_episode"
-                android:text="Created"
+                android:text="@string/created"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -128,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_created_tag"
-                android:text="2017-11-10T12:56:36.618Z"
+                android:text="@string/_2017_11_10t12_56_36_618z"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -148,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Character"
+                android:text="@string/character"
                 android:textColor="@color/hitam"
                 android:textSize="22sp"
                 android:textStyle="bold" />

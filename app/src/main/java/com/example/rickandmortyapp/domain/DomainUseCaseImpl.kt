@@ -2,7 +2,6 @@ package com.example.rickandmortyapp.domain
 
 import android.app.Application
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
@@ -34,7 +33,6 @@ class DomainUseCaseImpl @Inject constructor(private val repository: DomainReposi
         type: String,
         gender: String
     ): Flow<PagingData<KarakterModelItemModel>> {
-        println("MASSUK 3")
         return repository.getAllKarakter(scope,application,name,status,species,type,gender)
     }
 
@@ -50,18 +48,16 @@ class DomainUseCaseImpl @Inject constructor(private val repository: DomainReposi
 
     override suspend fun getKarakterById(
         scope: CoroutineScope,
-        application: Application,
         id: String
     ): Flow<PagingData<KarakterModelItemModel>> {
-        return repository.getKarakterById(scope,application,id)
+        return repository.getKarakterById(scope,id)
     }
 
     override suspend fun getEpisodeById(
         scope: CoroutineScope,
-        application: Application,
         id: String
     ): Flow<PagingData<EpisodeModelItemModel>> {
-        return repository.getEpisodeById(scope,application,id)
+        return repository.getEpisodeById(scope,id)
     }
 
     override suspend fun getLocationById(id: Int): Flow<LocationModelItemModel> {

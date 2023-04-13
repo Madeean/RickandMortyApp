@@ -6,7 +6,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.databinding.ItemEpisodeBinding
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
 
 class LocationPagingAdapter : PagingDataAdapter<LocationModelItemModel, LocationPagingAdapter.LocationViewHolder>(
@@ -45,9 +44,6 @@ class LocationPagingAdapter : PagingDataAdapter<LocationModelItemModel, Location
                 tvEpisode.text = location.type
                 tvDate.text = location.dimension
             }
-//            Glide.with(itemView.context)
-//                .load(Utils.ImageUrl + movie.posterPath)
-//                .into(binding.ivPosterMovie)
 
         }
     }

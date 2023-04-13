@@ -7,7 +7,6 @@ import com.example.rickandmortyapp.data.repository.di.LocalModule
 import com.example.rickandmortyapp.data.repository.local.episode.EpisodeDao
 import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoom
 import com.example.rickandmortyapp.data.repository.network.episode.model.EpisodeDetail
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -25,17 +24,15 @@ class EpisodeListPagingSource(
         val position = params.key ?: 1
         return try {
 
-//            deleteAllDbRoom(executorService, episodeDao)
             val respone = apiService.getEpisodeList(name, page = position)
             val data = EpisodeDetail.transforms(respone.results)
-//            saveToRoom(executorService, episodeDao, respone.results)
             if (position == 1) {
                 saveToRoom(respone.results)
             }
 
 
             toLoadResult(
-                data = data, nextKey = if (data.isNullOrEmpty()) null else position + 1
+                data = data, nextKey = if (data.isEmpty()) null else position + 1
             )
 
         } catch (e: java.lang.Exception) {
@@ -57,26 +54,10 @@ class EpisodeListPagingSource(
         executorService: ExecutorService, episodeDao: EpisodeDao, results: List<EpisodeDetail>
     ) {
         val dataSudahTransform = EpisodeModelRoom.transforms(results)
-        println("SUDAH MASUK")
         executorService.execute {
             episodeDao.insertAllEpisodeRoom(dataSudahTransform)
         }
     }
-
-//    private fun saveToRoom(
-//        executorService: ExecutorService, episodeDao: EpisodeDao, data: List<EpisodeDetail>
-//    ) {
-//        val episodeDao: EpisodeDao
-//        val executorService: ExecutorService = Executors.newSingleThreadExecutor()
-//        val db = LocalModule.getDatabase(application)
-//        episodeDao = db.episodeDao()
-//
-//        val dataSudahTransform = EpisodeModelRoom.transforms(data)
-//        println("SUDAH MASUK")
-//        executorService.execute {
-//            episodeDao.insertAllEpisodeRoom(dataSudahTransform)
-//        }
-//    }
 
     private fun deleteAllDbRoom(executorService: ExecutorService, episodeDao: EpisodeDao) {
         executorService.execute {
@@ -87,8 +68,8 @@ class EpisodeListPagingSource(
 
     private fun toLoadResult(
         data: List<EpisodeModelItemModel>, prevKey: Int? = null, nextKey: Int? = null
-    ): PagingSource.LoadResult<Int, EpisodeModelItemModel> {
-        return PagingSource.LoadResult.Page(
+    ): LoadResult<Int, EpisodeModelItemModel> {
+        return LoadResult.Page(
             data = data, prevKey = prevKey, nextKey = nextKey
         )
     }

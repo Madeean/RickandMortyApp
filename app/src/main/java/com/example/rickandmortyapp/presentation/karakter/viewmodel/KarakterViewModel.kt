@@ -7,9 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.rickandmortyapp.domain.DomainUseCase
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
@@ -31,15 +28,13 @@ class KarakterViewModel @Inject constructor(private val useCase: DomainUseCase) 
         type: String,
         gender: String
     ): Flow<PagingData<KarakterModelItemModel>> {
-        println("MASUK 2")
         return useCase.getAllKarakter(viewModelScope, application, name,status,species,type,gender)
     }
 
     suspend fun getKarakterById(
-        application: Application,
         id: String
     ): Flow<PagingData<KarakterModelItemModel>> {
-        return useCase.getKarakterById(viewModelScope, application, id)
+        return useCase.getKarakterById(viewModelScope, id)
     }
 
     suspend fun getKarakterRoom(

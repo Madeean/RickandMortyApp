@@ -1,30 +1,25 @@
 package com.example.rickandmortyapp.presentation.location.activity
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailLocationBinding
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
-import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
-import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
+import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
+import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
+import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
@@ -77,20 +72,31 @@ class DetailLocationActivity : AppCompatActivity() {
     }
 
     private fun insertFavorite() {
-        binding.cbFavoritDetailLocation.setOnClickListener {
-            if (binding.cbFavoritDetailLocation.isChecked) {
-                lifecycleScope.launch {
-                    locationViewModel.deleteLocationFavoriteRoom(application, data?.id ?: -1)
+        binding.cbFavoritDetailLocation.apply {
+            setOnClickListener {
+                if (isChecked) {
+                    lifecycleScope.launch {
+                        locationViewModel.deleteLocationFavoriteRoom(application, data?.id ?: -1)
+                    }
+                    Toast.makeText(
+                        this@DetailLocationActivity,
+                        R.string.berhasil_menghapus_favorite,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    lifecycleScope.launch {
+                        locationViewModel.insertLocationFavoriteRoom(application, data?.id ?: -1)
+                    }
+                    Toast.makeText(
+                        this@DetailLocationActivity,
+                        R.string.berhasil_menghapus_favorite,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                Toast.makeText(this, "Berhasil menghapus favorite", Toast.LENGTH_SHORT).show()
-            } else {
-                lifecycleScope.launch {
-                    locationViewModel.insertLocationFavoriteRoom(application, data?.id ?: -1)
-                }
-                Toast.makeText(this, "Berhasil menambah favorite", Toast.LENGTH_SHORT).show()
+                getFavorite()
             }
-            getFavorite()
         }
+
     }
 
     private fun getFavorite() {
@@ -101,21 +107,22 @@ class DetailLocationActivity : AppCompatActivity() {
                 it.idLocation == data?.id
             }
 
-            if (isFavorite) {
-                binding.cbFavoritDetailLocation.setBackgroundResource(R.drawable.favorite_full)
-                binding.cbFavoritDetailLocation.isChecked = false
-            } else {
-                binding.cbFavoritDetailLocation.setBackgroundResource(R.drawable.favorite_outline)
-                binding.cbFavoritDetailLocation.isChecked = true
+            binding.cbFavoritDetailLocation.apply {
+                isChecked = if (isFavorite) {
+                    setBackgroundResource(R.drawable.favorite_full)
+                    false
+                } else {
+                    setBackgroundResource(R.drawable.favorite_outline)
+                    true
+                }
             }
-
         }
     }
 
     private fun setupObserverLocation() {
         locationViewModel.locationById.observe(this) {
             if (it.id == null) return@observe
-            setLoading(false)
+            setLoading(false, dialog)
             setData(it)
             getDataFromInternet()
         }
@@ -123,7 +130,7 @@ class DetailLocationActivity : AppCompatActivity() {
 
     private fun getDataFromInternet() {
         lifecycleScope.launch {
-            karakterViewModel.getKarakterById(application, idKarakter).collectLatest {
+            karakterViewModel.getKarakterById(idKarakter).collectLatest {
                 adapter.submitData(it)
             }
         }
@@ -143,10 +150,10 @@ class DetailLocationActivity : AppCompatActivity() {
         if (data != null) {
             setData(data)
         } else if (idLocation != 0) {
-            setLoading(true)
+            setLoading(true, dialog)
             locationViewModel.getLocationById(idLocation)
         } else {
-            showError("Data kosong")
+            showError(getString(R.string.location_tidak_ditemukan), this)
         }
     }
 
@@ -170,7 +177,7 @@ class DetailLocationActivity : AppCompatActivity() {
 
     private fun setAdapter() {
         adapter = KarakterPagingAdapter().apply {
-            setOnItemClickListener { position, data ->
+            setOnItemClickListener { _, data ->
                 val intent = Intent(this@DetailLocationActivity, DetailKarakterActivity::class.java)
                 intent.putExtra(PresentationUtils.INTENT_DATA, data)
                 startActivity(intent)
@@ -178,47 +185,38 @@ class DetailLocationActivity : AppCompatActivity() {
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true)
+                setLoading(true, dialog)
             } else {
-                setLoading(false)
+                setLoading(false, dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false)
-                showError("Episode tidak ditemukan")
+                setLoading(false, dialog)
+                showError(getString(R.string.karakter_tidak_ditemukan), this)
 
             }
         }
-        binding.rvDetailLocation.layoutManager = GridLayoutManager(this, 2)
-        binding.rvDetailLocation.adapter = adapter
-    }
-
-    private fun showError(error: String) {
-        PresentationUtils.setupDialogError(this, error ?: "").setPositiveButton("Ok") { dialog, _ ->
-            dialog.dismiss()
-        }.show()
-    }
-
-    private fun setLoading(isLoading: Boolean) {
-        if (isLoading) {
-            dialog.show()
-        } else {
-            dialog.dismiss()
+        binding.apply {
+            rvDetailLocation.layoutManager = GridLayoutManager(this@DetailLocationActivity, 2)
+            rvDetailLocation.adapter = adapter
         }
+
     }
+
 
     private fun setToolbar() {
-        binding.detailLocationToolbar.tvToolbar.text = "Detail Location"
-        binding.detailLocationToolbar.ivBackToolbar.setOnClickListener {
-            val intent = Intent()
-            setResult(CODE_RESULT, intent)
-            finish()
+        binding.detailLocationToolbar.apply {
+            tvToolbar.text = getString(R.string.detail_location)
+            ivBackToolbar.setOnClickListener {
+                val intent = Intent()
+                setResult(CODE_RESULT, intent)
+                finish()
+            }
         }
+
     }
 
     private fun setProgressBar() {
-        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        alertDialog.setView(R.layout.progress)
-        dialog = alertDialog.create()
+        dialog = loadingAlertDialog(this)
     }
 
 

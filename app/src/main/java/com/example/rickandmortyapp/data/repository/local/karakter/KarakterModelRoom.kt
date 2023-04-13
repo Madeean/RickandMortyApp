@@ -4,11 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoom
 import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterDetail
-import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterLocation
-import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterOrigin
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import kotlinx.parcelize.Parcelize
 

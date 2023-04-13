@@ -1,6 +1,5 @@
 package com.example.rickandmortyapp.presentation.daftarfavorit.fragmentdaftarfavorit
 
-import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
 import android.content.Intent
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
@@ -20,9 +18,11 @@ import com.example.rickandmortyapp.databinding.FragmentEpisodeDaftarFavoriteBind
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
+import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
+import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
+import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
-import com.example.rickandmortyapp.presentation.episode.fragment.HomeFragment
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -41,7 +41,6 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentEpisodeDaftarFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,16 +49,8 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setProgressBar()
         setRecyclerView()
-        getAllData()
-    }
-
-    private fun getAllData() {
-        Toast.makeText(requireContext(), "Episode", Toast.LENGTH_SHORT).show()
         getDataFvorite()
-
-
     }
-
 
     private fun getDataFvorite() {
         dataId = ""
@@ -74,39 +65,25 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
     }
 
     private fun getDataFromInternet() {
-        setLoading(true)
+        setLoading(true, dialog)
         if (PresentationUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
-                episodeViewModel.getEpisodeById(application, dataId).collectLatest {
-                    setLoading(false)
+                episodeViewModel.getEpisodeById( dataId).collectLatest {
+                    setLoading(false, dialog)
                     adapter.submitData(it)
 
                 }
             }
         } else {
-            setLoading(false)
-            showError("Tidak ada koneksi internet")
+            setLoading(false, dialog)
+            showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
         }
     }
 
-    private fun showError(error: String?) {
-        PresentationUtils.setupDialogError(requireContext(), error ?: "")
-            .setPositiveButton("Ok") { dialog, _ ->
-                dialog.dismiss()
-            }.show()
-    }
-
-    private fun setLoading(isLoading: Boolean) {
-        if (isLoading) {
-            dialog.show()
-        } else {
-            dialog.dismiss()
-        }
-    }
 
     private fun setRecyclerView() {
         adapter = EpisodePagingAdapter().apply {
-            setOnItemClickListener { position, data ->
+            setOnItemClickListener { _, data ->
                 val intent = Intent(context, DetailEpisodeActivity::class.java)
                 intent.putExtra(INTENT_DATA, data)
                 resultLauncher.launch(intent)
@@ -114,31 +91,35 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true)
+                setLoading(true, dialog)
             } else {
-                setLoading(false)
+                setLoading(false, dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false)
+                setLoading(false, dialog)
                 if (!PresentationUtils.isNetworkAvailable(requireContext())) {
-                    showError("Tidak ada koneksi internet")
+                    showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
                 }
             }
 
             if (loadState.append is LoadState.Error) {
-                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError("Tidak ada koneksi internet")
+                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError(
+                    getString(R.string.tidak_ada_koneksi_internet), requireContext()
+                )
             }
 
         }
 
-        binding.rvEpisode.layoutManager = LinearLayoutManager(context)
-        binding.rvEpisode.adapter = adapter
+        binding.apply {
+            rvEpisode.layoutManager = LinearLayoutManager(context)
+            rvEpisode.adapter = adapter
+        }
+
+
     }
 
     private fun setProgressBar() {
-        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
-        alertDialog.setView(R.layout.progress)
-        dialog = alertDialog.create()
+        dialog = loadingAlertDialog(requireContext())
     }
 
     companion object {
@@ -156,8 +137,7 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
-            setRecyclerView()
-            getAllData()
+            getDataFvorite()
         }
     }
 

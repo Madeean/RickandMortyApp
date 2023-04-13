@@ -3,7 +3,6 @@ package com.example.rickandmortyapp.presentation.daftarfavorit.activity
 import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.rickandmortyapp.presentation.daftarfavorit.fragmentdaftarfavorit.EpisodeDaftarFavoriteFragment
 import com.example.rickandmortyapp.presentation.daftarfavorit.fragmentdaftarfavorit.KarakterDaftarFavoriteFragment

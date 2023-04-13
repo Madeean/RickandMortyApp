@@ -29,7 +29,7 @@
             android:background="@drawable/search_input_radius"
             android:drawableStart="@drawable/baseline_search_24"
             android:drawablePadding="10dp"
-            android:hint="Search Episode"
+            android:hint="@string/search_episode"
             android:inputType="textAutoCorrect"
             android:paddingHorizontal="25dp"
             android:paddingVertical="16dp"
@@ -46,27 +46,13 @@
             android:layout_marginTop="14dp"
             android:background="@drawable/btn_18_blue"
             android:backgroundTint="@color/hijau"
-            android:contentDescription="Search Button"
+            android:contentDescription="@string/search_button"
             android:padding="16dp"
             android:src="@drawable/baseline_search_24_white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/et_search_home"
             app:layout_constraintTop_toBottomOf="@id/home_toolbar" />
 
-        <!--        <SearchView-->
-        <!--            android:id="@+id/et_search_home"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="15dp"-->
-        <!--            android:background="@drawable/search_input_radius"-->
-        <!--            android:drawablePadding="10dp"-->
-        <!--            android:iconifiedByDefault="false"-->
-        <!--            android:inputType="textAutoCorrect"-->
-        <!--            android:queryHint="Search Episode"-->
-        <!--            android:textColor="@color/hitam"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/home_toolbar" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_episode"

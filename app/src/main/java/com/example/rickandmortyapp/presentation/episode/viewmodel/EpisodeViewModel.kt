@@ -6,13 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoom
 import com.example.rickandmortyapp.domain.DomainUseCase
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -28,10 +25,9 @@ class EpisodeViewModel @Inject constructor(private val useCase: DomainUseCase) :
         return useCase.getAllEpisode(viewModelScope, application, name)
     }
 
-    suspend fun getEpisodeById(
-        application: Application, id: String
+    suspend fun getEpisodeById( id: String
     ): Flow<PagingData<EpisodeModelItemModel>> {
-        return useCase.getEpisodeById(viewModelScope, application, id)
+        return useCase.getEpisodeById(viewModelScope, id)
     }
 
     suspend fun getEpisodeRoom(

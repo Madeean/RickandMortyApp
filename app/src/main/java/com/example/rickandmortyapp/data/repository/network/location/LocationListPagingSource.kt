@@ -4,12 +4,9 @@ import android.app.Application
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickandmortyapp.data.repository.di.LocalModule
-import com.example.rickandmortyapp.data.repository.local.karakter.KarakterDao
 import com.example.rickandmortyapp.data.repository.local.location.LocationDao
 import com.example.rickandmortyapp.data.repository.local.location.LocationModelRoom
-import com.example.rickandmortyapp.data.repository.network.karakter.KarakterApiService
 import com.example.rickandmortyapp.data.repository.network.location.model.LocationDetail
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -34,7 +31,7 @@ class LocationListPagingSource(
             val data = LocationDetail.transforms(respone.results)
             if (position == 1) respone.results?.let { saveToRoom(it) }
             toLoadResult(
-                data = data, nextKey = if (data.isNullOrEmpty()) null else position + 1
+                data = data, nextKey = if (data.isEmpty()) null else position + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
@@ -69,8 +66,8 @@ class LocationListPagingSource(
 
     private fun toLoadResult(
         data: List<LocationModelItemModel>, prevKey: Int? = null, nextKey: Int? = null
-    ): PagingSource.LoadResult<Int, LocationModelItemModel> {
-        return PagingSource.LoadResult.Page(
+    ): LoadResult<Int, LocationModelItemModel> {
+        return LoadResult.Page(
             data = data, prevKey = prevKey, nextKey = nextKey
         )
     }

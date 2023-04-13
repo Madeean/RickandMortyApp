@@ -2,7 +2,6 @@ package com.example.rickandmortyapp.domain
 
 import android.app.Application
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
@@ -42,13 +41,11 @@ interface DomainRepository {
 
     suspend fun getKarakterById(
         scope:CoroutineScope,
-        application: Application,
         id:String
     ):Flow<PagingData<KarakterModelItemModel>>
 
     suspend fun getEpisodeById(
         scope:CoroutineScope,
-        application: Application,
         id:String
     ):Flow<PagingData<EpisodeModelItemModel>>
 

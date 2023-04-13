@@ -1,7 +1,5 @@
 package com.example.rickandmortyapp.presentation.karakter.activity
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
@@ -16,11 +14,14 @@ import com.bumptech.glide.Glide
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailKarakterBinding
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
+import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
+import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
+import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
+import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
@@ -67,17 +68,25 @@ class DetailKarakterActivity : AppCompatActivity() {
         setAdapter()
         getDataFromIntent()
         setFavorite()
+        setBtnToDetail()
 
-        binding.btnDetailLocation.setOnClickListener {
-            val intent = Intent(this, DetailLocationActivity::class.java)
-            intent.putExtra(PresentationUtils.INTENT_ID, idLocation)
-            startActivity(intent)
+
+    }
+
+    private fun setBtnToDetail() {
+        binding.apply {
+            btnDetailLocation.setOnClickListener {
+                val intent = Intent(this@DetailKarakterActivity, DetailLocationActivity::class.java)
+                intent.putExtra(PresentationUtils.INTENT_ID, idLocation)
+                startActivity(intent)
+            }
+            btnDetailOrigin.setOnClickListener {
+                val intent = Intent(this@DetailKarakterActivity, DetailLocationActivity::class.java)
+                intent.putExtra(PresentationUtils.INTENT_ID, idOrigin)
+                startActivity(intent)
+            }
         }
-        binding.btnDetailOrigin.setOnClickListener {
-            val intent = Intent(this, DetailLocationActivity::class.java)
-            intent.putExtra(PresentationUtils.INTENT_ID, idOrigin)
-            startActivity(intent)
-        }
+
     }
 
     private fun setFavorite() {
@@ -86,20 +95,31 @@ class DetailKarakterActivity : AppCompatActivity() {
     }
 
     private fun insertFavorite() {
-        binding.cbFavoritDetailKarakter.setOnClickListener {
-            if (binding.cbFavoritDetailKarakter.isChecked) {
-                lifecycleScope.launch {
-                    karakterViewModel.deleteKarakterFavoriteRoom(application, data?.id ?: -1)
+        binding.cbFavoritDetailKarakter.apply {
+            setOnClickListener {
+                if (isChecked) {
+                    lifecycleScope.launch {
+                        karakterViewModel.deleteKarakterFavoriteRoom(application, data?.id ?: -1)
+                    }
+                    Toast.makeText(
+                        this@DetailKarakterActivity,
+                        getString(R.string.berhasil_menghapus_favorite),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    lifecycleScope.launch {
+                        karakterViewModel.insertKarakterFavoriteRoom(application, data?.id ?: -1)
+                    }
+                    Toast.makeText(
+                        this@DetailKarakterActivity,
+                        getString(R.string.berhasil_menambah_favorite),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                Toast.makeText(this, "Berhasil menghapus favorite", Toast.LENGTH_SHORT).show()
-            } else {
-                lifecycleScope.launch {
-                    karakterViewModel.insertKarakterFavoriteRoom(application, data?.id ?: -1)
-                }
-                Toast.makeText(this, "Berhasil menambah favorite", Toast.LENGTH_SHORT).show()
+                getFavorite()
             }
-            getFavorite()
         }
+
     }
 
     private fun getFavorite() {
@@ -110,14 +130,15 @@ class DetailKarakterActivity : AppCompatActivity() {
                 it.idKarakter == data?.id
             }
 
-            if (isFavorite) {
-                binding.cbFavoritDetailKarakter.setBackgroundResource(R.drawable.favorite_full)
-                binding.cbFavoritDetailKarakter.isChecked = false
-            } else {
-                binding.cbFavoritDetailKarakter.setBackgroundResource(R.drawable.favorite_outline)
-                binding.cbFavoritDetailKarakter.isChecked = true
+            binding.cbFavoritDetailKarakter.apply {
+                isChecked = if (isFavorite) {
+                    setBackgroundResource(R.drawable.favorite_full)
+                    false
+                } else {
+                    setBackgroundResource(R.drawable.favorite_outline)
+                    true
+                }
             }
-
         }
     }
 
@@ -132,13 +153,13 @@ class DetailKarakterActivity : AppCompatActivity() {
         if (data != null) {
             setData(data)
         } else {
-            showError("Data kosong")
+            showError(getString(R.string.karakter_tidak_ditemukan), this@DetailKarakterActivity)
         }
     }
 
     private fun getDataFromApi() {
         lifecycleScope.launch {
-            episodeViewModel.getEpisodeById(application, idEpisode).collectLatest {
+            episodeViewModel.getEpisodeById(idEpisode).collectLatest {
                 adapter.submitData(it)
             }
         }
@@ -153,32 +174,34 @@ class DetailKarakterActivity : AppCompatActivity() {
             tvName.text = data?.name
             tvOrigin.text = data?.origin?.name
             tvSpesies.text = data?.species
-            tvType.text = if (data?.type?.isBlank() == true) "Unknown" else data?.type
-        }
-        Glide.with(this).load(data?.image).placeholder(R.drawable.ic_launcher_background)
-            .into(binding.ivDetailImage)
+            tvType.text =
+                if (data?.type?.isBlank() == true) getString(R.string.unknown) else data?.type
 
-        if (data?.location == null && data?.origin == null) {
-            binding.btnDetailLocation.isEnabled = false
-            binding.btnDetailOrigin.isEnabled = false
-            return
+            Glide.with(this@DetailKarakterActivity).load(data?.image)
+                .placeholder(R.drawable.ic_launcher_background).into(ivDetailImage)
+
+            if (data?.location == null && data?.origin == null) {
+                btnDetailLocation.isEnabled = false
+                btnDetailOrigin.isEnabled = false
+                return
+            }
         }
 
-        if (data.origin?.url?.isBlank() == true) {
+        if (data?.origin?.url?.isBlank() == true) {
             binding.btnDetailOrigin.isEnabled = false
-            idLocation = PresentationUtils.getIdFromUrl(data.location?.url ?: "")
-        } else if (data.location?.url?.isBlank() == true) {
+            idLocation = getIdFromUrl(data.location?.url ?: "")
+        } else if (data?.location?.url?.isBlank() == true) {
             binding.btnDetailLocation.isEnabled = false
-            idOrigin = PresentationUtils.getIdFromUrl(data.origin?.url ?: "")
+            idOrigin = getIdFromUrl(data.origin?.url ?: "")
         } else {
-            idLocation = PresentationUtils.getIdFromUrl(data.location?.url ?: "")
-            idOrigin = PresentationUtils.getIdFromUrl(data.origin?.url ?: "")
+            idLocation = getIdFromUrl(data?.location?.url ?: "")
+            idOrigin = getIdFromUrl(data?.origin?.url ?: "")
         }
 
-        if (data.episode?.isNotEmpty() == true) {
+        if (data?.episode?.isNotEmpty() == true) {
             idEpisode = ""
             data.episode.forEach {
-                idEpisode += "${PresentationUtils.getIdFromUrl(it)},"
+                idEpisode += "${getIdFromUrl(it)},"
             }
             getDataFromApi()
         }
@@ -186,23 +209,9 @@ class DetailKarakterActivity : AppCompatActivity() {
 
     }
 
-    private fun setLoading(isLoading: Boolean) {
-        if (isLoading) {
-            dialog.show()
-        } else {
-            dialog.dismiss()
-        }
-    }
-
-    private fun showError(error: String?) {
-        PresentationUtils.setupDialogError(this, error ?: "").setPositiveButton("Ok") { dialog, _ ->
-            dialog.dismiss()
-        }.show()
-    }
-
     private fun setAdapter() {
         adapter = EpisodePagingAdapter().apply {
-            setOnItemClickListener { position, data ->
+            setOnItemClickListener { _, data ->
                 val intent = Intent(this@DetailKarakterActivity, DetailEpisodeActivity::class.java)
                 intent.putExtra(PresentationUtils.INTENT_DATA, data)
                 startActivity(intent)
@@ -210,32 +219,35 @@ class DetailKarakterActivity : AppCompatActivity() {
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true)
+                setLoading(true, dialog)
             } else {
-                setLoading(false)
+                setLoading(false, dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false)
-                showError("Episode tidak ditemukan")
+                setLoading(false, dialog)
+                showError(getString(R.string.episode_tidak_ditemukan), this)
 
             }
         }
-        binding.rvDetailKarakter.layoutManager = LinearLayoutManager(this)
-        binding.rvDetailKarakter.adapter = adapter
+        binding.apply {
+            rvDetailKarakter.layoutManager = LinearLayoutManager(this@DetailKarakterActivity)
+            rvDetailKarakter.adapter = adapter
+        }
     }
 
     private fun setToolbar() {
-        binding.detailKarakterToolbar.tvToolbar.text = "Detail Karakter"
-        binding.detailKarakterToolbar.ivBackToolbar.setOnClickListener {
-            val intent = Intent()
-            setResult(CODE_RESULT, intent)
-            finish()
+        binding.detailKarakterToolbar.apply {
+            tvToolbar.text = getString(R.string.detail_karakter)
+            ivBackToolbar.setOnClickListener {
+                val intent = Intent()
+                setResult(CODE_RESULT, intent)
+                finish()
+            }
         }
+
     }
 
     private fun setProgressBar() {
-        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        alertDialog.setView(R.layout.progress)
-        dialog = alertDialog.create()
+        dialog = loadingAlertDialog(this)
     }
 }

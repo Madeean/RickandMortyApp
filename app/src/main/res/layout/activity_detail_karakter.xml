@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:contentDescription="Detail Image"
+                android:contentDescription="@string/detail_image"
                 android:scaleType="centerCrop"
                 android:src="@drawable/indomie_goreng_png_0" />
         </androidx.cardview.widget.CardView>
@@ -54,8 +54,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Favorite"
+                android:layout_marginEnd="10dp"
+                android:text="@string/favorite"
                 android:textColor="@color/hitam"
                 android:textSize="20sp" />
 
@@ -85,7 +85,7 @@
                 android:id="@+id/tv_name_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="@string/name"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_name_tag"
-                android:text="Jerry Smith"
+                android:text="@string/jerry_smith"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_name"
-                android:text="Status"
+                android:text="@string/status"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_status_tag"
-                android:text="Alive"
+                android:text="@string/alive"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -123,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_status"
-                android:text="Spesies"
+                android:text="@string/spesies"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_spesies_tag"
-                android:text="Human"
+                android:text="@string/human"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_spesies"
-                android:text="Type"
+                android:text="@string/type"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_type_tag"
-                android:text="Unknown"
+                android:text="@string/unknown"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -161,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_type"
-                android:text="Gender"
+                android:text="@string/gender"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_gender_tag"
-                android:text="Male"
+                android:text="@string/male"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -180,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_gender"
-                android:text="Created"
+                android:text="@string/created"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -190,7 +190,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_created_tag"
-                android:text="2017-11-04T19:26:56.301Z"
+                android:text="@string/_2017_11_10t12_56_36_618z"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -211,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="location"
+                android:text="@string/location"
                 android:textColor="@color/hitam"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -224,7 +224,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@id/btn_detail_location"
-                android:text="Earth (Replacement Dimension)"
+                android:text="@string/earth_replacement_dimension"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -234,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_location_tag"
                 android:layout_alignParentEnd="true"
-                android:text="detail" />
+                android:text="@string/detail" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -252,7 +252,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Origin"
+                android:text="@string/origin"
                 android:textColor="@color/hitam"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -265,7 +265,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@id/btn_detail_origin"
-                android:text="Earth (Replacement Dimension)"
+                android:text="@string/earth_replacement_dimension"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -275,7 +275,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_origin_tag"
                 android:layout_alignParentEnd="true"
-                android:text="detail" />
+                android:text="@string/detail" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -292,7 +292,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Episode"
+                android:text="@string/episode"
                 android:textColor="@color/hitam"
                 android:textSize="22sp"
                 android:textStyle="bold" />

@@ -1,7 +1,6 @@
 package com.example.rickandmortyapp.data.repository.local.location
 
 import androidx.room.*
-import com.example.rickandmortyapp.data.repository.local.karakter.KarakterFavoriteModelRoom
 
 @Dao
 interface LocationDao {

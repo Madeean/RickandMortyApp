@@ -24,7 +24,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_18_blue"
-            android:text="Open Filter"
+            android:text="@string/open_filter"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"

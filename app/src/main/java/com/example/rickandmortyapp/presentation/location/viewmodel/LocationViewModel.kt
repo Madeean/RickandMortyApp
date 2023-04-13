@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.rickandmortyapp.domain.DomainUseCase
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom

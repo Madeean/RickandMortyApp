@@ -1,6 +1,5 @@
 package com.example.rickandmortyapp.presentation.episode.fragment
 
-import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
 import android.content.Intent
@@ -8,22 +7,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentHomeBinding
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
-import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
-import com.example.rickandmortyapp.presentation.PresentationUtils.setupDialogError
+import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
+import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
+import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
@@ -54,7 +51,12 @@ class HomeFragment : Fragment() {
         setSearchEpisode()
         setRecyclerView()
         getAllData()
+        setSwipeRefresh()
 
+
+    }
+
+    private fun setSwipeRefresh() {
         binding.swlEpisode.setOnRefreshListener {
             getAllData()
             binding.swlEpisode.isRefreshing = false
@@ -63,25 +65,23 @@ class HomeFragment : Fragment() {
 
 
     private fun setProgressBar() {
-        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
-        alertDialog.setView(R.layout.progress)
-        dialog = alertDialog.create()
+        dialog = loadingAlertDialog(requireContext())
     }
 
 
     private fun getAllData(name: String = "") {
-        setLoading(true)
+        setLoading(true, dialog)
         if (PresentationUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
                 episodeViewModel.getAllEpisode(application, name).collectLatest {
-                    setLoading(false)
+                    setLoading(false, dialog)
                     adapter.submitData(it)
 
                 }
             }
         } else {
-            setLoading(false)
-            showError("Tidak ada koneksi internet")
+            setLoading(false, dialog)
+            showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
             checkDbRoom()
         }
 
@@ -94,28 +94,15 @@ class HomeFragment : Fragment() {
                 val dataSudahTransform = EpisodeItemModelRoom.transformFromDomainToRoom(data)
                 adapter.submitData(lifecycle, dataSudahTransform)
             } else {
-                showError("Episode tidak ditemukan")
+                showError(getString(R.string.episode_tidak_ditemukan), requireContext())
             }
         }
     }
 
-    private fun showError(error: String?) {
-        setupDialogError(requireContext(), error ?: "").setPositiveButton("Ok") { dialog, _ ->
-            dialog.dismiss()
-        }.show()
-    }
-
-    private fun setLoading(isLoading: Boolean) {
-        if (isLoading) {
-            dialog.show()
-        } else {
-            dialog.dismiss()
-        }
-    }
 
     private fun setRecyclerView() {
         adapter = EpisodePagingAdapter().apply {
-            setOnItemClickListener { position, data ->
+            setOnItemClickListener { _, data ->
                 val intent = Intent(context, DetailEpisodeActivity::class.java)
                 intent.putExtra(INTENT_DATA, data)
                 resultLauncher.launch(intent)
@@ -123,27 +110,33 @@ class HomeFragment : Fragment() {
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true)
+                setLoading(true, dialog)
             } else {
-                setLoading(false)
+                setLoading(false, dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false)
+                setLoading(false, dialog)
                 if (!PresentationUtils.isNetworkAvailable(requireContext())) {
-                    showError("Tidak ada koneksi internet")
+                    showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
                 } else {
-                    showError("Episode tidak ditemukan")
+                    showError(getString(R.string.episode_tidak_ditemukan), requireContext())
                 }
             }
 
             if (loadState.append is LoadState.Error) {
-                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError("Tidak ada koneksi internet")
+                setLoading(false, dialog)
+                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError(
+                    getString(R.string.tidak_ada_koneksi_internet), requireContext()
+                )
             }
 
         }
 
-        binding.rvEpisode.layoutManager = LinearLayoutManager(context)
-        binding.rvEpisode.adapter = adapter
+        binding.apply {
+            rvEpisode.layoutManager = LinearLayoutManager(context)
+            rvEpisode.adapter = adapter
+        }
+
     }
 
     private fun setSearchEpisode() {
@@ -152,21 +145,10 @@ class HomeFragment : Fragment() {
             getAllData(searchValue.toString())
         }
 
-//        binding.etSearchHome.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                getAllData(query ?: "")
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                return false
-//            }
-//        })
-
     }
 
     private fun setToolbar() {
-        binding.homeToolbar.tvToolbar.text = "Episode"
+        binding.homeToolbar.tvToolbar.text = getString(R.string.episode)
     }
 
     companion object {
@@ -180,6 +162,6 @@ class HomeFragment : Fragment() {
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) { result ->}
+    ) { }
 
 }

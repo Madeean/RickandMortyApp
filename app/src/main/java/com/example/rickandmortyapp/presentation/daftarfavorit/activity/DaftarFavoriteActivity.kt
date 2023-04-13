@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.example.rickandmortyapp.MyApplication
+import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDaftarFavoriteBinding
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
@@ -47,7 +48,7 @@ class DaftarFavoriteActivity : AppCompatActivity() {
         initView()
     }
     private fun setToolbar() {
-        binding.daftarFavoritToolbar.tvToolbar.text = "Daftar Favorite"
+        binding.daftarFavoritToolbar.tvToolbar.text = getString(R.string.daftar_favorite)
         binding.daftarFavoritToolbar.ivBackToolbar.setOnClickListener{
             finish()
         }

@@ -1,8 +1,6 @@
 package com.example.rickandmortyapp.domain.model.karakter
 
 import android.os.Parcelable
-import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterLocation
-import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterOrigin
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

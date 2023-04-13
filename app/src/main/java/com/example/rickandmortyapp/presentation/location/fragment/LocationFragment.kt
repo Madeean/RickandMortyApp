@@ -1,6 +1,5 @@
 package com.example.rickandmortyapp.presentation.location.fragment
 
-import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
 import android.content.Intent
@@ -13,13 +12,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentLocationBinding
 import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
+import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
+import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
+import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import com.example.rickandmortyapp.presentation.location.adapter.LocationPagingAdapter
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
@@ -51,39 +52,48 @@ class LocationFragment : Fragment() {
         setRecyclerView()
         setDataFilter()
         getAllData()
+        setSwipeRefresh()
 
+
+
+    }
+
+    private fun setSwipeRefresh() {
         binding.swlLocation.setOnRefreshListener {
             getAllData()
             binding.swlLocation.isRefreshing = false
         }
-
     }
 
     private fun setDataFilter() {
-        binding.btnGetLocationFilter.setOnClickListener {
-            val name = binding.etSearchName.text.toString()
-            val type = binding.etSearchType.text.toString()
-            val dimension = binding.etSearchDimension.text.toString()
-            binding.rlAccordionLocation.visibility = View.GONE
-            getAllData(name, type, dimension)
+        binding.apply {
+            btnGetLocationFilter.setOnClickListener {
+                val name = etSearchName.text.toString()
+                val type = etSearchType.text.toString()
+                val dimension = etSearchDimension.text.toString()
+                rlAccordionLocation.visibility = View.GONE
+                getAllData(name, type, dimension)
+            }
         }
+
     }
 
     private fun getAllData(
         name: String = "", type: String = "", dimension: String = ""
     ) {
-        setLoading(true)
+        setLoading(true,dialog)
         if (PresentationUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
                 locationViewModel.getAllLocation(
                     application = application, name = name, type = type, dimension = dimension
                 ).collectLatest {
+                    setLoading(false,dialog)
                     adapter.submitData(it)
                 }
             }
         } else {
-            setLoading(false)
-            showError("Tidak ada koneksi internet")
+            setLoading(false,dialog)
+            showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
             checkDbRoom()
         }
 
@@ -96,14 +106,14 @@ class LocationFragment : Fragment() {
                 val dataSudahDiTransform = LocationItemModelRoom.transforms(data)
                 adapter.submitData(lifecycle, dataSudahDiTransform)
             } else {
-                showError("Location tidak ditemukan")
+                showError(getString(R.string.lokasi_tidak_ditemukan), requireContext())
             }
         }
     }
 
     private fun setRecyclerView() {
         adapter = LocationPagingAdapter().apply {
-            setOnItemClickListener { position, data ->
+            setOnItemClickListener { _, data ->
                 val intent = Intent(requireContext(), DetailLocationActivity::class.java)
                 intent.putExtra(INTENT_DATA, data)
                 resultLauncher.launch(intent)
@@ -111,67 +121,61 @@ class LocationFragment : Fragment() {
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true)
+                setLoading(true,dialog)
             } else {
-                setLoading(false)
+                setLoading(false,dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false)
+                setLoading(false,dialog)
                 if (!PresentationUtils.isNetworkAvailable(requireContext())) {
-                    showError("Tidak ada koneksi internet")
+                    showError(getString(R.string.tidak_ada_koneksi_internet),requireContext())
                 } else {
-                    showError("Location tidak ditemukan")
+                    showError(getString(R.string.lokasi_tidak_ditemukan),requireContext())
                 }
             }
 
             if (loadState.append is LoadState.Error) {
-                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError("Tidak ada koneksi internet")
+                setLoading(false,dialog)
+                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError(
+                    getString(R.string.tidak_ada_koneksi_internet),
+                    requireContext()
+                )
             }
         }
-        binding.rvLocation.layoutManager = LinearLayoutManager(context)
-        binding.rvLocation.adapter = adapter
-    }
 
-    private fun showError(error: String?) {
-        PresentationUtils.setupDialogError(requireContext(), error ?: "")
-            .setPositiveButton("Ok") { dialog, _ ->
-                dialog.dismiss()
-            }.show()
-    }
-
-    private fun setLoading(isLoading: Boolean) {
-        if (isLoading) {
-            dialog.show()
-        } else {
-            dialog.dismiss()
+        binding.apply {
+            rvLocation.layoutManager = LinearLayoutManager(context)
+            rvLocation.adapter = adapter
         }
+
     }
+
 
     private fun setToolbar() {
-        binding.locationToolbar.tvToolbar.text = "Location"
+        binding.locationToolbar.tvToolbar.text = getString(R.string.location)
     }
 
     private fun setProgressBar() {
-        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
-        alertDialog.setView(R.layout.progress)
-        dialog = alertDialog.create()
+        dialog = loadingAlertDialog(requireContext())
     }
 
     private fun setAccordion() {
-        binding.btnOpenAccordion.setOnClickListener {
-            if (binding.rlAccordionLocation.visibility == View.VISIBLE) {
-                binding.btnOpenAccordion.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.baseline_keyboard_arrow_down_24, 0
-                )
-                binding.rlAccordionLocation.visibility = View.GONE
-            } else {
-//                edit drawable
-                binding.btnOpenAccordion.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.baseline_keyboard_arrow_up_24, 0
-                )
-                binding.rlAccordionLocation.visibility = View.VISIBLE
+        binding.apply {
+            btnOpenAccordion.setOnClickListener {
+                if (rlAccordionLocation.visibility == View.VISIBLE) {
+                    btnOpenAccordion.setCompoundDrawablesWithIntrinsicBounds(
+                        0, 0, R.drawable.baseline_keyboard_arrow_down_24, 0
+                    )
+                    rlAccordionLocation.visibility = View.GONE
+                } else {
+                    btnOpenAccordion.setCompoundDrawablesWithIntrinsicBounds(
+                        0, 0, R.drawable.baseline_keyboard_arrow_up_24, 0
+                    )
+                    rlAccordionLocation.visibility = View.VISIBLE
+                }
             }
         }
+
     }
 
     companion object {
@@ -185,7 +189,7 @@ class LocationFragment : Fragment() {
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) { result ->}
+    ) { }
 
 
 }

@@ -1,14 +1,11 @@
 package com.example.rickandmortyapp.presentation.episode.activity
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -18,11 +15,13 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailEpisodeBinding
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
-import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.getCreated
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
+import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
+import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
+import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
@@ -81,70 +80,79 @@ class DetailEpisodeActivity : AppCompatActivity() {
                 it.idEpisode == data?.id
             }
 
-            if (isFavorite) {
-                binding.cbFavoritDetailEpisode.setBackgroundResource(R.drawable.favorite_full)
-                binding.cbFavoritDetailEpisode.isChecked = false
-            } else {
-                binding.cbFavoritDetailEpisode.setBackgroundResource(R.drawable.favorite_outline)
-                binding.cbFavoritDetailEpisode.isChecked = true
+            binding.cbFavoritDetailEpisode.apply {
+                isChecked = if (isFavorite) {
+                    setBackgroundResource(R.drawable.favorite_full)
+                    false
+                } else {
+                    setBackgroundResource(R.drawable.favorite_outline)
+                    true
+                }
             }
+
 
         }
     }
 
     private fun insertFavorite() {
-        binding.cbFavoritDetailEpisode.setOnClickListener {
-            if (binding.cbFavoritDetailEpisode.isChecked) {
-                lifecycleScope.launch {
-                    episodeViewModel.deleteEpisodeFavoriteRoom(application, data?.id ?: -1)
+        binding.cbFavoritDetailEpisode.apply {
+            setOnClickListener {
+                if (isChecked) {
+                    lifecycleScope.launch {
+                        episodeViewModel.deleteEpisodeFavoriteRoom(application, data?.id ?: -1)
+                    }
+                    Toast.makeText(
+                        this@DetailEpisodeActivity,
+                        getString(R.string.berhasil_menghapus_favorite),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    lifecycleScope.launch {
+                        episodeViewModel.insertEpisodeFavoriteRoom(application, data?.id ?: -1)
+                    }
+                    Toast.makeText(
+                        this@DetailEpisodeActivity,
+                        getString(R.string.berhasil_menambah_favorite),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                Toast.makeText(this, "Berhasil menghapus favorite", Toast.LENGTH_SHORT).show()
-            } else {
-                lifecycleScope.launch {
-                    episodeViewModel.insertEpisodeFavoriteRoom(application, data?.id ?: -1)
-                }
-                Toast.makeText(this, "Berhasil menambah favorite", Toast.LENGTH_SHORT).show()
+                getFavorite()
             }
-            getFavorite()
         }
+
     }
 
     private fun setProgressBar() {
-        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        alertDialog.setView(R.layout.progress)
-        dialog = alertDialog.create()
+        dialog = loadingAlertDialog(this)
     }
 
-    private fun setLoading(isLoading: Boolean) {
-        if (isLoading) {
-            dialog.show()
-        } else {
-            dialog.dismiss()
-        }
-    }
 
     private fun setAdapter() {
         adapter = KarakterPagingAdapter().apply {
-            setOnItemClickListener { position, data ->
+            setOnItemClickListener { _, data ->
                 val intent = Intent(this@DetailEpisodeActivity, DetailKarakterActivity::class.java)
-                intent.putExtra(PresentationUtils.INTENT_DATA, data)
+                intent.putExtra(INTENT_DATA, data)
                 startActivity(intent)
             }
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true)
+                setLoading(true, dialog)
             } else {
-                setLoading(false)
+                setLoading(false, dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false)
-                showError("Karakter tidak ditemukan")
+                setLoading(false, dialog)
+                showError(getString(R.string.karakter_tidak_ditemukan), this)
 
             }
         }
-        binding.rvDetailEpisode.layoutManager = GridLayoutManager(this, 2)
-        binding.rvDetailEpisode.adapter = adapter
+        binding.apply {
+            rvDetailEpisode.layoutManager = GridLayoutManager(this@DetailEpisodeActivity, 2)
+            rvDetailEpisode.adapter = adapter
+        }
+
+
     }
 
     private fun getDataFromIntent() {
@@ -157,13 +165,13 @@ class DetailEpisodeActivity : AppCompatActivity() {
             setData(data)
             getDataFromApi()
         } else {
-            showError("Data kosong")
+            showError(getString(R.string.episode_tidak_ditemukan), this)
         }
     }
 
     private fun getDataFromApi() {
         lifecycleScope.launch {
-            karakterViewModel.getKarakterById(application, idKarakter).collectLatest {
+            karakterViewModel.getKarakterById(idKarakter).collectLatest {
                 adapter.submitData(it)
             }
         }
@@ -189,18 +197,16 @@ class DetailEpisodeActivity : AppCompatActivity() {
 
     }
 
-    private fun showError(error: String?) {
-        PresentationUtils.setupDialogError(this, error ?: "").setPositiveButton("Ok") { dialog, _ ->
-            dialog.dismiss()
-        }.show()
-    }
 
     private fun setToolbar() {
-        binding.detailEpisodeToolbar.tvToolbar.text = "Detail Episode"
-        binding.detailEpisodeToolbar.ivBackToolbar.setOnClickListener {
-            val intent = Intent()
-            setResult(CODE_RESULT, intent)
-            finish()
+        binding.detailEpisodeToolbar.apply {
+            tvToolbar.text = getString(R.string.detail_episode)
+            ivBackToolbar.setOnClickListener {
+                val intent = Intent()
+                setResult(CODE_RESULT, intent)
+                finish()
+            }
         }
+
     }
 }

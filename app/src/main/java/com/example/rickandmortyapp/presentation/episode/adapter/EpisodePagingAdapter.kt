@@ -46,9 +46,6 @@ class EpisodePagingAdapter : PagingDataAdapter<EpisodeModelItemModel, EpisodePag
                 tvEpisode.text = episode.episode
                 tvDate.text = episode.airDate
             }
-//            Glide.with(itemView.context)
-//                .load(Utils.ImageUrl + movie.posterPath)
-//                .into(binding.ivPosterMovie)
         }
     }
 

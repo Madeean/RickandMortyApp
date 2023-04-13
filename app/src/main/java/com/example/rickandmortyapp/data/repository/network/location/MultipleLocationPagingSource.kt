@@ -3,7 +3,6 @@ package com.example.rickandmortyapp.data.repository.network.location
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickandmortyapp.data.repository.network.location.model.LocationDetail
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
 
 class MultipleLocationPagingSource(
@@ -35,8 +34,8 @@ class MultipleLocationPagingSource(
 
     private fun toLoadResult(
         data: List<LocationModelItemModel>, prevKey: Int? = null, nextKey: Int? = null
-    ): PagingSource.LoadResult<Int, LocationModelItemModel> {
-        return PagingSource.LoadResult.Page(
+    ): LoadResult<Int, LocationModelItemModel> {
+        return LoadResult.Page(
             data = data, prevKey = prevKey, nextKey = nextKey
         )
     }

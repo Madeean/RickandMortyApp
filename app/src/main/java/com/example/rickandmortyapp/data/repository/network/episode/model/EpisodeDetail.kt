@@ -1,6 +1,5 @@
 package com.example.rickandmortyapp.data.repository.network.episode.model
 
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
 import com.google.gson.annotations.SerializedName
 

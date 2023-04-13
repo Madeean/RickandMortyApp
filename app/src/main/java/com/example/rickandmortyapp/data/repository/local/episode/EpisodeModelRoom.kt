@@ -5,7 +5,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.rickandmortyapp.data.repository.network.episode.model.EpisodeDetail
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelEntity
 import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
 import kotlinx.parcelize.Parcelize
 

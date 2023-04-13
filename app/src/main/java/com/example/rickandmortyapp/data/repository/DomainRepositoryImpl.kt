@@ -62,7 +62,7 @@ class DomainRepositoryImpl @Inject constructor(
         type: String,
         gender: String
     ): Flow<PagingData<KarakterModelItemModel>> {
-        println("MASUK 4")
+
         return Pager(config = PagingConfig(20)) {
             KarakterListPagingSource(
                 apiService = karakterApiService,
@@ -95,21 +95,20 @@ class DomainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getKarakterById(
-        scope: CoroutineScope, application: Application, id: String
+        scope: CoroutineScope, id: String
     ): Flow<PagingData<KarakterModelItemModel>> {
         return Pager(config = PagingConfig(1)) {
-            MultipleKarakterPagingSource(
-                application = application, apiService = karakterApiService, id = id
+            MultipleKarakterPagingSource( apiService = karakterApiService, id = id
             )
         }.flow.cachedIn(scope)
     }
 
     override suspend fun getEpisodeById(
-        scope: CoroutineScope, application: Application, id: String
+        scope: CoroutineScope, id: String
     ): Flow<PagingData<EpisodeModelItemModel>> {
         return Pager(config = PagingConfig(1)) {
             MultipleEpisodePagingSource(
-                application = application, apiService = episodeApiService, id = id
+                 apiService = episodeApiService, id = id
             )
         }.flow.cachedIn(scope)
     }

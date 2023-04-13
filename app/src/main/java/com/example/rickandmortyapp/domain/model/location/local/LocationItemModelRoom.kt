@@ -1,8 +1,6 @@
 package com.example.rickandmortyapp.domain.model.location.local
 
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
 
 data class LocationItemModelRoom(

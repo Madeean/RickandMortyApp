@@ -1,6 +1,7 @@
 package com.example.rickandmortyapp.presentation
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -56,5 +57,24 @@ object PresentationUtils {
             setMessage(msg)
             setCancelable(false)
         }
+    }
+
+    fun showError(error: String?,context:Context) {
+        setupDialogError(context, error ?: "").setPositiveButton(context.getString(R.string.ok)) { dialog, _ ->
+            dialog.dismiss()
+        }.show()
+    }
+
+    fun setLoading(isLoading: Boolean,dialog:Dialog) {
+        if (isLoading) {
+            dialog.show()
+        } else {
+            dialog.dismiss()
+        }
+    }
+
+    fun loadingAlertDialog(context: Context):AlertDialog{
+        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
+        return alertDialog.setView(R.layout.progress).create()
     }
 }
