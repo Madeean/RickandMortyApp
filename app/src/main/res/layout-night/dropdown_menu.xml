@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:background="@color/darkmode_biru_tua"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvDropdown"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/darkmode_biru_sangat_muda"
+    android:textSize="14sp"
+    android:padding="8dp"/>

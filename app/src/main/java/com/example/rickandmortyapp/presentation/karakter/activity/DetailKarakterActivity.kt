@@ -25,9 +25,8 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
+import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
-import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModelFactory
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -41,15 +40,13 @@ class DetailKarakterActivity : AppCompatActivity() {
 
 
     @Inject
-    lateinit var episodeFactory: EpisodeViewModelFactory
+    lateinit var presentationFactory: PresentationFactory
     private val episodeViewModel: EpisodeViewModel by viewModels {
-        episodeFactory
+        presentationFactory
     }
 
-    @Inject
-    lateinit var karakterFactory: KarakterViewModelFactory
     private val karakterViewModel: KarakterViewModel by viewModels {
-        karakterFactory
+        presentationFactory
     }
     private var idEpisode = ""
     private var idLocation = 0
@@ -69,8 +66,6 @@ class DetailKarakterActivity : AppCompatActivity() {
         getDataFromIntent()
         setFavorite()
         setBtnToDetail()
-
-
     }
 
     private fun setBtnToDetail() {

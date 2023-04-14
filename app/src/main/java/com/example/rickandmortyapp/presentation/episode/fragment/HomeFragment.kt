@@ -21,6 +21,7 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.activity.MainActivity
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
@@ -34,8 +35,6 @@ class HomeFragment : Fragment() {
     private lateinit var application: Application
     private lateinit var adapter: EpisodePagingAdapter
     private lateinit var dialog: Dialog
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -46,14 +45,18 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setViewModelAndApplication()
         setProgressBar()
         setToolbar()
         setSearchEpisode()
         setRecyclerView()
         getAllData()
         setSwipeRefresh()
+    }
 
-
+    private fun setViewModelAndApplication() {
+        episodeViewModel = (requireActivity() as MainActivity).getViewModelEpisode()
+        application = (requireActivity() as MainActivity).getApplicationForApi()
     }
 
     private fun setSwipeRefresh() {
@@ -140,25 +143,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun setSearchEpisode() {
-        val searchValue = binding.etSearchHome.text
-        binding.ibSearch.setOnClickListener {
-            getAllData(searchValue.toString())
+        binding.apply {
+            ibSearch.setOnClickListener {
+                val searchValue = etSearchHome.text
+                getAllData(searchValue.toString())
+            }
         }
-
     }
 
     private fun setToolbar() {
         binding.homeToolbar.tvToolbar.text = getString(R.string.episode)
     }
 
-    companion object {
-        fun newInstance(viewModel: EpisodeViewModel, application: Application): HomeFragment {
-            return HomeFragment().apply {
-                episodeViewModel = viewModel
-                this.application = application
-            }
-        }
-    }
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

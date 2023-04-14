@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation.activity
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -12,33 +13,29 @@ import com.example.rickandmortyapp.presentation.karakter.fragment.KarakterFragme
 import com.example.rickandmortyapp.presentation.location.fragment.LocationFragment
 import com.example.rickandmortyapp.presentation.setting.SettingFragment
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
+import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
-import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModelFactory
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
-import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-//    private var isNightModeOn = false
 
     @Inject
-    lateinit var episodeFactory: EpisodeViewModelFactory
+    lateinit var presentationFactory: PresentationFactory
+
+
     private val episodeViewModel: EpisodeViewModel by viewModels {
-        episodeFactory
+        presentationFactory
     }
 
-    @Inject
-    lateinit var karakterFactory: KarakterViewModelFactory
     private val karakterViewModel: KarakterViewModel by viewModels {
-        karakterFactory
+        presentationFactory
     }
 
-    @Inject
-    lateinit var locationFactory: LocationViewModelFactory
+
     private val locationViewModel: LocationViewModel by viewModels {
-        locationFactory
+        presentationFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,13 +43,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-//        isNightModeOn = currentNightMode == Configuration.UI_MODE_NIGHT_YES
-
         setViewPager()
         setBottomNavigationView()
+    }
 
 
+    fun getViewModelEpisode(): EpisodeViewModel {
+        return episodeViewModel
+    }
+
+    fun getViewModelKarakter(): KarakterViewModel {
+        return karakterViewModel
+    }
+
+    fun getViewmodelLocation(): LocationViewModel {
+        return locationViewModel
+    }
+
+    fun getApplicationForApi(): Application {
+        return application
     }
 
     private fun setBottomNavigationView() {
@@ -69,21 +78,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun setViewPager() {
         val adapter = FragmentAdapter(
-            supportFragmentManager, lifecycle, application, episodeViewModel, karakterViewModel,locationViewModel
+            supportFragmentManager, lifecycle
         )
-        adapter.addFragment(HomeFragment())
-        adapter.addFragment(KarakterFragment())
-        adapter.addFragment(LocationFragment())
-        adapter.addFragment(SettingFragment())
+        adapter.apply {
+            addFragment(HomeFragment())
+            addFragment(KarakterFragment())
+            addFragment(LocationFragment())
+            addFragment(SettingFragment())
+        }
 
-        binding.viewPager2.adapter = adapter
+        binding.apply {
+            viewPager2.adapter = adapter
 
-        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                binding.navView.menu.getItem(position).isChecked = true
-            }
-        })
+            viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    navView.menu.getItem(position).isChecked = true
+                }
+            })
+        }
+
     }
 
 }

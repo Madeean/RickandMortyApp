@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_karakter"
+    android:backgroundTint="@color/darkmode_biru_muda"
+    android:layout_width="match_parent"
+    android:layout_height="210dp"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_karakter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
+            android:contentDescription="@string/indomie_goreng"
+            android:src="@drawable/indomie_goreng_png_0" />
+
+        <TextView
+            android:id="@+id/tv_nama_karakter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_image"
+            android:layout_marginHorizontal="15dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="Morty Smith - Alive" />
+
+        <TextView
+            android:id="@+id/tv_gender_karakter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_nama_karakter"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="10dp"
+            tools:text="Male"
+            android:textColor="@color/darkmode_biru_sangat_muda"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

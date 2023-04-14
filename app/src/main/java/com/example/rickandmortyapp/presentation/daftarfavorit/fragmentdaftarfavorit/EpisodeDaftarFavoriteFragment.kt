@@ -21,6 +21,7 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.daftarfavorit.activity.DaftarFavoriteActivity
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
@@ -36,8 +37,6 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
 
     private var dataFavorite: List<EpisodeItemFavoriteModelRoom> = ArrayList()
     private var dataId = ""
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -47,9 +46,14 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setViewModelAndApplication()
         setProgressBar()
         setRecyclerView()
         getDataFvorite()
+    }
+    private fun setViewModelAndApplication() {
+        episodeViewModel = (requireActivity() as DaftarFavoriteActivity).getViewModelEpisode()
+        application = (requireActivity() as DaftarFavoriteActivity).getApplicationForApi()
     }
 
     private fun getDataFvorite() {
@@ -71,7 +75,6 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
                 episodeViewModel.getEpisodeById( dataId).collectLatest {
                     setLoading(false, dialog)
                     adapter.submitData(it)
-
                 }
             }
         } else {
@@ -114,23 +117,10 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
             rvEpisode.layoutManager = LinearLayoutManager(context)
             rvEpisode.adapter = adapter
         }
-
-
     }
 
     private fun setProgressBar() {
         dialog = loadingAlertDialog(requireContext())
-    }
-
-    companion object {
-        fun newInstance(
-            viewModel: EpisodeViewModel, application: Application
-        ): EpisodeDaftarFavoriteFragment {
-            return EpisodeDaftarFavoriteFragment().apply {
-                episodeViewModel = viewModel
-                this.application = application
-            }
-        }
     }
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(

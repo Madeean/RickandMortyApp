@@ -23,6 +23,7 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.activity.MainActivity
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
@@ -42,20 +43,23 @@ class KarakterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentKarakterBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setViewModelAndApplication()
         setProgressBar()
         setToolbar()
         setBottomSheetDialog()
         setRecyclerView()
         getAllData()
         setSwipeRefresh()
+    }
 
-
+    private fun setViewModelAndApplication() {
+        karakterViewModel = (requireActivity() as MainActivity).getViewModelKarakter()
+        application = (requireActivity() as MainActivity).getApplicationForApi()
     }
 
     private fun setSwipeRefresh() {
@@ -84,12 +88,18 @@ class KarakterFragment : Fragment() {
 
             lifecycleScope.launch {
                 karakterViewModel.getAllKarakter(
-                    application, name, statusValue, species, type, genderValue
+                    application,
+                    name,
+                    statusValue,
+                    species,
+                    type,
+                    genderValue
                 ).collectLatest {
-                    setLoading(false,dialog)
+                    setLoading(false, dialog)
                     adapter.submitData(it)
                 }
             }
+
         } else {
             setLoading(false, dialog)
             showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
@@ -100,7 +110,8 @@ class KarakterFragment : Fragment() {
 
     private fun checkDbRoom() {
         lifecycleScope.launch {
-            val data = karakterViewModel.getKarakterRoom(application)
+            val data = karakterViewModel
+                .getKarakterRoom(application)
             if (data.isNotEmpty()) {
                 val dataSudahDiTransform = KarakterItemModelRoom.transforms(data)
                 adapter.submitData(lifecycle, dataSudahDiTransform)
@@ -135,7 +146,7 @@ class KarakterFragment : Fragment() {
             }
 
             if (loadState.append is LoadState.Error) {
-                setLoading(false,dialog)
+                setLoading(false, dialog)
                 if (!PresentationUtils.isNetworkAvailable(requireContext())) showError(
                     getString(R.string.tidak_ada_koneksi_internet), requireContext()
                 )
@@ -195,14 +206,6 @@ class KarakterFragment : Fragment() {
         binding.karakterToolbar.tvToolbar.text = getString(R.string.karakter)
     }
 
-    companion object {
-        fun newInstance(viewModel: KarakterViewModel, application: Application): KarakterFragment {
-            return KarakterFragment().apply {
-                karakterViewModel = viewModel
-                this.application = application
-            }
-        }
-    }
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

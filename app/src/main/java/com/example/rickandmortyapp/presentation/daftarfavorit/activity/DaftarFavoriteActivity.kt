@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation.daftarfavorit.activity
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -7,11 +8,9 @@ import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDaftarFavoriteBinding
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
+import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
-import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModelFactory
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
-import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
@@ -20,24 +19,20 @@ class DaftarFavoriteActivity : AppCompatActivity() {
     private lateinit var tabs: List<String>
 
     @Inject
-    lateinit var episodeFactory: EpisodeViewModelFactory
+    lateinit var presentationFactory: PresentationFactory
+
+
     private val episodeViewModel: EpisodeViewModel by viewModels {
-        episodeFactory
+        presentationFactory
     }
 
-    @Inject
-    lateinit var karakterFactory: KarakterViewModelFactory
     private val karakterViewModel: KarakterViewModel by viewModels {
-        karakterFactory
+        presentationFactory
     }
 
-    @Inject
-    lateinit var locationFactory: LocationViewModelFactory
     private val locationViewModel: LocationViewModel by viewModels {
-        locationFactory
+        presentationFactory
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MyApplication).appComponent.daftarFavoriteActivity(this)
         binding = ActivityDaftarFavoriteBinding.inflate(layoutInflater)
@@ -47,15 +42,36 @@ class DaftarFavoriteActivity : AppCompatActivity() {
         initTabs()
         initView()
     }
+
+
+    fun getViewModelEpisode(): EpisodeViewModel {
+        return episodeViewModel
+    }
+
+    fun getViewModelKarakter(): KarakterViewModel {
+        return karakterViewModel
+    }
+
+    fun getViewmodelLocation(): LocationViewModel {
+        return locationViewModel
+    }
+
+    fun getApplicationForApi(): Application {
+        return application
+    }
+
     private fun setToolbar() {
-        binding.daftarFavoritToolbar.tvToolbar.text = getString(R.string.daftar_favorite)
-        binding.daftarFavoritToolbar.ivBackToolbar.setOnClickListener{
-            finish()
+        binding.daftarFavoritToolbar.apply {
+            tvToolbar.text = getString(R.string.daftar_favorite)
+            ivBackToolbar.setOnClickListener{
+                finish()
+            }
         }
+
     }
 
     private fun initView() {
-        binding.daftarFavoritViewPager2.adapter = FragmentAdapterDaftarFavorite(this, application, episodeViewModel, karakterViewModel,locationViewModel)
+        binding.daftarFavoritViewPager2.adapter = FragmentAdapterDaftarFavorite(this)
         TabLayoutMediator(
             binding.daftarFavoritTabLayout, binding.daftarFavoritViewPager2
         ) { tab, pos ->

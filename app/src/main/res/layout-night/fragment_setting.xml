@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/abuabumuda"
+    android:background="@color/darkmode_biru_tua"
     tools:context=".presentation.setting.SettingFragment">
 
     <include
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@color/white"
+        android:background="@color/darkmode_biru_tua_sedikit_muda"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/setting_toolbar">
@@ -29,7 +29,7 @@
             android:drawablePadding="20dp"
             android:padding="10dp"
             android:text="@string/daftar_favorit"
-            android:textColor="@color/black"
+            android:textColor="@color/darkmode_biru_sangat_muda"
             android:textSize="20sp"
             app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
             app:drawableStartCompat="@drawable/favorite_tag" />
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_daftar_favorit"
-            app:dividerColor="@color/black" />
+            android:textColor="@color/darkmode_biru_sangat_muda" />
 
         <TextView
             android:id="@+id/tv_tentang_aplikasi"
@@ -50,7 +50,7 @@
             android:drawablePadding="20dp"
             android:padding="10dp"
             android:text="@string/tentang_aplikasi_ini"
-            android:textColor="@color/black"
+            android:textColor="@color/darkmode_biru_sangat_muda"
             android:textSize="20sp"
             app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
             app:drawableStartCompat="@drawable/baseline_error_outline_24" />
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_tentang_aplikasi"
-            app:dividerColor="@color/black" />
+            android:textColor="@color/darkmode_biru_sangat_muda" />
 
         <TextView
             android:id="@+id/tv_dark_mode"
@@ -71,7 +71,7 @@
             android:drawablePadding="20dp"
             android:padding="10dp"
             android:text="@string/dark_mode"
-            android:textColor="@color/black"
+            android:textColor="@color/darkmode_biru_sangat_muda"
             android:textSize="20sp"
             app:drawableStartCompat="@drawable/baseline_dark_mode_24" />
 
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_dark_mode"
-            app:dividerColor="@color/black" />
+            android:textColor="@color/darkmode_biru_sangat_muda" />
 
     </RelativeLayout>
 

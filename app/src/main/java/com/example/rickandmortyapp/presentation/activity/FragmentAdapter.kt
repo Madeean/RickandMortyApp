@@ -1,6 +1,5 @@
 package com.example.rickandmortyapp.presentation.activity
 
-import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -9,17 +8,9 @@ import com.example.rickandmortyapp.presentation.episode.fragment.HomeFragment
 import com.example.rickandmortyapp.presentation.karakter.fragment.KarakterFragment
 import com.example.rickandmortyapp.presentation.location.fragment.LocationFragment
 import com.example.rickandmortyapp.presentation.setting.SettingFragment
-import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
-import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
 
 class FragmentAdapter(
-    fragmentManager: FragmentManager,
-    lifecycle: Lifecycle,
-    private val application: Application,
-    private val episodeViewModel: EpisodeViewModel,
-    private val karakterViewModel: KarakterViewModel,
-    private val locationViewModel: LocationViewModel
+    fragmentManager: FragmentManager, lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     private val fragmentList = arrayListOf<Fragment>()
 
@@ -33,11 +24,11 @@ class FragmentAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> HomeFragment.newInstance(episodeViewModel, application)
-            1 -> KarakterFragment.newInstance(karakterViewModel, application)
-            2 -> LocationFragment.newInstance(locationViewModel, application)
+            0 -> HomeFragment()
+            1 -> KarakterFragment()
+            2 -> LocationFragment()
             3 -> SettingFragment()
-            else -> HomeFragment.newInstance(episodeViewModel, application)
+            else -> HomeFragment()
         }
     }
 }

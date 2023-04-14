@@ -20,6 +20,7 @@ import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.daftarfavorit.activity.DaftarFavoriteActivity
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import com.example.rickandmortyapp.presentation.location.adapter.LocationPagingAdapter
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
@@ -44,9 +45,15 @@ class LocationDaftarFavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setViewModelAndApplication()
         setProgressBar()
         setRecyclerView()
         getDataFvorite()
+    }
+
+    private fun setViewModelAndApplication() {
+        locationViewModel = (requireActivity() as DaftarFavoriteActivity).getViewmodelLocation()
+        application = (requireActivity() as DaftarFavoriteActivity).getApplicationForApi()
     }
 
 
@@ -122,18 +129,6 @@ class LocationDaftarFavoriteFragment : Fragment() {
     ) { result ->
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
             getDataFvorite()
-        }
-    }
-
-
-    companion object {
-        fun newInstance(
-            viewModel: LocationViewModel, application: Application
-        ): LocationDaftarFavoriteFragment {
-            return LocationDaftarFavoriteFragment().apply {
-                locationViewModel = viewModel
-                this.application = application
-            }
         }
     }
 }

@@ -21,6 +21,7 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.daftarfavorit.activity.DaftarFavoriteActivity
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
@@ -47,9 +48,15 @@ class KarakterDaftarFavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setViewModelAndApplication()
         setProgressBar()
         setRecyclerView()
         getDataFvorite()
+    }
+
+    private fun setViewModelAndApplication() {
+        karakterViewModel = (requireActivity() as DaftarFavoriteActivity).getViewModelKarakter()
+        application = (requireActivity() as DaftarFavoriteActivity).getApplicationForApi()
     }
 
     private fun getDataFvorite() {
@@ -125,16 +132,7 @@ class KarakterDaftarFavoriteFragment : Fragment() {
         }
     }
 
-    companion object {
-        fun newInstance(
-            viewModel: KarakterViewModel, application: Application
-        ): KarakterDaftarFavoriteFragment {
-            return KarakterDaftarFavoriteFragment().apply {
-                karakterViewModel = viewModel
-                this.application = application
-            }
-        }
-    }
+
 
 
 }

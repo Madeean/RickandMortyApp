@@ -15,4 +15,9 @@
     <color name="hijau">#50CE8A</color>
     <color name="ungu">#AE7EFD</color>
     <color name="merah">#F55C5C</color>
+
+    <color name="darkmode_biru_tua">#0B2447</color>
+    <color name="darkmode_biru_tua_sedikit_muda">#19376D</color>
+    <color name="darkmode_biru_muda">#576CBC</color>
+    <color name="darkmode_biru_sangat_muda">#A5D7E8</color>
 </resources>

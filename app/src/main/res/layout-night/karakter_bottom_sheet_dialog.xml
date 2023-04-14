@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/darkmode_biru_tua_sedikit_muda"
+    android:paddingBottom="20dp">
+
+    <EditText
+        android:id="@+id/et_nama_karakter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="14dp"
+        android:autofillHints=""
+        android:backgroundTint="@color/darkmode_biru_muda"
+        android:textColor="@color/darkmode_biru_sangat_muda"
+        android:textColorHint="@color/darkmode_biru_sangat_muda"
+        android:background="@drawable/search_input_radius"
+        android:drawableStart="@drawable/baseline_search_24"
+        android:drawablePadding="10dp"
+        android:hint="@string/search_name"
+        android:inputType="textAutoCorrect"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="16dp"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:backgroundTint="@color/darkmode_biru_muda"
+        android:id="@+id/ti_gender"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_14_krem"
+        android:hint="@string/choose_gender"
+        android:textSize="12sp"
+        app:hintTextColor="@color/darkmode_biru_sangat_muda"
+        app:layout_constraintEnd_toStartOf="@+id/ti_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_nama_karakter">
+
+        <AutoCompleteTextView
+            android:backgroundTint="@color/darkmode_biru_muda"
+            android:id="@+id/ac_gender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_14_krem"
+            android:drawablePadding="10dp"
+            android:inputType="none"
+            android:padding="15dp"
+            android:textSize="12sp"
+            app:hintTextColor="@color/darkmode_biru_sangat_muda">
+
+        </AutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:backgroundTint="@color/darkmode_biru_muda"
+
+        android:id="@+id/ti_status"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_14_krem"
+        android:hint="@string/choose_status"
+        android:textSize="12sp"
+        app:hintTextColor="@color/darkmode_biru_sangat_muda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ti_gender"
+        app:layout_constraintTop_toBottomOf="@+id/et_nama_karakter">
+
+        <AutoCompleteTextView
+            android:backgroundTint="@color/darkmode_biru_muda"
+
+            android:id="@+id/ac_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_14_krem"
+            android:drawablePadding="10dp"
+            android:inputType="none"
+            android:padding="15dp"
+            android:textSize="12sp"
+            app:hintTextColor="@color/darkmode_biru_sangat_muda">
+
+        </AutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:backgroundTint="@color/darkmode_biru_muda"
+        android:textColor="@color/darkmode_biru_sangat_muda"
+        android:textColorHint="@color/darkmode_biru_sangat_muda"
+        android:id="@+id/et_search_species"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="14dp"
+        android:autofillHints=""
+        android:background="@drawable/search_input_radius"
+        android:drawableStart="@drawable/baseline_search_24"
+        android:drawablePadding="10dp"
+        android:hint="@string/search_species"
+        android:inputType="textAutoCorrect"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="16dp"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ti_gender" />
+
+    <EditText
+        android:backgroundTint="@color/darkmode_biru_muda"
+        android:textColor="@color/darkmode_biru_sangat_muda"
+        android:textColorHint="@color/darkmode_biru_sangat_muda"
+        android:id="@+id/et_search_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="14dp"
+        android:autofillHints=""
+        android:background="@drawable/search_input_radius"
+        android:drawableStart="@drawable/baseline_search_24"
+        android:drawablePadding="10dp"
+        android:hint="@string/search_type"
+        android:inputType="textAutoCorrect"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="16dp"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_search_species" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_get_karakter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_18_blue"
+        android:text="@string/cari_karakter"
+        android:textAllCaps="false"
+        android:textColor="@color/darkmode_biru_sangat_muda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_search_type" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

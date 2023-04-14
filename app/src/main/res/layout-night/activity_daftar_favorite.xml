@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/abuabumuda"
+    android:background="@color/darkmode_biru_tua"
     android:orientation="vertical"
     tools:context=".presentation.daftarfavorit.activity.DaftarFavoriteActivity">
 
@@ -13,12 +13,14 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/daftar_favorit_tab_layout"
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/darkmode_biru_tua" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/daftar_favorit_view_pager2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

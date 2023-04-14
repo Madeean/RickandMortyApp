@@ -23,5 +23,4 @@ interface AppComponent {
     fun detailKarakterActivity(activity: DetailKarakterActivity)
     fun detailLocationActivity(activity: DetailLocationActivity)
     fun daftarFavoriteActivity(activity: DaftarFavoriteActivity)
-//    fun splashScreenActivity(activity: SplashScreenActivity)
 }

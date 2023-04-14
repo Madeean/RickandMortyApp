@@ -23,11 +23,10 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDi
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
-import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModelFactory
+import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
-import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,17 +37,15 @@ class DetailEpisodeActivity : AppCompatActivity() {
     private lateinit var adapter: KarakterPagingAdapter
     private lateinit var dialog: Dialog
 
-
     @Inject
-    lateinit var karakterFactory: KarakterViewModelFactory
+    lateinit var presentationFactory: PresentationFactory
+
     private val karakterViewModel: KarakterViewModel by viewModels {
-        karakterFactory
+        presentationFactory
     }
 
-    @Inject
-    lateinit var episodeFactory: EpisodeViewModelFactory
     private val episodeViewModel: EpisodeViewModel by viewModels {
-        episodeFactory
+        presentationFactory
     }
 
     private var idKarakter = ""
@@ -64,7 +61,6 @@ class DetailEpisodeActivity : AppCompatActivity() {
         setAdapter()
         getDataFromIntent()
         setFavorite()
-
     }
 
     private fun setFavorite() {

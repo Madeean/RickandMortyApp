@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/abuabumuda"
-    tools:context=".presentation.daftarfavorit.fragmentdaftarfavorit.EpisodeDaftarFavoriteFragment">
+    android:background="@color/darkmode_biru_tua"
+    tools:context=".presentation.daftarfavorit.fragmentdaftarfavorit.LocationDaftarFavoriteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_episode"
+        android:id="@+id/rv_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="130dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_episode" />
+        tools:listitem="@layout/item_karakter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

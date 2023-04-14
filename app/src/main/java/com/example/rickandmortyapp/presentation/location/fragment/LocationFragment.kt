@@ -21,6 +21,7 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.activity.MainActivity
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import com.example.rickandmortyapp.presentation.location.adapter.LocationPagingAdapter
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
@@ -29,9 +30,9 @@ import kotlinx.coroutines.launch
 
 
 class LocationFragment : Fragment() {
-    private lateinit var binding: FragmentLocationBinding
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var application: Application
+    private lateinit var binding: FragmentLocationBinding
     private lateinit var dialog: Dialog
     private lateinit var adapter: LocationPagingAdapter
 
@@ -46,6 +47,7 @@ class LocationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setViewModelAndApplication()
         setProgressBar()
         setToolbar()
         setAccordion()
@@ -55,7 +57,11 @@ class LocationFragment : Fragment() {
         setSwipeRefresh()
 
 
+    }
 
+    private fun setViewModelAndApplication() {
+        locationViewModel = (requireActivity() as MainActivity).getViewmodelLocation()
+        application = (requireActivity() as MainActivity).getApplicationForApi()
     }
 
     private fun setSwipeRefresh() {
@@ -81,18 +87,18 @@ class LocationFragment : Fragment() {
     private fun getAllData(
         name: String = "", type: String = "", dimension: String = ""
     ) {
-        setLoading(true,dialog)
+        setLoading(true, dialog)
         if (PresentationUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
                 locationViewModel.getAllLocation(
                     application = application, name = name, type = type, dimension = dimension
                 ).collectLatest {
-                    setLoading(false,dialog)
+                    setLoading(false, dialog)
                     adapter.submitData(it)
                 }
             }
         } else {
-            setLoading(false,dialog)
+            setLoading(false, dialog)
             showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
             checkDbRoom()
         }
@@ -121,24 +127,23 @@ class LocationFragment : Fragment() {
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true,dialog)
+                setLoading(true, dialog)
             } else {
-                setLoading(false,dialog)
+                setLoading(false, dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false,dialog)
+                setLoading(false, dialog)
                 if (!PresentationUtils.isNetworkAvailable(requireContext())) {
-                    showError(getString(R.string.tidak_ada_koneksi_internet),requireContext())
+                    showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
                 } else {
-                    showError(getString(R.string.lokasi_tidak_ditemukan),requireContext())
+                    showError(getString(R.string.lokasi_tidak_ditemukan), requireContext())
                 }
             }
 
             if (loadState.append is LoadState.Error) {
-                setLoading(false,dialog)
+                setLoading(false, dialog)
                 if (!PresentationUtils.isNetworkAvailable(requireContext())) showError(
-                    getString(R.string.tidak_ada_koneksi_internet),
-                    requireContext()
+                    getString(R.string.tidak_ada_koneksi_internet), requireContext()
                 )
             }
         }
@@ -178,14 +183,6 @@ class LocationFragment : Fragment() {
 
     }
 
-    companion object {
-        fun newInstance(viewModel: LocationViewModel, application: Application): LocationFragment {
-            return LocationFragment().apply {
-                locationViewModel = viewModel
-                this.application = application
-            }
-        }
-    }
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

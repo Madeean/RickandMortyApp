@@ -12,6 +12,9 @@ import java.util.*
 
 object PresentationUtils {
 
+    const val PREF_DARK_MODE = "DARK_MODE"
+    const val GET_BOOLEAN_DARK_MODE = "dark_mode"
+
     const val CODE_RESULT = 100
 
     const val INTENT_DATA = "data"

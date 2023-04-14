@@ -20,12 +20,11 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
-import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModelFactory
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
-import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,15 +36,13 @@ class DetailLocationActivity : AppCompatActivity() {
     private lateinit var dialog: Dialog
 
     @Inject
-    lateinit var karakterFactory: KarakterViewModelFactory
-    private val karakterViewModel: KarakterViewModel by viewModels {
-        karakterFactory
-    }
+    lateinit var presentationFactory: PresentationFactory
 
-    @Inject
-    lateinit var locationFactory: LocationViewModelFactory
+    private val karakterViewModel: KarakterViewModel by viewModels {
+        presentationFactory
+    }
     private val locationViewModel: LocationViewModel by viewModels {
-        locationFactory
+        presentationFactory
     }
 
     private var idKarakter = ""
