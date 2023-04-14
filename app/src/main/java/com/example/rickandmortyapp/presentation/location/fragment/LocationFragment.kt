@@ -15,7 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentLocationBinding
-import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
+import com.example.rickandmortyapp.domain.location.model.local.LocationItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -187,6 +187,11 @@ class LocationFragment : Fragment() {
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialog.dismiss()
+    }
 
 
 }

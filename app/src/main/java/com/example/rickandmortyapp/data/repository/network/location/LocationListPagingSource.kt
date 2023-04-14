@@ -7,7 +7,7 @@ import com.example.rickandmortyapp.data.repository.di.LocalModule
 import com.example.rickandmortyapp.data.repository.local.location.LocationDao
 import com.example.rickandmortyapp.data.repository.local.location.LocationModelRoom
 import com.example.rickandmortyapp.data.repository.network.location.model.LocationDetail
-import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -21,7 +21,6 @@ class LocationListPagingSource(
     override fun getRefreshKey(state: PagingState<Int, LocationModelItemModel>): Int? {
         return null
     }
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LocationModelItemModel> {
         val position = params.key ?: 1
         return try {
@@ -45,8 +44,6 @@ class LocationListPagingSource(
         locationDao = db.locationDao()
         deleteAllDbRoom(executorService, locationDao)
         insetAllDataRoom(executorService, locationDao, results)
-
-
     }
 
     private fun insetAllDataRoom(

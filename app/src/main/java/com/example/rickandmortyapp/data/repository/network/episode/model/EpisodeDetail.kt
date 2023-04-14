@@ -1,6 +1,6 @@
 package com.example.rickandmortyapp.data.repository.network.episode.model
 
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 import com.google.gson.annotations.SerializedName
 
 data class EpisodeDetail(
@@ -31,7 +31,7 @@ data class EpisodeDetail(
             }
         }
 
-        private fun transform(model:EpisodeDetail?):EpisodeModelItemModel{
+        private fun transform(model:EpisodeDetail?): EpisodeModelItemModel {
             return EpisodeModelItemModel(
                 model?.id,
                 model?.name,

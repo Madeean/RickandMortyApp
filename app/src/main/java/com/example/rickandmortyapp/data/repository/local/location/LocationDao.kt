@@ -19,11 +19,9 @@ interface LocationDao {
     @Delete
     fun deleteLocationFavoriteRoom(locationFavoriteRoom: LocationFavoriteModelRoom)
 
-    //    where id lebih dari 0
     @Query("SELECT * FROM location_favorite WHERE id_location > 0 ")
     fun getAllLocationFavoriteRoom(): List<LocationFavoriteModelRoom>
 
-    //    delete all
     @Query("DELETE FROM location_favorite")
     fun deleteAllLocationFavoriteRoom()
 }

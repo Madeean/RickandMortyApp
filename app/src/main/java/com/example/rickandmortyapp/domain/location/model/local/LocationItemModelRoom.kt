@@ -1,7 +1,7 @@
-package com.example.rickandmortyapp.domain.model.location.local
+package com.example.rickandmortyapp.domain.location.model.local
 
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
 
 data class LocationItemModelRoom(
     val id: Int?,

@@ -7,7 +7,7 @@ import com.example.rickandmortyapp.data.repository.di.LocalModule
 import com.example.rickandmortyapp.data.repository.local.karakter.KarakterDao
 import com.example.rickandmortyapp.data.repository.local.karakter.KarakterModelRoom
 import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterDetail
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

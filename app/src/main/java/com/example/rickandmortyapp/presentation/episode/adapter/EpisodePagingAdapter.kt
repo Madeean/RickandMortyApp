@@ -6,15 +6,15 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.databinding.ItemEpisodeBinding
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 
 class EpisodePagingAdapter : PagingDataAdapter<EpisodeModelItemModel, EpisodePagingAdapter.EpisodeViewHolder>(
     DiffCallback
 ) {
 
-    private var onItemClick: ((position: Int,data:EpisodeModelItemModel) -> Unit)? = null
+    private var onItemClick: ((position: Int,data: EpisodeModelItemModel) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (position: Int,data:EpisodeModelItemModel) -> Unit) {
+    fun setOnItemClickListener(listener: (position: Int,data: EpisodeModelItemModel) -> Unit) {
         onItemClick = listener
     }
 

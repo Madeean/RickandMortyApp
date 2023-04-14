@@ -6,16 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.DomainUseCase
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
+import com.example.rickandmortyapp.domain.karakter.KarakterDomainUseCase
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemModelRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class KarakterViewModel @Inject constructor(private val useCase: DomainUseCase) : ViewModel() {
+class KarakterViewModel @Inject constructor(private val useCase: KarakterDomainUseCase) : ViewModel() {
 
     private var _karakter = MutableLiveData<PagingData<KarakterModelItemModel>>()
     val karakter: LiveData<PagingData<KarakterModelItemModel>> = _karakter

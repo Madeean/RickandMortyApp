@@ -1,7 +1,7 @@
-package com.example.rickandmortyapp.domain.model.karakter.local
+package com.example.rickandmortyapp.domain.karakter.model.local
 
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 
 data class KarakterItemModelRoom(
     val id:Int?,
@@ -31,7 +31,7 @@ data class KarakterItemModelRoom(
             })
         }
 
-        private fun transform(model:KarakterItemModelRoom):KarakterModelItemModel{
+        private fun transform(model: KarakterItemModelRoom): KarakterModelItemModel {
             return KarakterModelItemModel(
                 id = model.id,
                 name = model.name,

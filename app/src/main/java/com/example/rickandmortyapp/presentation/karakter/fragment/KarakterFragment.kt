@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentKarakterBinding
 import com.example.rickandmortyapp.databinding.KarakterBottomSheetDialogBinding
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
+import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -210,4 +210,9 @@ class KarakterFragment : Fragment() {
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialog.dismiss()
+    }
 }

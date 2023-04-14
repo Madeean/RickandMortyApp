@@ -1,8 +1,8 @@
 package com.example.rickandmortyapp.data.repository.network.karakter.model
 
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelLocationItemModel
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelOriginItemModel
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelLocationItemModel
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelOriginItemModel
 
 data class KarakterDetail (
     val id:Int?,
@@ -42,7 +42,7 @@ data class KarakterDetail (
             }
         }
 
-        private fun transform(model:KarakterDetail):KarakterModelItemModel{
+        private fun transform(model:KarakterDetail): KarakterModelItemModel {
             return KarakterModelItemModel(
                 id = model.id,
                 name = model.name,

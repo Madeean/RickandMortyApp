@@ -3,7 +3,7 @@ package com.example.rickandmortyapp.data.repository.network.episode
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickandmortyapp.data.repository.network.episode.model.EpisodeDetail
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 
 class MultipleEpisodePagingSource(
     private val apiService: EpisodeApiService,
@@ -12,7 +12,6 @@ class MultipleEpisodePagingSource(
     override fun getRefreshKey(state: PagingState<Int, EpisodeModelItemModel>): Int? {
         return null
     }
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeModelItemModel> {
         return try {
 

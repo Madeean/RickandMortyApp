@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailKarakterBinding
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl

@@ -47,7 +47,7 @@ object PresentationUtils {
     }
 
 
-    fun setupDialogError(context: Context, msg: String): AlertDialog.Builder {
+    private fun setupDialogError(context: Context, msg: String): AlertDialog.Builder {
         return AlertDialog.Builder(context).apply {
             setIcon(
                 ResourcesCompat.getDrawable(
@@ -80,4 +80,5 @@ object PresentationUtils {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context)
         return alertDialog.setView(R.layout.progress).create()
     }
+
 }

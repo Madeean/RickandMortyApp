@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ItemKarakterBinding
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 
 class KarakterPagingAdapter :
     PagingDataAdapter<KarakterModelItemModel, KarakterPagingAdapter.KarakterViewHolder>(

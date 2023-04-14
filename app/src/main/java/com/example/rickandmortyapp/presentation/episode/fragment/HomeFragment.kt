@@ -15,7 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentHomeBinding
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
+import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -68,7 +68,7 @@ class HomeFragment : Fragment() {
 
 
     private fun setProgressBar() {
-        dialog = loadingAlertDialog(requireContext())
+        dialog = loadingAlertDialog(requireActivity())
     }
 
 
@@ -159,5 +159,10 @@ class HomeFragment : Fragment() {
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialog.dismiss()
+    }
 
 }

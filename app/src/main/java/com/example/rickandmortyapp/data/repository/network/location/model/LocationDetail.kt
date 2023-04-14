@@ -1,6 +1,6 @@
 package com.example.rickandmortyapp.data.repository.network.location.model
 
-import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
+import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
 
 data class LocationDetail(
     val id: Int?,
@@ -30,7 +30,7 @@ data class LocationDetail(
             }
         }
 
-        fun transform(model: LocationDetail):LocationModelItemModel{
+        fun transform(model: LocationDetail): LocationModelItemModel {
             return LocationModelItemModel(
                 id = model.id,
                 name = model.name,

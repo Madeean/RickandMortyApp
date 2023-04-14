@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailEpisodeBinding
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.getCreated

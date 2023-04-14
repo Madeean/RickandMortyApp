@@ -1,4 +1,4 @@
-package com.example.rickandmortyapp.domain.model.location.local
+package com.example.rickandmortyapp.domain.location.model.local
 
 data class LocationItemFavoriteModelRoom(
     val idLocation: Int?,

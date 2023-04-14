@@ -3,7 +3,7 @@ package com.example.rickandmortyapp.data.repository.network.karakter
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterDetail
-import com.example.rickandmortyapp.domain.model.karakter.KarakterModelItemModel
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 
 class MultipleKarakterPagingSource(
     private val apiService: KarakterApiService,
@@ -12,7 +12,6 @@ class MultipleKarakterPagingSource(
     override fun getRefreshKey(state: PagingState<Int, KarakterModelItemModel>): Int? {
         return null
     }
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, KarakterModelItemModel> {
         return try {
             val response = apiService.getKarakterById(

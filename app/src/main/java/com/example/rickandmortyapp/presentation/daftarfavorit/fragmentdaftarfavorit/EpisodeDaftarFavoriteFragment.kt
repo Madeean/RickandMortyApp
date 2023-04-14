@@ -15,7 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentEpisodeDaftarFavoriteBinding
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -129,6 +129,11 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
             getDataFvorite()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialog.dismiss()
     }
 
 

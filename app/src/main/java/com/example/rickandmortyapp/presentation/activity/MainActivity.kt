@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         presentationFactory
     }
 
-
     private val locationViewModel: LocationViewModel by viewModels {
         presentationFactory
     }

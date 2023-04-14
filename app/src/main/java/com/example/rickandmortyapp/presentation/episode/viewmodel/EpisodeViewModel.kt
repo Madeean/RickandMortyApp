@@ -6,16 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.DomainUseCase
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemModelRoom
+import com.example.rickandmortyapp.domain.episode.EpisodeDomainUseCase
+import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemModelRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class EpisodeViewModel @Inject constructor(private val useCase: DomainUseCase) : ViewModel() {
+class EpisodeViewModel @Inject constructor(private val useCase: EpisodeDomainUseCase) : ViewModel() {
     private var _episode = MutableLiveData<PagingData<EpisodeModelItemModel>>()
     val episode: LiveData<PagingData<EpisodeModelItemModel>> = _episode
 

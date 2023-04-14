@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.rickandmortyapp.data.repository.network.location.model.LocationDetail
-import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
+import com.example.rickandmortyapp.domain.location.model.local.LocationItemModelRoom
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "location")

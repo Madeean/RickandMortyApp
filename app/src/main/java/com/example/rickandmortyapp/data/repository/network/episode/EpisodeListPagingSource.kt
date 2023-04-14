@@ -7,7 +7,7 @@ import com.example.rickandmortyapp.data.repository.di.LocalModule
 import com.example.rickandmortyapp.data.repository.local.episode.EpisodeDao
 import com.example.rickandmortyapp.data.repository.local.episode.EpisodeModelRoom
 import com.example.rickandmortyapp.data.repository.network.episode.model.EpisodeDetail
-import com.example.rickandmortyapp.domain.model.episode.EpisodeModelItemModel
+import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -19,7 +19,6 @@ class EpisodeListPagingSource(
     override fun getRefreshKey(state: PagingState<Int, EpisodeModelItemModel>): Int? {
         return null
     }
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeModelItemModel> {
         val position = params.key ?: 1
         return try {
@@ -29,7 +28,6 @@ class EpisodeListPagingSource(
             if (position == 1) {
                 saveToRoom(respone.results)
             }
-
 
             toLoadResult(
                 data = data, nextKey = if (data.isEmpty()) null else position + 1

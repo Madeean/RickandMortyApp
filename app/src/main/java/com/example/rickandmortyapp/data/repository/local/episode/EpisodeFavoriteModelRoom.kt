@@ -3,7 +3,7 @@ package com.example.rickandmortyapp.data.repository.local.episode
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.rickandmortyapp.domain.model.episode.local.EpisodeItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
 
 @Entity(tableName = "episode_favorite")
 data class EpisodeFavoriteModelRoom(
@@ -20,7 +20,7 @@ data class EpisodeFavoriteModelRoom(
             }
         }
 
-        private fun transform(model:EpisodeFavoriteModelRoom):EpisodeItemFavoriteModelRoom{
+        private fun transform(model:EpisodeFavoriteModelRoom): EpisodeItemFavoriteModelRoom {
             return EpisodeItemFavoriteModelRoom(
                 idEpisode = model.idEpisode,
             )

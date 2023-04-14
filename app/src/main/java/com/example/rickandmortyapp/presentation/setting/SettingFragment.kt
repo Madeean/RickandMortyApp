@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation.setting
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -13,6 +14,7 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentSettingBinding
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.GET_BOOLEAN_DARK_MODE
+import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.daftarfavorit.activity.DaftarFavoriteActivity
 import com.example.rickandmortyapp.presentation.tentang_aplikasi_ini.activity.TentangAplikasiIniActivity
 
@@ -20,6 +22,7 @@ import com.example.rickandmortyapp.presentation.tentang_aplikasi_ini.activity.Te
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private lateinit var pref: SharedPreferences
+    private lateinit var dialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -31,10 +34,15 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar()
+        setDialog()
         setSharedPreferences()
         setSwitchDarkMode()
         setDaftarFavorit()
         setTentangAplikasi()
+    }
+
+    private fun setDialog() {
+        dialog = loadingAlertDialog(requireActivity())
     }
 
     private fun setTentangAplikasi() {
@@ -76,6 +84,11 @@ class SettingFragment : Fragment() {
 
     private fun setToolbar() {
         binding.settingToolbar.tvToolbar.text = getString(R.string.setting)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        dialog.dismiss()
     }
 
 

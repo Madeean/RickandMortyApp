@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailLocationBinding
-import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
-import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
+import com.example.rickandmortyapp.domain.location.model.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog

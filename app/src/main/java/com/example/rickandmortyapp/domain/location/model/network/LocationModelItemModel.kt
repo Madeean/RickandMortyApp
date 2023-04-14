@@ -1,4 +1,4 @@
-package com.example.rickandmortyapp.domain.model.location
+package com.example.rickandmortyapp.domain.location.model.network
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.example.rickandmortyapp.domain.model.episode.local
+package com.example.rickandmortyapp.domain.episode.model.local
 
 
 data class EpisodeItemFavoriteModelRoom (

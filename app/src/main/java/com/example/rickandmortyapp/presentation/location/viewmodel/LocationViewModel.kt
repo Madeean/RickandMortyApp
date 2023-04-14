@@ -6,17 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.DomainUseCase
-import com.example.rickandmortyapp.domain.model.location.LocationModelItemModel
-import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.model.location.local.LocationItemModelRoom
+import com.example.rickandmortyapp.domain.location.LocationDomainUseCase
+import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
+import com.example.rickandmortyapp.domain.location.model.local.LocationItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.location.model.local.LocationItemModelRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LocationViewModel @Inject constructor(private val useCase: DomainUseCase) : ViewModel(){
+class LocationViewModel @Inject constructor(private val useCase: LocationDomainUseCase) : ViewModel(){
     private var _location = MutableLiveData<PagingData<LocationModelItemModel>>()
     val location: LiveData<PagingData<LocationModelItemModel>> = _location
 

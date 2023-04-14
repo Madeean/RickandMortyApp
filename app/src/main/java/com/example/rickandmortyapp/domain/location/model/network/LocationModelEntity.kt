@@ -1,4 +1,4 @@
-package com.example.rickandmortyapp.domain.model.location
+package com.example.rickandmortyapp.domain.location.model.network
 
 
 data class LocationModelEntity(

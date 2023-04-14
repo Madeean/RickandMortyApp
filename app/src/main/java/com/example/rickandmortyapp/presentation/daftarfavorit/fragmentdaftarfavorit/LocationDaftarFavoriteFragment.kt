@@ -15,7 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentLocationDaftarFavoriteBinding
-import com.example.rickandmortyapp.domain.model.location.local.LocationItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.location.model.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
@@ -130,5 +130,10 @@ class LocationDaftarFavoriteFragment : Fragment() {
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
             getDataFvorite()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialog.dismiss()
     }
 }

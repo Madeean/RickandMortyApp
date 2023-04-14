@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.rickandmortyapp.data.repository.network.karakter.model.KarakterDetail
-import com.example.rickandmortyapp.domain.model.karakter.local.KarakterItemModelRoom
+import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemModelRoom
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "karakter")
