@@ -50,10 +50,10 @@ class LocationFragment : Fragment() {
         setViewModelAndApplication()
         setProgressBar()
         setToolbar()
-        setAccordion()
         setRecyclerView()
         setDataFilter()
         getAllData()
+        setAccordion()
         setSwipeRefresh()
 
 

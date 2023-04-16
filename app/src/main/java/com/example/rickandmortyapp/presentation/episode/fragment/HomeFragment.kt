@@ -48,9 +48,9 @@ class HomeFragment : Fragment() {
         setViewModelAndApplication()
         setProgressBar()
         setToolbar()
-        setSearchEpisode()
         setRecyclerView()
         getAllData()
+        setSearchEpisode()
         setSwipeRefresh()
     }
 

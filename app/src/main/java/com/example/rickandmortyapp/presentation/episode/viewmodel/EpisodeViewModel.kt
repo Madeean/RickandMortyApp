@@ -15,7 +15,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class EpisodeViewModel @Inject constructor(private val useCase: EpisodeDomainUseCase) : ViewModel() {
+class EpisodeViewModel @Inject constructor(private val useCase: EpisodeDomainUseCase) :
+    ViewModel() {
     private var _episode = MutableLiveData<PagingData<EpisodeModelItemModel>>()
     val episode: LiveData<PagingData<EpisodeModelItemModel>> = _episode
 
@@ -25,7 +26,8 @@ class EpisodeViewModel @Inject constructor(private val useCase: EpisodeDomainUse
         return useCase.getAllEpisode(viewModelScope, application, name)
     }
 
-    suspend fun getEpisodeById( id: String
+    suspend fun getEpisodeById(
+        id: String
     ): Flow<PagingData<EpisodeModelItemModel>> {
         return useCase.getEpisodeById(viewModelScope, id)
     }
@@ -49,10 +51,10 @@ class EpisodeViewModel @Inject constructor(private val useCase: EpisodeDomainUse
 
     suspend fun deleteEpisodeFavoriteRoom(
         application: Application,
-        id:Int,
-    ){
-        return withContext(Dispatchers.IO){
-            useCase.deleteFavoriteEpisode(application,id)
+        id: Int,
+    ) {
+        return withContext(Dispatchers.IO) {
+            useCase.deleteFavoriteEpisode(application, id)
         }
     }
 

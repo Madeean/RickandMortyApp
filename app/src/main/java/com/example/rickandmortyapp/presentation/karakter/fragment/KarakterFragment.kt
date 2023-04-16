@@ -51,9 +51,9 @@ class KarakterFragment : Fragment() {
         setViewModelAndApplication()
         setProgressBar()
         setToolbar()
-        setBottomSheetDialog()
         setRecyclerView()
         getAllData()
+        setBottomSheetDialog()
         setSwipeRefresh()
     }
 
