@@ -112,7 +112,7 @@ class LocationFragment : Fragment() {
                 val dataSudahDiTransform = LocationItemModelRoom.transforms(data)
                 adapter.submitData(lifecycle, dataSudahDiTransform)
             } else {
-                showError(getString(R.string.lokasi_tidak_ditemukan), requireContext())
+                binding.tvLocationKosong.visibility = View.VISIBLE
             }
         }
     }

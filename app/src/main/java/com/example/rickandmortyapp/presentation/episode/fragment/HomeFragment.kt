@@ -97,7 +97,7 @@ class HomeFragment : Fragment() {
                 val dataSudahTransform = EpisodeItemModelRoom.transformFromDomainToRoom(data)
                 adapter.submitData(lifecycle, dataSudahTransform)
             } else {
-                showError(getString(R.string.episode_tidak_ditemukan), requireContext())
+                binding.tvEpisodeKosong.visibility = View.VISIBLE
             }
         }
     }

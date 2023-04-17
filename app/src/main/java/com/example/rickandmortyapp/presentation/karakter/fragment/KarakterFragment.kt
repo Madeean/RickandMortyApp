@@ -116,7 +116,7 @@ class KarakterFragment : Fragment() {
                 val dataSudahDiTransform = KarakterItemModelRoom.transforms(data)
                 adapter.submitData(lifecycle, dataSudahDiTransform)
             } else {
-                showError(getString(R.string.karakter_tidak_ditemukan), requireContext())
+                binding.tvKarakterKosong.visibility = View.VISIBLE
             }
         }
     }

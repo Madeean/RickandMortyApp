@@ -1,5 +1,6 @@
 package com.example.rickandmortyapp.presentation
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -65,6 +66,12 @@ object PresentationUtils {
     fun showError(error: String?,context:Context) {
         setupDialogError(context, error ?: "").setPositiveButton(context.getString(R.string.ok)) { dialog, _ ->
             dialog.dismiss()
+        }.show()
+    }
+    fun showErrorFavorite(error: String?,context:Context,activity: Activity) {
+        setupDialogError(context, error ?: "").setPositiveButton("Back") { dialog, _ ->
+            dialog.dismiss()
+            activity.finish()
         }.show()
     }
 

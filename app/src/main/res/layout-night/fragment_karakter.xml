@@ -13,6 +13,21 @@
         tools:context=".presentation.karakter.fragment.KarakterFragment">
 
 
+        <TextView
+            android:id="@+id/tv_karakter_kosong"
+            android:visibility="gone"
+            android:translationZ="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/darkmode_biru_sangat_muda"
+            android:text="@string/karakter_tidak_ditemukan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <include
             android:id="@+id/karakter_toolbar"
             layout="@layout/my_toolbar" />

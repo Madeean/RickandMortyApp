@@ -12,6 +12,20 @@
         android:background="@color/abuabumuda"
         tools:context=".presentation.location.fragment.LocationFragment">
 
+        <TextView
+            android:id="@+id/tv_location_kosong"
+            android:visibility="gone"
+            android:translationZ="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:text="@string/location_tidak_ditemukan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <include
             android:id="@+id/location_toolbar"

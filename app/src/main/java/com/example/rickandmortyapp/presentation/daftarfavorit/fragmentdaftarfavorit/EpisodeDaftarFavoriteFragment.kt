@@ -21,6 +21,7 @@ import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
+import com.example.rickandmortyapp.presentation.PresentationUtils.showErrorFavorite
 import com.example.rickandmortyapp.presentation.daftarfavorit.activity.DaftarFavoriteActivity
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
@@ -51,6 +52,7 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         setRecyclerView()
         getDataFvorite()
     }
+
     private fun setViewModelAndApplication() {
         episodeViewModel = (requireActivity() as DaftarFavoriteActivity).getViewModelEpisode()
         application = (requireActivity() as DaftarFavoriteActivity).getApplicationForApi()
@@ -72,14 +74,16 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         setLoading(true, dialog)
         if (PresentationUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
-                episodeViewModel.getEpisodeById( dataId).collectLatest {
+                episodeViewModel.getEpisodeById(dataId).collectLatest {
                     setLoading(false, dialog)
                     adapter.submitData(it)
                 }
             }
         } else {
             setLoading(false, dialog)
-            showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
+            showErrorFavorite(
+                getString(R.string.tidak_ada_koneksi_internet), requireContext(), requireActivity()
+            )
         }
     }
 

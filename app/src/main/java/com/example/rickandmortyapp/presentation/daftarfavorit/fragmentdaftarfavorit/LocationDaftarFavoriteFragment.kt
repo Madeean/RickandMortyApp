@@ -81,7 +81,9 @@ class LocationDaftarFavoriteFragment : Fragment() {
             }
         } else {
             setLoading(false, dialog)
-            showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
+            PresentationUtils.showErrorFavorite(
+                getString(R.string.tidak_ada_koneksi_internet), requireContext(), requireActivity()
+            )
         }
     }
 

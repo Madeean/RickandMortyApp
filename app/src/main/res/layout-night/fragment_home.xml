@@ -14,6 +14,21 @@
         tools:context=".presentation.episode.fragment.HomeFragment">
 
 
+        <TextView
+            android:id="@+id/tv_episode_kosong"
+            android:visibility="gone"
+            android:translationZ="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/darkmode_biru_sangat_muda"
+            android:text="@string/episode_tidak_ditemukan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <include
             android:id="@+id/home_toolbar"
             layout="@layout/my_toolbar" />
