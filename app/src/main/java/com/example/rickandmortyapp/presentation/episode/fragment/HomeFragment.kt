@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -144,10 +145,13 @@ class HomeFragment : Fragment() {
 
     private fun setSearchEpisode() {
         binding.apply {
-            ibSearch.setOnClickListener {
-                val searchValue = etSearchHome.text
-                getAllData(searchValue.toString())
+            etSearchHome.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    getAllData(binding.etSearchHome.text.toString())
+                }
+                true
             }
+
         }
     }
 

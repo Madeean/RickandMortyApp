@@ -88,12 +88,7 @@ class KarakterFragment : Fragment() {
 
             lifecycleScope.launch {
                 karakterViewModel.getAllKarakter(
-                    application,
-                    name,
-                    statusValue,
-                    species,
-                    type,
-                    genderValue
+                    application, name, statusValue, species, type, genderValue
                 ).collectLatest {
                     setLoading(false, dialog)
                     adapter.submitData(it)
@@ -110,8 +105,7 @@ class KarakterFragment : Fragment() {
 
     private fun checkDbRoom() {
         lifecycleScope.launch {
-            val data = karakterViewModel
-                .getKarakterRoom(application)
+            val data = karakterViewModel.getKarakterRoom(application)
             if (data.isNotEmpty()) {
                 val dataSudahDiTransform = KarakterItemModelRoom.transforms(data)
                 adapter.submitData(lifecycle, dataSudahDiTransform)

@@ -86,7 +86,7 @@ class DetailLocationActivity : AppCompatActivity() {
                     }
                     Toast.makeText(
                         this@DetailLocationActivity,
-                        R.string.berhasil_menghapus_favorite,
+                        R.string.berhasil_menambah_favorite,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
