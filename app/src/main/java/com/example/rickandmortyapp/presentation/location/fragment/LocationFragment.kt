@@ -15,6 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentLocationBinding
+import com.example.rickandmortyapp.databinding.LocationBottomSheetDialogBinding
 import com.example.rickandmortyapp.domain.location.model.local.LocationItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
@@ -25,6 +26,7 @@ import com.example.rickandmortyapp.presentation.activity.MainActivity
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import com.example.rickandmortyapp.presentation.location.adapter.LocationPagingAdapter
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -51,7 +53,6 @@ class LocationFragment : Fragment() {
         setProgressBar()
         setToolbar()
         setRecyclerView()
-        setDataFilter()
         getAllData()
         setAccordion()
         setSwipeRefresh()
@@ -69,19 +70,6 @@ class LocationFragment : Fragment() {
             getAllData()
             binding.swlLocation.isRefreshing = false
         }
-    }
-
-    private fun setDataFilter() {
-        binding.apply {
-            btnGetLocationFilter.setOnClickListener {
-                val name = etSearchName.text.toString()
-                val type = etSearchType.text.toString()
-                val dimension = etSearchDimension.text.toString()
-                rlAccordionLocation.visibility = View.GONE
-                getAllData(name, type, dimension)
-            }
-        }
-
     }
 
     private fun getAllData(
@@ -167,18 +155,24 @@ class LocationFragment : Fragment() {
     private fun setAccordion() {
         binding.apply {
             btnOpenAccordion.setOnClickListener {
-                if (rlAccordionLocation.visibility == View.VISIBLE) {
-                    btnOpenAccordion.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0, R.drawable.baseline_keyboard_arrow_down_24, 0
-                    )
-                    rlAccordionLocation.visibility = View.GONE
-                } else {
-                    btnOpenAccordion.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0, R.drawable.baseline_keyboard_arrow_up_24, 0
-                    )
-                    rlAccordionLocation.visibility = View.VISIBLE
+                val bottomSheetDialog = BottomSheetDialog(requireContext())
+                val viewBottomSheet = LocationBottomSheetDialogBinding.inflate(layoutInflater)
+                viewBottomSheet.apply {
+                    btnGetLocationFilter.setOnClickListener {
+                        val name = etSearchName.text.toString()
+                        val type = etSearchType.text.toString()
+                        val dimension = etSearchDimension.text.toString()
+                        getAllData(name, type, dimension)
+                        bottomSheetDialog.dismiss()
+                    }
+                }
+                bottomSheetDialog.apply {
+                    setCancelable(true)
+                    setContentView(viewBottomSheet.root)
+                    show()
                 }
             }
+
         }
 
     }

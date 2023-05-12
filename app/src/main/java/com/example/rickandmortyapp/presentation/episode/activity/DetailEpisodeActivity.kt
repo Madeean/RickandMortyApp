@@ -99,7 +99,7 @@ class DetailEpisodeActivity : AppCompatActivity() {
                     }
                     Toast.makeText(
                         this@DetailEpisodeActivity,
-                        getString(R.string.berhasil_menghapus_favorite),
+                        getString(R.string.berhasil_menghapus_favorite, data?.name),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -108,7 +108,7 @@ class DetailEpisodeActivity : AppCompatActivity() {
                     }
                     Toast.makeText(
                         this@DetailEpisodeActivity,
-                        getString(R.string.berhasil_menambah_favorite),
+                        getString(R.string.berhasil_menambah_favorite, data?.name),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

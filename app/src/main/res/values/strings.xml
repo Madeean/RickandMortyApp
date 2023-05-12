@@ -3,7 +3,7 @@
     <string name="home">Home</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="karakter">Karakter</string>
+    <string name="karakter">Character</string>
     <string name="location">Location</string>
     <string name="setting">Setting</string>
     <string name="back_button">Back Button</string>
@@ -13,16 +13,16 @@
     <string name="choose_status">Choose Status</string>
     <string name="search_species">Search Species</string>
     <string name="search_type">Search Type</string>
-    <string name="cari_karakter">Cari Karakter</string>
+    <string name="cari_karakter">Search character</string>
     <string name="indomie_goreng">Indomie Goreng</string>
-    <string name="judul">Judul</string>
+    <string name="judul">Title</string>
     <string name="detail">Detail</string>
-    <string name="daftar_favorit">Daftar Favorit</string>
+    <string name="daftar_favorit">Favorite list</string>
     <string name="open_filter">Open Filter</string>
     <string name="search_name_location">Search name location</string>
     <string name="search_type_location">Search type location</string>
     <string name="search_dimension_location">Search dimension location</string>
-    <string name="cari_location">Cari location</string>
+    <string name="cari_location">Search location</string>
     <string name="search_button">Search Button</string>
     <string name="search_episode">Search Episode</string>
     <string name="logo">Logo</string>
@@ -48,22 +48,23 @@
     <string name="episode">Episode</string>
     <string name="air_date">Air Date</string>
     <string name="december_2_2013">December 2, 2013</string>
-    <string name="episode_tidak_ditemukan">Episode tidak ditemukan</string>
-    <string name="tidak_ada_koneksi_internet">Tidak ada koneksi internet</string>
+    <string name="episode_tidak_ditemukan">Episode not found</string>
+    <string name="tidak_ada_koneksi_internet">No internet connection</string>
     <string name="ok">OK</string>
-    <string name="karakter_tidak_ditemukan">Karakter tidak ditemukan</string>
-    <string name="lokasi_tidak_ditemukan">Location tidak ditemukan</string>
-    <string name="berhasil_menghapus_favorite">Berhasil menghapus favorite</string>
-    <string name="berhasil_menambah_favorite">Berhasil menambah favorite</string>
+    <string name="karakter_tidak_ditemukan">Character not found</string>
+    <string name="lokasi_tidak_ditemukan">Location not found</string>
+    <string name="berhasil_menghapus_favorite">Success delete favorite %s</string>
+    <string name="berhasil_menambah_favorite">Success add favorite %s</string>
     <string name="detail_episode">Detail Episode</string>
     <string name="unknown">Unknown</string>
-    <string name="detail_karakter">Detail Karakter</string>
-    <string name="location_tidak_ditemukan">Location tidak ditemukan</string>
+    <string name="detail_karakter">Detail character</string>
+    <string name="location_tidak_ditemukan">Location not found</string>
     <string name="detail_location">Detail Location</string>
     <string name="daftar_favorite">Daftar Favorite</string>
-    <string name="tentang_aplikasi_ini">Tentang aplikasi ini</string>
+    <string name="tentang_aplikasi_ini">About this application</string>
     <string name="penjelasan_rick_and_morty">Rick and Morty merupakan sebuah serial animasi yang bercerita tentang pertualangan seorang ilmuan genius benama Rick yang membawa cucu pemalunya bernama Morty dalam petualangan sangat berbahaya menjelajahi alam semesta.</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="image_close">Image Close</string>
 
     <string-array name="gender">
         <item>all</item>

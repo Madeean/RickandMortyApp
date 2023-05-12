@@ -252,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_location_tag"
                     android:layout_alignParentEnd="true"
-                    android:background="@color/darkmode_biru_muda"
+                    android:background="@drawable/btn_18_blue"
                     android:text="@string/detail"
                     android:textColor="@color/darkmode_biru_sangat_muda" />
             </RelativeLayout>
@@ -296,7 +296,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_origin_tag"
                     android:layout_alignParentEnd="true"
-                    android:background="@color/darkmode_biru_muda"
+                    android:background="@drawable/btn_18_blue"
                     android:text="@string/detail"
                     android:textColor="@color/darkmode_biru_sangat_muda" />
             </RelativeLayout>

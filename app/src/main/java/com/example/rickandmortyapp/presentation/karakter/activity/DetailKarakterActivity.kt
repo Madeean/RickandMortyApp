@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -98,7 +99,7 @@ class DetailKarakterActivity : AppCompatActivity() {
                     }
                     Toast.makeText(
                         this@DetailKarakterActivity,
-                        getString(R.string.berhasil_menghapus_favorite),
+                        getString(R.string.berhasil_menghapus_favorite,data?.name),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -107,7 +108,7 @@ class DetailKarakterActivity : AppCompatActivity() {
                     }
                     Toast.makeText(
                         this@DetailKarakterActivity,
-                        getString(R.string.berhasil_menambah_favorite),
+                        getString(R.string.berhasil_menambah_favorite,data?.name),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -184,9 +185,19 @@ class DetailKarakterActivity : AppCompatActivity() {
 
         if (data?.origin?.url?.isBlank() == true) {
             binding.btnDetailOrigin.isEnabled = false
+            binding.btnDetailOrigin.setBackgroundColor(
+                ContextCompat.getColor(
+                    this, R.color.abuabutua
+                )
+            )
             idLocation = getIdFromUrl(data.location?.url ?: "")
         } else if (data?.location?.url?.isBlank() == true) {
             binding.btnDetailLocation.isEnabled = false
+            binding.btnDetailLocation.setBackgroundColor(
+                ContextCompat.getColor(
+                    this, R.color.abuabutua
+                )
+            )
             idOrigin = getIdFromUrl(data.origin?.url ?: "")
         } else {
             idLocation = getIdFromUrl(data?.location?.url ?: "")

@@ -31,6 +31,7 @@
             android:id="@+id/location_toolbar"
             layout="@layout/my_toolbar" />
 
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_open_accordion"
             android:layout_width="match_parent"
@@ -38,106 +39,15 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_18_blue"
-            android:backgroundTint="@color/darkmode_biru_tua_sedikit_muda"
-            android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
             android:paddingStart="40dp"
             android:paddingEnd="40dp"
             android:text="@string/open_filter"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textAllCaps="false"
-            android:textColor="@color/darkmode_biru_sangat_muda"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location_toolbar" />
-
-        <RelativeLayout
-            android:id="@+id/rl_accordion_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/darkmode_biru_tua_sedikit_muda"
-            android:background="@drawable/shape_14_krem"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/btn_open_accordion">
-
-            <EditText
-                android:backgroundTint="@color/darkmode_biru_muda"
-                android:id="@+id/et_search_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginVertical="8dp"
-                android:autofillHints=""
-                android:textColor="@color/darkmode_biru_sangat_muda"
-                android:background="@drawable/search_input_radius"
-                android:drawableStart="@drawable/baseline_search_24"
-                android:drawablePadding="10dp"
-                android:hint="@string/search_name_location"
-                android:inputType="textAutoCorrect"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="16dp"
-                android:textColorHint="@color/darkmode_biru_sangat_muda"
-                app:iconifiedByDefault="false" />
-
-            <EditText
-                android:backgroundTint="@color/darkmode_biru_muda"
-                android:id="@+id/et_search_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/et_search_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginVertical="8dp"
-                android:autofillHints=""
-                android:background="@drawable/search_input_radius"
-                android:drawableStart="@drawable/baseline_search_24"
-                android:drawablePadding="10dp"
-                android:textColor="@color/darkmode_biru_sangat_muda"
-                android:hint="@string/search_type_location"
-                android:inputType="textAutoCorrect"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="16dp"
-                android:textColorHint="@color/darkmode_biru_sangat_muda"
-                app:iconifiedByDefault="false" />
-
-            <EditText
-                android:textColorHint="@color/darkmode_biru_sangat_muda"
-                android:textColor="@color/darkmode_biru_sangat_muda"
-                android:backgroundTint="@color/darkmode_biru_muda"
-                android:id="@+id/et_search_dimension"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/et_search_type"
-                android:layout_centerHorizontal="true"
-                android:layout_marginVertical="8dp"
-                android:autofillHints=""
-                android:background="@drawable/search_input_radius"
-                android:drawableStart="@drawable/baseline_search_24"
-                android:drawablePadding="10dp"
-                android:hint="@string/search_dimension_location"
-                android:inputType="textAutoCorrect"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="16dp"
-                app:iconifiedByDefault="false" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_get_location_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/et_search_dimension"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/btn_18_blue"
-                android:backgroundTint="@color/biru"
-                android:drawableStart="@drawable/baseline_search_24_white"
-                android:drawablePadding="10dp"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="20dp"
-                android:text="@string/cari_location"
-                android:textAllCaps="false"
-                android:textColor="@color/darkmode_biru_sangat_muda" />
-
-        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_location"
@@ -145,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingBottom="130dp"
-            app:layout_constraintTop_toBottomOf="@id/rl_accordion_location"
+            app:layout_constraintTop_toBottomOf="@id/btn_open_accordion"
             tools:listitem="@layout/item_karakter" />
 
 

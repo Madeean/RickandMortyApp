@@ -243,6 +243,9 @@
                     android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_18_blue"
                     android:id="@+id/btn_detail_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -284,6 +287,9 @@
                     android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_18_blue"
                     android:id="@+id/btn_detail_origin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
