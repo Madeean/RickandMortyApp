@@ -1,9 +1,11 @@
 package com.example.rickandmortyapp.data.repository.di
 
 import com.example.rickandmortyapp.data.DataUtils.BASE_URL
+import com.example.rickandmortyapp.data.DataUtils.BASE_URL_TMDB
 import com.example.rickandmortyapp.data.repository.network.episode.EpisodeApiService
 import com.example.rickandmortyapp.data.repository.network.karakter.KarakterApiService
 import com.example.rickandmortyapp.data.repository.network.location.LocationApiService
+import com.example.rickandmortyapp.data.repository.network.tmbd.TmdbApiService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -30,6 +32,21 @@ class NetworkModule {
             .build()
     }
 
+    private fun tmdbRetrofitClient(): Retrofit {
+        val loggingInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_TMDB)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(client)
+            .build()
+    }
+
     @Provides
     fun getTvShowApiService(): EpisodeApiService {
         return retrofitClient().create(EpisodeApiService::class.java)
@@ -43,5 +60,10 @@ class NetworkModule {
     @Provides
     fun getLocationApiService(): LocationApiService {
         return retrofitClient().create(LocationApiService::class.java)
+    }
+
+    @Provides
+    fun getTmdbApiService(): TmdbApiService {
+        return tmdbRetrofitClient().create(TmdbApiService::class.java)
     }
 }

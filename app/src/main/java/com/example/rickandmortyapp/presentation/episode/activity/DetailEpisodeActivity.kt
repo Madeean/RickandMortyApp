@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,7 @@ import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailEpisodeBinding
 import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.tmdb.model.TmdbTvDomainModel
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.getCreated
@@ -27,6 +29,7 @@ import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakterActivity
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
+import com.example.rickandmortyapp.presentation.tmdb.TmdbViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,6 +51,10 @@ class DetailEpisodeActivity : AppCompatActivity() {
         presentationFactory
     }
 
+    private val tmdbViewModel: TmdbViewModel by viewModels {
+        presentationFactory
+    }
+
     private var idKarakter = ""
     private var dataFavorite: List<EpisodeItemFavoriteModelRoom> = ArrayList()
 
@@ -57,10 +64,32 @@ class DetailEpisodeActivity : AppCompatActivity() {
         binding = ActivityDetailEpisodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setProgressBar()
+        setObserver()
         setToolbar()
         setAdapter()
         getDataFromIntent()
         setFavorite()
+    }
+
+    private fun setObserver() {
+        setLoading(true, dialog)
+        tmdbViewModel.tmdbDetailTv.observe(this) {
+            if (it.overview.isBlank()) return@observe
+            setLoading(false, dialog)
+            setOverview(it)
+        }
+    }
+
+    private fun setOverview(it: TmdbTvDomainModel) {
+        if (it.error.isNotBlank()) {
+            binding.apply {
+                tvOverviewTag?.visibility = View.GONE
+                tvOverview?.visibility = View.GONE
+                clDescriptionDetailEpisode?.visibility = View.INVISIBLE
+            }
+            Toast.makeText(this, it.error, Toast.LENGTH_SHORT).show()
+        }
+        binding.tvOverview?.text = it.overview
     }
 
     private fun setFavorite() {
@@ -182,6 +211,8 @@ class DetailEpisodeActivity : AppCompatActivity() {
             tvCreated.text = data?.created
             tvCreated.text = getCreated(data?.created ?: "")
         }
+        val episode = getEpisode(data?.episode ?: "")
+        val season = getSeason(data?.episode ?: "")
 
         if (data?.characterList?.isNotEmpty() == true) {
             idKarakter = ""
@@ -190,7 +221,26 @@ class DetailEpisodeActivity : AppCompatActivity() {
             }
         }
 
+        getDataOverview(episode, season)
 
+    }
+
+    private fun getDataOverview(episode: Int, season: Int) {
+        tmdbViewModel.getDetailTv(episodeNumber = episode, seasonNumber = season)
+    }
+
+    private fun getSeason(data: String): Int {
+        val pattern = "(S)(\\d{2})(E)\\d+".toRegex()
+        val matchResult = pattern.find(data)
+        val result = matchResult?.groups?.get(2)?.value
+        return result?.toInt() ?: 0
+    }
+
+    private fun getEpisode(data: String): Int {
+        val pattern = "S\\d+(E)(\\d{2})".toRegex()
+        val matchResult = pattern.find(data)
+        val result = matchResult?.groups?.get(2)?.value
+        return result?.toInt() ?: 0
     }
 
 

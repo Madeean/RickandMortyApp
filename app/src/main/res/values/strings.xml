@@ -65,6 +65,7 @@
     <string name="penjelasan_rick_and_morty">Rick and Morty merupakan sebuah serial animasi yang bercerita tentang pertualangan seorang ilmuan genius benama Rick yang membawa cucu pemalunya bernama Morty dalam petualangan sangat berbahaya menjelajahi alam semesta.</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="image_close">Image Close</string>
+    <string name="overview">Overview</string>
 
     <string-array name="gender">
         <item>all</item>

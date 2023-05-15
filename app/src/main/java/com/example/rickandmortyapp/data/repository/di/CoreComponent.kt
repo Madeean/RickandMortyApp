@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.rickandmortyapp.domain.episode.EpisodeDomainRepository
 import com.example.rickandmortyapp.domain.karakter.KarakterDomainRepository
 import com.example.rickandmortyapp.domain.location.LocationDomainRepository
+import com.example.rickandmortyapp.domain.tmdb.TmdbDomainRepository
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -21,4 +22,5 @@ interface CoreComponent {
     fun provideEpisodeRepository(): EpisodeDomainRepository
     fun provideKarakterRepository(): KarakterDomainRepository
     fun provideLocationRepository(): LocationDomainRepository
+    fun provideTmdbRepository(): TmdbDomainRepository
 }
