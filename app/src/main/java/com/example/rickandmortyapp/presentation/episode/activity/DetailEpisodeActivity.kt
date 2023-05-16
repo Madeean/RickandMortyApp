@@ -30,6 +30,8 @@ import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakter
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.tmdb.TmdbViewModel
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -75,21 +77,36 @@ class DetailEpisodeActivity : AppCompatActivity() {
         setLoading(true, dialog)
         tmdbViewModel.tmdbDetailTv.observe(this) {
             if (it.overview.isBlank()) return@observe
-            setLoading(false, dialog)
             setOverview(it)
         }
+        tmdbViewModel.tmdbTrailetTv.observe(this) {
+            if (it.isEmpty())return@observe
+            binding.cvYoutubePlayerView.visibility = View.VISIBLE
+            setYoutubePlayer(it[0].key)
+        }
+
+    }
+
+    private fun setYoutubePlayer(key: String) {
+        binding.youtubePlayerView.let { lifecycle.addObserver(it) }
+        binding.youtubePlayerView.addYouTubePlayerListener(object :
+            AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                youTubePlayer.cueVideo(key, 0f)
+            }
+        })
     }
 
     private fun setOverview(it: TmdbTvDomainModel) {
         if (it.error.isNotBlank()) {
             binding.apply {
-                tvOverviewTag?.visibility = View.GONE
-                tvOverview?.visibility = View.GONE
-                clDescriptionDetailEpisode?.visibility = View.INVISIBLE
+                tvOverviewTag.visibility = View.GONE
+                tvOverview.visibility = View.GONE
+                clDescriptionDetailEpisode.visibility = View.INVISIBLE
             }
             Toast.makeText(this, it.error, Toast.LENGTH_SHORT).show()
         }
-        binding.tvOverview?.text = it.overview
+        binding.tvOverview.text = it.overview
     }
 
     private fun setFavorite() {
@@ -222,7 +239,12 @@ class DetailEpisodeActivity : AppCompatActivity() {
         }
 
         getDataOverview(episode, season)
+        getDataTrailer(episode, season)
 
+    }
+
+    private fun getDataTrailer(episode: Int, season: Int) {
+        tmdbViewModel.getTrailerTv(episodeNumber = episode, seasonNumber = season)
     }
 
     private fun getDataOverview(episode: Int, season: Int) {

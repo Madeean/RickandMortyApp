@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapp.domain.tmdb.TmdbDomainUseCase
+import com.example.rickandmortyapp.domain.tmdb.model.TmdbTrailerDomainModel
 import com.example.rickandmortyapp.domain.tmdb.model.TmdbTvDomainModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,4 +24,19 @@ class TmdbViewModel @Inject constructor(private val useCase: TmdbDomainUseCase) 
             }
         }
     }
+
+    private var _tmdbTrailetTv = MutableLiveData<List<TmdbTrailerDomainModel>>()
+    val tmdbTrailetTv: LiveData<List<TmdbTrailerDomainModel>> = _tmdbTrailetTv
+
+    fun getTrailerTv(
+        seasonNumber: Int,
+        episodeNumber: Int
+    ) {
+        viewModelScope.launch {
+            useCase.getTrailerEpisode(seasonNumber = seasonNumber, episodeNumber = episodeNumber).collect{
+                _tmdbTrailetTv.postValue(it)
+            }
+        }
+    }
+
 }
