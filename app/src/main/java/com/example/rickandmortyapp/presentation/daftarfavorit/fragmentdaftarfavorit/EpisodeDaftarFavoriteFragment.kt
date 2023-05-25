@@ -131,6 +131,7 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
+            setRecyclerView()
             getDataFvorite()
         }
     }

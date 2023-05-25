@@ -36,7 +36,7 @@ abstract class LocalModule : RoomDatabase() {
             if (INSTANCE == null) {
                 synchronized(LocalModule::class.java) {
                     INSTANCE = Room.databaseBuilder(
-                        context.applicationContext, LocalModule::class.java, "rick_and_morty_db3"
+                        context.applicationContext, LocalModule::class.java, "rick_and_morty_db4"
                     ).build()
                 }
             }
