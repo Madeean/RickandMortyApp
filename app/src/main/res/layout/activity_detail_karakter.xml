@@ -7,10 +7,10 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/abuabumuda">
+        android:background="@color/abuabumuda"
+        app:elevation="0dp">
 
         <include
             android:id="@+id/detail_karakter_toolbar"
@@ -20,9 +20,9 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -189,25 +189,6 @@
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_created_tag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_gender"
-                    android:text="@string/created"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_created"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_created_tag"
-                    android:text="@string/_2017_11_10t12_56_36_618z"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -243,15 +224,15 @@
                     android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:background="@drawable/btn_18_blue"
                     android:id="@+id/btn_detail_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_location_tag"
                     android:layout_alignParentEnd="true"
-                    android:text="@string/detail" />
+                    android:background="@drawable/btn_18_blue"
+                    android:text="@string/detail"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -287,15 +268,15 @@
                     android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:background="@drawable/btn_18_blue"
                     android:id="@+id/btn_detail_origin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_origin_tag"
                     android:layout_alignParentEnd="true"
-                    android:text="@string/detail" />
+                    android:background="@drawable/btn_18_blue"
+                    android:text="@string/detail"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <RelativeLayout

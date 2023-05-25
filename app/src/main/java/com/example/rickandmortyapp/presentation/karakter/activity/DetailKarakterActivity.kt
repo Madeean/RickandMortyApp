@@ -99,7 +99,7 @@ class DetailKarakterActivity : AppCompatActivity() {
                     }
                     Toast.makeText(
                         this@DetailKarakterActivity,
-                        getString(R.string.berhasil_menghapus_favorite,data?.name),
+                        getString(R.string.berhasil_menghapus_favorite, data?.name),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -108,7 +108,7 @@ class DetailKarakterActivity : AppCompatActivity() {
                     }
                     Toast.makeText(
                         this@DetailKarakterActivity,
-                        getString(R.string.berhasil_menambah_favorite,data?.name),
+                        getString(R.string.berhasil_menambah_favorite, data?.name),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -163,7 +163,6 @@ class DetailKarakterActivity : AppCompatActivity() {
 
     private fun setData(data: KarakterModelItemModel?) {
         binding.apply {
-            tvCreated.text = PresentationUtils.getCreated(data?.created ?: "")
             tvGender.text = data?.gender
             tvStatus.text = data?.status
             tvLocation.text = data?.location?.name
@@ -185,17 +184,27 @@ class DetailKarakterActivity : AppCompatActivity() {
 
         if (data?.origin?.url?.isBlank() == true) {
             binding.btnDetailOrigin.isEnabled = false
-            binding.btnDetailOrigin.setBackgroundColor(
+            binding.btnDetailOrigin.setTextColor(
                 ContextCompat.getColor(
-                    this, R.color.abuabutua
+                    this, R.color.black
+                )
+            )
+            binding.btnDetailOrigin.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    this, R.drawable.btn_18_gray
                 )
             )
             idLocation = getIdFromUrl(data.location?.url ?: "")
         } else if (data?.location?.url?.isBlank() == true) {
             binding.btnDetailLocation.isEnabled = false
-            binding.btnDetailLocation.setBackgroundColor(
+            binding.btnDetailLocation.setTextColor(
                 ContextCompat.getColor(
-                    this, R.color.abuabutua
+                    this, R.color.black
+                )
+            )
+            binding.btnDetailLocation.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    this, R.drawable.btn_18_gray
                 )
             )
             idOrigin = getIdFromUrl(data.origin?.url ?: "")

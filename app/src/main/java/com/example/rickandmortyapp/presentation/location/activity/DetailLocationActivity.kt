@@ -156,7 +156,6 @@ class DetailLocationActivity : AppCompatActivity() {
 
     private fun setData(data: LocationModelItemModel?) {
         binding.apply {
-            tvCreated.text = PresentationUtils.getCreated(data?.created ?: "")
             tvName.text = data?.name
             tvDimension.text = data?.dimension
             tvType.text = data?.type

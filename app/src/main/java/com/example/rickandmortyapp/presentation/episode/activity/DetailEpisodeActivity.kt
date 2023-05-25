@@ -19,7 +19,6 @@ import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavorit
 import com.example.rickandmortyapp.domain.tmdb.model.TmdbTvDomainModel
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
-import com.example.rickandmortyapp.presentation.PresentationUtils.getCreated
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
@@ -225,8 +224,6 @@ class DetailEpisodeActivity : AppCompatActivity() {
             tvEpisode.text = data?.episode
             tvName.text = data?.name
             tvAirDate.text = data?.airDate
-            tvCreated.text = data?.created
-            tvCreated.text = getCreated(data?.created ?: "")
         }
         val episode = getEpisode(data?.episode ?: "")
         val season = getSeason(data?.episode ?: "")
