@@ -71,4 +71,11 @@ class KarakterViewModel @Inject constructor(private val useCase: KarakterDomainU
             useCase.getFavoriteKarakter(application)
         }
     }
+
+    val _itemCount = MutableLiveData<Int>()
+    val itemCount: LiveData<Int> = _itemCount
+
+    fun setItemAmount(itemCount: Int) {
+        _itemCount.value = itemCount
+    }
 }

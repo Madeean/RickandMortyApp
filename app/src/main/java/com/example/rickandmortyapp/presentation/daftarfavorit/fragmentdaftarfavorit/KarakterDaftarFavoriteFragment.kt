@@ -51,7 +51,29 @@ class KarakterDaftarFavoriteFragment : Fragment() {
         setViewModelAndApplication()
         setProgressBar()
         setRecyclerView()
+        setLifeCycleOwner()
         getDataFvorite()
+        setHide()
+    }
+
+    private fun setHide() {
+        karakterViewModel.itemCount.observe(requireActivity()) {
+            if (it == 0) {
+                binding.tvKarakter.visibility = View.VISIBLE
+                binding.rvKarakter.visibility = View.GONE
+            } else {
+                binding.tvKarakter.visibility = View.GONE
+                binding.rvKarakter.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun setLifeCycleOwner() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            adapter.loadStateFlow.collect { combinedLoadStates ->
+                karakterViewModel.setItemAmount(adapter.itemCount)
+            }
+        }
     }
 
     private fun setViewModelAndApplication() {
@@ -72,20 +94,26 @@ class KarakterDaftarFavoriteFragment : Fragment() {
     }
 
     private fun getDataFromInternet() {
-        setLoading(true,dialog)
+        setLoading(true, dialog)
         if (PresentationUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
-                karakterViewModel.getKarakterById( dataId).collectLatest {
-                    setLoading(false,dialog)
+                karakterViewModel.getKarakterById(dataId).collectLatest {
+                    setLoading(false, dialog)
                     adapter.submitData(it)
-
+                    setItemCount()
                 }
             }
         } else {
-            setLoading(false,dialog)
+            setLoading(false, dialog)
             PresentationUtils.showErrorFavorite(
                 getString(R.string.tidak_ada_koneksi_internet), requireContext(), requireActivity()
             )
+        }
+    }
+
+    private fun setItemCount() {
+        adapter.addLoadStateListener { combinedLoadStates ->
+            karakterViewModel.setItemAmount(adapter.itemCount)
         }
     }
 
@@ -99,20 +127,22 @@ class KarakterDaftarFavoriteFragment : Fragment() {
         }
         adapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) {
-                setLoading(true,dialog)
+                setLoading(true, dialog)
             } else {
-                setLoading(false,dialog)
+                setLoading(false, dialog)
             }
             if (loadState.refresh is LoadState.Error) {
-                setLoading(false,dialog)
+                setLoading(false, dialog)
                 if (!PresentationUtils.isNetworkAvailable(requireContext())) {
-                    showError(getString(R.string.tidak_ada_koneksi_internet),requireContext())
+                    showError(getString(R.string.tidak_ada_koneksi_internet), requireContext())
                 }
             }
 
             if (loadState.append is LoadState.Error) {
-                setLoading(false,dialog)
-                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError(getString(R.string.tidak_ada_koneksi_internet),requireContext())
+                setLoading(false, dialog)
+                if (!PresentationUtils.isNetworkAvailable(requireContext())) showError(
+                    getString(R.string.tidak_ada_koneksi_internet), requireContext()
+                )
             }
 
         }
@@ -131,7 +161,9 @@ class KarakterDaftarFavoriteFragment : Fragment() {
     ) { result ->
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
             setRecyclerView()
+            setLifeCycleOwner()
             getDataFvorite()
+            setHide()
         }
     }
 
@@ -139,8 +171,6 @@ class KarakterDaftarFavoriteFragment : Fragment() {
         super.onDestroyView()
         dialog.dismiss()
     }
-
-
 
 
 }

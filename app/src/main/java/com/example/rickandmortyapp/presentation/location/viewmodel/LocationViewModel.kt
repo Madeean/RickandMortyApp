@@ -87,4 +87,10 @@ class LocationViewModel @Inject constructor(private val useCase: LocationDomainU
             useCase.getFavoriteLocation(application)
         }
     }
+
+    val _itemCount = MutableLiveData<Int>()
+    val itemCount: LiveData<Int> = _itemCount
+    fun setItemAmount(itemCount: Int) {
+        _itemCount.value = itemCount
+    }
 }

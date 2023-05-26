@@ -48,7 +48,29 @@ class LocationDaftarFavoriteFragment : Fragment() {
         setViewModelAndApplication()
         setProgressBar()
         setRecyclerView()
+        setLifeCycleOwner()
         getDataFvorite()
+        setHide()
+    }
+
+    private fun setHide() {
+        locationViewModel.itemCount.observe(requireActivity()) {
+            if (it == 0) {
+                binding.tvLocation.visibility = View.VISIBLE
+                binding.rvLocation.visibility = View.GONE
+            } else {
+                binding.tvLocation.visibility = View.GONE
+                binding.rvLocation.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun setLifeCycleOwner() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            adapter.loadStateFlow.collect { combinedLoadStates ->
+                locationViewModel.setItemAmount(adapter.itemCount)
+            }
+        }
     }
 
     private fun setViewModelAndApplication() {
@@ -76,7 +98,7 @@ class LocationDaftarFavoriteFragment : Fragment() {
                 locationViewModel.getMultipleLocation(dataId).collectLatest {
                     setLoading(false, dialog)
                     adapter.submitData(it)
-
+                    setItemCount()
                 }
             }
         } else {
@@ -84,6 +106,12 @@ class LocationDaftarFavoriteFragment : Fragment() {
             PresentationUtils.showErrorFavorite(
                 getString(R.string.tidak_ada_koneksi_internet), requireContext(), requireActivity()
             )
+        }
+    }
+
+    private fun setItemCount() {
+        adapter.addLoadStateListener { combinedLoadStates ->
+            locationViewModel.setItemAmount(adapter.itemCount)
         }
     }
 
@@ -131,7 +159,9 @@ class LocationDaftarFavoriteFragment : Fragment() {
     ) { result ->
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
             setRecyclerView()
+            setLifeCycleOwner()
             getDataFvorite()
+            setHide()
         }
     }
 

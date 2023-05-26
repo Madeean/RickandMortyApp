@@ -7,11 +7,25 @@
     android:background="@color/darkmode_biru_tua"
     tools:context=".presentation.daftarfavorit.fragmentdaftarfavorit.LocationDaftarFavoriteFragment">
 
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location_tidak_ditemukan"
+        android:textColor="@color/darkmode_biru_sangat_muda"
+        android:textSize="32sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="130dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -50,7 +50,29 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
         setViewModelAndApplication()
         setProgressBar()
         setRecyclerView()
+        setLifeCycleOwner()
         getDataFvorite()
+        setHide()
+    }
+
+    private fun setLifeCycleOwner() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            adapter.loadStateFlow.collect { combinedLoadStates ->
+                episodeViewModel.setItemAmount(adapter.itemCount)
+            }
+        }
+    }
+
+    private fun setHide() {
+        episodeViewModel.itemCount.observe(requireActivity()) {
+            if (it == 0) {
+                binding.tvEpisode.visibility = View.VISIBLE
+                binding.rvEpisode.visibility = View.GONE
+            } else {
+                binding.tvEpisode.visibility = View.GONE
+                binding.rvEpisode.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun setViewModelAndApplication() {
@@ -77,6 +99,7 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
                 episodeViewModel.getEpisodeById(dataId).collectLatest {
                     setLoading(false, dialog)
                     adapter.submitData(it)
+                    setItemCount()
                 }
             }
         } else {
@@ -84,6 +107,12 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
             showErrorFavorite(
                 getString(R.string.tidak_ada_koneksi_internet), requireContext(), requireActivity()
             )
+        }
+    }
+
+    private fun setItemCount() {
+        adapter.addLoadStateListener { combinedLoadStates ->
+            episodeViewModel.setItemAmount(adapter.itemCount)
         }
     }
 
@@ -132,7 +161,9 @@ class EpisodeDaftarFavoriteFragment : Fragment() {
     ) { result ->
         if (result.resultCode == PresentationUtils.CODE_RESULT) {
             setRecyclerView()
+            setLifeCycleOwner()
             getDataFvorite()
+            setHide()
         }
     }
 

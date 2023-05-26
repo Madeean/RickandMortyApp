@@ -7,7 +7,21 @@
     android:background="@color/darkmode_biru_tua"
     tools:context=".presentation.daftarfavorit.fragmentdaftarfavorit.EpisodeDaftarFavoriteFragment">
 
+    <TextView
+        android:id="@+id/tv_episode"
+        android:visibility="visible"
+        android:textColor="@color/darkmode_biru_sangat_muda"
+        android:textSize="32sp"
+        android:text="@string/episode_tidak_ditemukan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/rv_episode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
