@@ -1,6 +1,8 @@
 package com.example.rickandmortyapp.presentation.activity
 
+import android.app.AlertDialog
 import android.app.Application
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -8,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityMainBinding
+import com.example.rickandmortyapp.databinding.TentangAplikasiIniDialogBinding
 import com.example.rickandmortyapp.presentation.episode.fragment.HomeFragment
 import com.example.rickandmortyapp.presentation.karakter.fragment.KarakterFragment
 import com.example.rickandmortyapp.presentation.location.fragment.LocationFragment
@@ -20,6 +23,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var tentangAplikasiDialog: Dialog
 
     @Inject
     lateinit var presentationFactory: PresentationFactory
@@ -41,11 +45,26 @@ class MainActivity : AppCompatActivity() {
         (application as MyApplication).appComponent.mainActivityInject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        setDialogTentangAplikasi()
         setContentView(binding.root)
         setViewPager()
         setBottomNavigationView()
     }
 
+    private fun setDialogTentangAplikasi() {
+        val builder = AlertDialog.Builder(this)
+        val tentangAplikasiIniBinding = TentangAplikasiIniDialogBinding.inflate(layoutInflater)
+        val view = tentangAplikasiIniBinding.root
+        tentangAplikasiIniBinding.ivClose.setOnClickListener {
+            tentangAplikasiDialog.dismiss()
+        }
+        builder.setView(view)
+        tentangAplikasiDialog = builder.create()
+        tentangAplikasiDialog.run {
+            setCancelable(false)
+            show()
+        }
+    }
 
     fun getViewModelEpisode(): EpisodeViewModel {
         return episodeViewModel

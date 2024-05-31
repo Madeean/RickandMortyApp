@@ -1,6 +1,5 @@
 package com.example.rickandmortyapp.presentation.episode.fragment
 
-import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
 import android.content.Intent
@@ -17,7 +16,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentHomeBinding
-import com.example.rickandmortyapp.databinding.TentangAplikasiIniDialogBinding
 import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
@@ -38,7 +36,6 @@ class HomeFragment : Fragment() {
     private lateinit var application: Application
     private lateinit var adapter: EpisodePagingAdapter
     private lateinit var dialog: Dialog
-    private lateinit var tentangAplikasiDialog: Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -49,7 +46,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setDialogTentangAplikasi()
         setViewModelAndApplication()
         setProgressBar()
         setToolbar()
@@ -57,19 +53,6 @@ class HomeFragment : Fragment() {
         getAllData()
         setSearchEpisode()
         setSwipeRefresh()
-    }
-
-    private fun setDialogTentangAplikasi() {
-        val builder = AlertDialog.Builder(requireContext())
-        val tentangAplikasiIniBinding = TentangAplikasiIniDialogBinding.inflate(layoutInflater)
-        val view = tentangAplikasiIniBinding.root
-        tentangAplikasiIniBinding.ivClose.setOnClickListener {
-            tentangAplikasiDialog.dismiss()
-        }
-        builder.setView(view)
-        tentangAplikasiDialog = builder.create()
-        tentangAplikasiDialog.setCancelable(false)
-        tentangAplikasiDialog.show()
     }
 
     private fun setViewModelAndApplication() {
