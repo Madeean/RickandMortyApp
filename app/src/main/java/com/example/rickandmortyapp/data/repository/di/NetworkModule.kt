@@ -8,62 +8,70 @@ import com.example.rickandmortyapp.data.repository.network.location.LocationApiS
 import com.example.rickandmortyapp.data.repository.network.tmbd.TmdbApiService
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 
 @Module
-class NetworkModule {
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
 
-    private fun retrofitClient(): Retrofit {
+    @Provides
+    fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        val client = OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .build()
+    }
 
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(client)
+            .client(okHttpClient)
             .build()
     }
 
-    private fun tmdbRetrofitClient(): Retrofit {
-        val loggingInterceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        val client = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
-
+    @Provides
+    @TmdbRetrofit // Tambahkan anotasi kualifier di sini
+    fun provideTmdbRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL_TMDB)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(client)
+            .client(okHttpClient)
             .build()
     }
 
     @Provides
-    fun getTvShowApiService(): EpisodeApiService {
-        return retrofitClient().create(EpisodeApiService::class.java)
+    fun provideTvShowApiService(retrofit: Retrofit): EpisodeApiService {
+        return retrofit.create(EpisodeApiService::class.java)
     }
 
     @Provides
-    fun getKarakterApiService(): KarakterApiService {
-        return retrofitClient().create(KarakterApiService::class.java)
+    fun provideKarakterApiService(retrofit: Retrofit): KarakterApiService {
+        return retrofit.create(KarakterApiService::class.java)
     }
 
     @Provides
-    fun getLocationApiService(): LocationApiService {
-        return retrofitClient().create(LocationApiService::class.java)
+    fun provideLocationApiService(retrofit: Retrofit): LocationApiService {
+        return retrofit.create(LocationApiService::class.java)
     }
 
     @Provides
-    fun getTmdbApiService(): TmdbApiService {
-        return tmdbRetrofitClient().create(TmdbApiService::class.java)
+    fun provideTmdbApiService(@TmdbRetrofit retrofit: Retrofit): TmdbApiService {
+        return retrofit.create(TmdbApiService::class.java)
     }
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TmdbRetrofit

@@ -10,15 +10,22 @@ import com.example.rickandmortyapp.domain.location.LocationDomainRepository
 import com.example.rickandmortyapp.domain.tmdb.TmdbDomainRepository
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-@Module(includes = [NetworkModule::class,LocalModule::class])
+@Module
+@InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+
     @Binds
-    abstract fun provideEpisodeRepository(repositoryImpl: EpisodeDomainRepositoryImpl): EpisodeDomainRepository
+    abstract fun bindEpisodeRepository(repositoryImpl: EpisodeDomainRepositoryImpl): EpisodeDomainRepository
+
     @Binds
-    abstract fun provideKarakterRepository(repositoryImpl: KarakterDomainRepositoryImpl): KarakterDomainRepository
+    abstract fun bindKarakterRepository(repositoryImpl: KarakterDomainRepositoryImpl): KarakterDomainRepository
+
     @Binds
-    abstract fun provideLocationRepository(repositoryImpl: LocationDomainRepositoryImpl): LocationDomainRepository
+    abstract fun bindLocationRepository(repositoryImpl: LocationDomainRepositoryImpl): LocationDomainRepository
+
     @Binds
-    abstract fun provideTmdbRepository(repositoryImpl: TmdbDomainRepositoryImpl): TmdbDomainRepository
+    abstract fun bindTmdbRepository(repositoryImpl: TmdbDomainRepositoryImpl): TmdbDomainRepository
 }

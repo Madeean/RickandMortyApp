@@ -3,18 +3,17 @@ package com.example.rickandmortyapp.presentation.location.activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailLocationBinding
-import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
 import com.example.rickandmortyapp.domain.location.model.local.LocationItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -25,10 +24,12 @@ import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakter
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailLocationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailLocationBinding
     private var data: LocationModelItemModel? = null
@@ -50,7 +51,6 @@ class DetailLocationActivity : AppCompatActivity() {
     private var dataFavorite: List<LocationItemFavoriteModelRoom> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.detailLocationActivity(this)
         binding = ActivityDetailLocationBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

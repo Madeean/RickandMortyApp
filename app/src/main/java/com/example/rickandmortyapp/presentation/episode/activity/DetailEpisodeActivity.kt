@@ -3,19 +3,18 @@ package com.example.rickandmortyapp.presentation.episode.activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailEpisodeBinding
-import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.tmdb.model.TmdbTvDomainModel
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
@@ -31,10 +30,12 @@ import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewM
 import com.example.rickandmortyapp.presentation.tmdb.TmdbViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailEpisodeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailEpisodeBinding
     private var data: EpisodeModelItemModel? = null
@@ -60,7 +61,6 @@ class DetailEpisodeActivity : AppCompatActivity() {
     private var dataFavorite: List<EpisodeItemFavoriteModelRoom> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.detailEpisodeActivity(this)
         super.onCreate(savedInstanceState)
         binding = ActivityDetailEpisodeBinding.inflate(layoutInflater)
         setContentView(binding.root)

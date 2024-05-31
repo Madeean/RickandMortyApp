@@ -1,10 +1,9 @@
 package com.example.rickandmortyapp.presentation.daftarfavorit.activity
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.example.rickandmortyapp.MyApplication
+import androidx.appcompat.app.AppCompatActivity
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDaftarFavoriteBinding
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
@@ -12,8 +11,10 @@ import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DaftarFavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDaftarFavoriteBinding
     private lateinit var tabs: List<String>
@@ -34,7 +35,6 @@ class DaftarFavoriteActivity : AppCompatActivity() {
         presentationFactory
     }
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.daftarFavoriteActivity(this)
         binding = ActivityDaftarFavoriteBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

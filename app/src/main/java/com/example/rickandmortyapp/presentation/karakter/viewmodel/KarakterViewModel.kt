@@ -10,11 +10,12 @@ import com.example.rickandmortyapp.domain.karakter.KarakterDomainUseCase
 import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemModelRoom
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
+@HiltViewModel
 class KarakterViewModel @Inject constructor(private val useCase: KarakterDomainUseCase) : ViewModel() {
 
     private var _karakter = MutableLiveData<PagingData<KarakterModelItemModel>>()

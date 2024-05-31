@@ -3,24 +3,25 @@ package com.example.rickandmortyapp.presentation.activity
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityMainBinding
 import com.example.rickandmortyapp.databinding.TentangAplikasiIniDialogBinding
 import com.example.rickandmortyapp.presentation.episode.fragment.HomeFragment
-import com.example.rickandmortyapp.presentation.karakter.fragment.KarakterFragment
-import com.example.rickandmortyapp.presentation.location.fragment.LocationFragment
-import com.example.rickandmortyapp.presentation.setting.SettingFragment
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.factory.PresentationFactory
+import com.example.rickandmortyapp.presentation.karakter.fragment.KarakterFragment
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
+import com.example.rickandmortyapp.presentation.location.fragment.LocationFragment
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
+import com.example.rickandmortyapp.presentation.setting.SettingFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tentangAplikasiDialog: Dialog
@@ -42,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.mainActivityInject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setDialogTentangAplikasi()

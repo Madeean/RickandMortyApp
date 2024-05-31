@@ -10,11 +10,12 @@ import com.example.rickandmortyapp.domain.episode.EpisodeDomainUseCase
 import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
 import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemModelRoom
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
+@HiltViewModel
 class EpisodeViewModel @Inject constructor(private val useCase: EpisodeDomainUseCase) :
     ViewModel() {
     private var _episode = MutableLiveData<PagingData<EpisodeModelItemModel>>()

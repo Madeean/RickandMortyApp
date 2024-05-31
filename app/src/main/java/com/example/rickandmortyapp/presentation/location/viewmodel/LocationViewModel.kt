@@ -10,12 +10,13 @@ import com.example.rickandmortyapp.domain.location.LocationDomainUseCase
 import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
 import com.example.rickandmortyapp.domain.location.model.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.domain.location.model.local.LocationItemModelRoom
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
+@HiltViewModel
 class LocationViewModel @Inject constructor(private val useCase: LocationDomainUseCase) : ViewModel(){
     private var _location = MutableLiveData<PagingData<LocationModelItemModel>>()
     val location: LiveData<PagingData<LocationModelItemModel>> = _location

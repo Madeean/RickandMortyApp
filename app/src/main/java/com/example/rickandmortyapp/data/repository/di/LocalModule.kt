@@ -15,32 +15,40 @@ import com.example.rickandmortyapp.data.repository.local.location.LocationFavori
 import com.example.rickandmortyapp.data.repository.local.location.LocationModelRoom
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
+object LocalModule {
+
+    @Provides
+    @Singleton
+    fun getDatabase(@ApplicationContext context: Context): LocalModuleDatabase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            LocalModuleDatabase::class.java,
+            "rick_and_morty_db4"
+        ).build()
+    }
+
+}
+
 @Database(
-    entities = [EpisodeModelRoom::class, KarakterModelRoom::class, LocationModelRoom::class, EpisodeFavoriteModelRoom::class, KarakterFavoriteModelRoom::class, LocationFavoriteModelRoom::class],
+    entities = [
+        EpisodeModelRoom::class,
+        KarakterModelRoom::class,
+        LocationModelRoom::class,
+        EpisodeFavoriteModelRoom::class,
+        KarakterFavoriteModelRoom::class,
+        LocationFavoriteModelRoom::class
+    ],
     version = 1
 )
-abstract class LocalModule : RoomDatabase() {
+abstract class LocalModuleDatabase : RoomDatabase() {
     abstract fun episodeDao(): EpisodeDao
     abstract fun karakterDao(): KarakterDao
     abstract fun locationDao(): LocationDao
-
-    companion object {
-        @Volatile
-        private var INSTANCE: LocalModule? = null
-
-        @Provides
-        @JvmStatic
-        fun getDatabase(context: Context): LocalModule {
-            if (INSTANCE == null) {
-                synchronized(LocalModule::class.java) {
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext, LocalModule::class.java, "rick_and_morty_db4"
-                    ).build()
-                }
-            }
-            return INSTANCE as LocalModule
-        }
-    }
 }

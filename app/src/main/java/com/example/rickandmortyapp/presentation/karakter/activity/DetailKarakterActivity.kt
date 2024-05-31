@@ -3,36 +3,37 @@ package com.example.rickandmortyapp.presentation.karakter.activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.rickandmortyapp.MyApplication
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailKarakterBinding
-import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemFavoriteModelRoom
+import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
 import com.example.rickandmortyapp.presentation.PresentationUtils.showError
-import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
+import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailKarakterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailKarakterBinding
     private var data: KarakterModelItemModel? = null
@@ -56,7 +57,6 @@ class DetailKarakterActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.detailKarakterActivity(this)
         binding = ActivityDetailKarakterBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

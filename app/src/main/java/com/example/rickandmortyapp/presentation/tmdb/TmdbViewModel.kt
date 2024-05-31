@@ -7,9 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapp.domain.tmdb.TmdbDomainUseCase
 import com.example.rickandmortyapp.domain.tmdb.model.TmdbTrailerDomainModel
 import com.example.rickandmortyapp.domain.tmdb.model.TmdbTvDomainModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+@HiltViewModel
 class TmdbViewModel @Inject constructor(private val useCase: TmdbDomainUseCase) : ViewModel() {
     private var _tmdbDetailTv = MutableLiveData<TmdbTvDomainModel>()
     val tmdbDetailTv: LiveData<TmdbTvDomainModel> = _tmdbDetailTv
