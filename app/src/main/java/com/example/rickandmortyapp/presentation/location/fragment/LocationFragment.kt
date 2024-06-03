@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentLocationBinding
 import com.example.rickandmortyapp.databinding.LocationBottomSheetDialogBinding
-import com.example.rickandmortyapp.domain.location.model.local.LocationItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -27,6 +26,7 @@ import com.example.rickandmortyapp.presentation.location.activity.DetailLocation
 import com.example.rickandmortyapp.presentation.location.adapter.LocationPagingAdapter
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.madeean.domain.location.model.local.LocationItemModelRoom
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

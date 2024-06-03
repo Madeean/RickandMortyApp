@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentKarakterBinding
 import com.example.rickandmortyapp.databinding.KarakterBottomSheetDialogBinding
-import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -28,6 +27,7 @@ import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakter
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.madeean.domain.karakter.model.local.KarakterItemModelRoom
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

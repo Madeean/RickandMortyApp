@@ -2,14 +2,14 @@ package com.example.rickandmortyapp.presentation.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.rickandmortyapp.domain.episode.EpisodeDomainUseCase
-import com.example.rickandmortyapp.domain.karakter.KarakterDomainUseCase
-import com.example.rickandmortyapp.domain.location.LocationDomainUseCase
-import com.example.rickandmortyapp.domain.tmdb.TmdbDomainUseCase
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
 import com.example.rickandmortyapp.presentation.tmdb.TmdbViewModel
+import com.madeean.domain.episode.EpisodeDomainUseCase
+import com.madeean.domain.karakter.KarakterDomainUseCase
+import com.madeean.domain.location.LocationDomainUseCase
+import com.madeean.domain.tmdb.TmdbDomainUseCase
 import javax.inject.Inject
 
 class PresentationFactory @Inject constructor(

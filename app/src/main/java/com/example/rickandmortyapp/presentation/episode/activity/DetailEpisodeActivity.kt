@@ -13,9 +13,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailEpisodeBinding
-import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
-import com.example.rickandmortyapp.domain.tmdb.model.TmdbTvDomainModel
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
@@ -28,6 +25,9 @@ import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakter
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.tmdb.TmdbViewModel
+import com.madeean.domain.episode.model.local.EpisodeItemFavoriteModelRoom
+import com.madeean.domain.episode.model.network.EpisodeModelItemModel
+import com.madeean.domain.tmdb.model.TmdbTvDomainModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -230,7 +230,7 @@ class DetailEpisodeActivity : AppCompatActivity() {
 
         if (data?.characterList?.isNotEmpty() == true) {
             idKarakter = ""
-            data.characterList.forEach {
+            data.characterList?.forEach {
                 idKarakter += "${getIdFromUrl(it)},"
             }
         }

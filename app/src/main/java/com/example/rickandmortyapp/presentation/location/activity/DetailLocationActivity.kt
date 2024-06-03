@@ -12,8 +12,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailLocationBinding
-import com.example.rickandmortyapp.domain.location.model.local.LocationItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -24,6 +22,8 @@ import com.example.rickandmortyapp.presentation.karakter.activity.DetailKarakter
 import com.example.rickandmortyapp.presentation.karakter.adapter.KarakterPagingAdapter
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
+import com.madeean.domain.location.model.local.LocationItemFavoriteModelRoom
+import com.madeean.domain.location.model.network.LocationModelItemModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -163,7 +163,7 @@ class DetailLocationActivity : AppCompatActivity() {
 
         if (data?.residents?.isNotEmpty() == true) {
             idKarakter = ""
-            data.residents.forEach {
+            data.residents?.forEach {
                 idKarakter += "${PresentationUtils.getIdFromUrl(it)},"
             }
             getDataFromInternet()

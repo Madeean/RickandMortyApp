@@ -15,7 +15,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentLocationDaftarFavoriteBinding
-import com.example.rickandmortyapp.domain.location.model.local.LocationItemFavoriteModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
 import com.example.rickandmortyapp.presentation.PresentationUtils.setLoading
@@ -24,6 +23,7 @@ import com.example.rickandmortyapp.presentation.daftarfavorit.activity.DaftarFav
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
 import com.example.rickandmortyapp.presentation.location.adapter.LocationPagingAdapter
 import com.example.rickandmortyapp.presentation.location.viewmodel.LocationViewModel
+import com.madeean.domain.location.model.local.LocationItemFavoriteModelRoom
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

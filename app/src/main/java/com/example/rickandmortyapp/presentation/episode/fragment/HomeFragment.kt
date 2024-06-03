@@ -16,7 +16,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.FragmentHomeBinding
-import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemModelRoom
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.INTENT_DATA
 import com.example.rickandmortyapp.presentation.PresentationUtils.loadingAlertDialog
@@ -26,6 +25,7 @@ import com.example.rickandmortyapp.presentation.activity.MainActivity
 import com.example.rickandmortyapp.presentation.episode.activity.DetailEpisodeActivity
 import com.example.rickandmortyapp.presentation.episode.adapter.EpisodePagingAdapter
 import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewModel
+import com.madeean.domain.episode.model.local.EpisodeItemModelRoom
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

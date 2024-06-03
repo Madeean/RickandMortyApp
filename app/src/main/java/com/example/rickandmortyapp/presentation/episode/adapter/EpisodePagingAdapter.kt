@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.databinding.ItemEpisodeBinding
-import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
+import com.madeean.domain.episode.model.network.EpisodeModelItemModel
 
 class EpisodePagingAdapter : PagingDataAdapter<EpisodeModelItemModel, EpisodePagingAdapter.EpisodeViewHolder>(
     DiffCallback

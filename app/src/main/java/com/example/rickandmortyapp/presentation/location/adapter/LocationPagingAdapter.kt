@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapp.databinding.ItemEpisodeBinding
-import com.example.rickandmortyapp.domain.location.model.network.LocationModelItemModel
+import com.madeean.domain.location.model.network.LocationModelItemModel
 
 class LocationPagingAdapter : PagingDataAdapter<LocationModelItemModel, LocationPagingAdapter.LocationViewHolder>(
     DiffCallback

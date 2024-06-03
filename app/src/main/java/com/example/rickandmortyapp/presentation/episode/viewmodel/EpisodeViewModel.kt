@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.example.rickandmortyapp.domain.episode.EpisodeDomainUseCase
-import com.example.rickandmortyapp.domain.episode.model.network.EpisodeModelItemModel
-import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.episode.model.local.EpisodeItemModelRoom
+import com.madeean.domain.episode.EpisodeDomainUseCase
+import com.madeean.domain.episode.model.local.EpisodeItemFavoriteModelRoom
+import com.madeean.domain.episode.model.local.EpisodeItemModelRoom
+import com.madeean.domain.episode.model.network.EpisodeModelItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

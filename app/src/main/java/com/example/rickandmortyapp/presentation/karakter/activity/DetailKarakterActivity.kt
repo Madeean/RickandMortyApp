@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.rickandmortyapp.R
 import com.example.rickandmortyapp.databinding.ActivityDetailKarakterBinding
-import com.example.rickandmortyapp.domain.karakter.model.local.KarakterItemFavoriteModelRoom
-import com.example.rickandmortyapp.domain.karakter.model.network.KarakterModelItemModel
 import com.example.rickandmortyapp.presentation.PresentationUtils
 import com.example.rickandmortyapp.presentation.PresentationUtils.CODE_RESULT
 import com.example.rickandmortyapp.presentation.PresentationUtils.getIdFromUrl
@@ -28,6 +26,8 @@ import com.example.rickandmortyapp.presentation.episode.viewmodel.EpisodeViewMod
 import com.example.rickandmortyapp.presentation.factory.PresentationFactory
 import com.example.rickandmortyapp.presentation.karakter.viewmodel.KarakterViewModel
 import com.example.rickandmortyapp.presentation.location.activity.DetailLocationActivity
+import com.madeean.domain.karakter.model.local.KarakterItemFavoriteModelRoom
+import com.madeean.domain.karakter.model.network.KarakterModelItemModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -215,7 +215,7 @@ class DetailKarakterActivity : AppCompatActivity() {
 
         if (data?.episode?.isNotEmpty() == true) {
             idEpisode = ""
-            data.episode.forEach {
+            data.episode?.forEach {
                 idEpisode += "${getIdFromUrl(it)},"
             }
             getDataFromApi()
